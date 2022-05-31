@@ -1,0 +1,21 @@
+imax 1
+jmax 1
+kmax *
+---------------
+shapes * * example_shapes.root $CHANNEL/$PROCESS $PROCESS_$SYSTEMATIC
+---------------
+bin bin1
+observation -1
+------------------------------
+bin             bin1       bin1
+process         signal     background
+process         0          1
+rate            -1         -1
+--------------------------------
+alpha  shape    -           1   uncertainty on background shape and normalization
+sigma  shape    1         -   uncertainty on signal resolution. Assume the histogram is a 2 sigma shift, 
+#                                so divide the unit gaussian by 2 before doing the interpolation
+--------------------------------
+gamma rateParam bin1 signal 1
+--------------------------------
+bin1 autoMCStats 10 0 1
