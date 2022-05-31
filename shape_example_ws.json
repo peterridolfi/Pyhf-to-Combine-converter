@@ -23,17 +23,16 @@
             50.0, 70.0, 80.0
           ],
           "modifiers": [
-            {
-              "name": "uncorr_bkguncrt",
-              "type": "shapesys",
-              "data": [
-                5.0, 10.0, 10.0
-              ]
-            },
+            
             {
                 "name": "corr_shape",
                 "type": "histosys",
                 "data": {"hi_data": [20, 15, 15], "lo_data": [10, 5, 10]}
+            },
+            {
+              "name": "mc_stat",
+              "type": "staterror",
+              "data": [1, 1, 1]
             }
           ]
         }
