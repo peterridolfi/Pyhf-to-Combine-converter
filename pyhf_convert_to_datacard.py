@@ -21,7 +21,7 @@ with uproot.recreate("C:/Users/peter/iris_project/example_shapes.root") as file:
     file["bin1/background_uncorr"] = np.histogram(range(3), weights=bkg_shapesys, bins = range(4))
     file["bin1/background_alphaUp"] = np.histogram(range(3), weights=bkg_histosys_up, bins = range(4))
     file["bin1/background_alphaDown"] = np.histogram(range(3), weights=bkg_histosys_down, bins = range(4))
-    file["bin1/observation"] = np.histogram(range(3), weights=observation, bins = range(4))
+    file["bin1/data_obs"] = np.histogram(range(3), weights=observation, bins = range(4))
     
     
 
