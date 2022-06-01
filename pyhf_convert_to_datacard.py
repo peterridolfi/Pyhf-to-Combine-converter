@@ -20,13 +20,13 @@ observation = spec['observations'][0]['data']
 h_background = hist.Hist.new.Regular(3, 0, 3).Weight()  # 3 bins
 h_background[...] = np.stack([bkg, bkg_err], axis=-1)  # set yields + uncertainties
 h_signal = hist.Hist.new.Regular(3, 0, 3).Weight()  # 3 bins
-h_signal.fill(sig)
+h_signal[...] = np.stack([sig, [0, 0, 0]], axis=-1)
 h_background_up = hist.Hist.new.Regular(3, 0, 3).Weight()  # 3 bins
 h_background_up[...] = np.stack([bkg_histosys_up, bkg_err], axis=-1)
 h_background_down = hist.Hist.new.Regular(3, 0, 3).Weight()  # 3 bins
 h_background_down[...] = np.stack([bkg_histosys_down, bkg_err], axis=-1)
 h_obs = hist.Hist.new.Regular(3, 0, 3).Weight()  # 3 bins
-h_obs.fill(observation)
+h_obs[...] = np.stack([observation, [0, 0, 0]], axis=-1)
 with uproot.recreate("C:/Users/peter/iris_project/example_shapes.root") as file:
     file["bin1/background"] = h_background
     file["bin1/signal"] = h_signal
