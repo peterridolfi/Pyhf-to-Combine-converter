@@ -27,7 +27,7 @@
             {
                 "name": "corr_shape",
                 "type": "histosys",
-                "data": {"hi_data": [20, 15, 15], "lo_data": [10, 5, 10]}
+                "data": {"hi_data": [50, 75, 90], "lo_data": [40, 70, 80]}
             },
             {
               "name": "mc_stat",
