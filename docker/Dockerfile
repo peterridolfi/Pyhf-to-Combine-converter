@@ -3,11 +3,12 @@ FROM ${BASE_IMAGE} as base
 
 ENV CVMFS_MOUNTS="cms.cern.ch oasis.opensciencegrid.org"
 
-ARG COMBINED_LIMIT_TAG="102x"
+ARG CMSSW_VERSION="CMSSW_11_2_0"
+ARG COMBINED_LIMIT_TAG="py3"
 ARG COMBINE_HARVESTER_TAG="master"
 RUN . /cvmfs/cms.cern.ch/cmsset_default.sh && \
-    cmsrel CMSSW_10_2_13 && \
-    cd CMSSW_10_2_13/src && \
+    cmsrel "${CMSSW_VERSION}" && \
+    cd "${CMSSW_VERSION}"/src && \
     cmsenv && \
     git clone \
         --depth 1 \
@@ -24,4 +25,4 @@ RUN . /cvmfs/cms.cern.ch/cmsset_default.sh && \
     scram b --jobs $(($(nproc) - 1)) && \
     cmsenv
 
-WORKDIR /home/cmsusr/CMSSW_10_2_13/src
+WORKDIR /home/cmsusr/"${CMSSW_VERSION}"/src
