@@ -5,9 +5,9 @@ all: image
 image:
 	docker pull aperloff/cms-cvmfs-docker:latest
 	docker build . \
-	-f docker/Dockerfile \
-	--build-arg BASE_IMAGE=aperloff/cms-cvmfs-docker:latest \
-	--tag pyhf/pyhf-combine-converter:debug-local
+		-f docker/Dockerfile \
+		--build-arg BASE_IMAGE=aperloff/cms-cvmfs-docker:latest \
+		--tag pyhf/pyhf-combine-converter:debug-local
 
 run:
 	docker run \
