@@ -18,14 +18,15 @@ run:
 		--cap-add SYS_ADMIN \
 		--security-opt apparmor:unconfined \
 		-e CVMFS_MOUNTS="cms.cern.ch oasis.opensciencegrid.org" \
-		pyhf/pyhf-combine-converter:debug-local
+		aperloff/cms-cvmfs-docker:latest
 
 image_dirty:
 	docker build . \
 		-f docker/dirty/Dockerfile \
 		--build-arg BASE_IMAGE=pyhf/pyhf-combine-converter:commit-build \
 		--build-arg CVMFS_MOUNTS="cms.cern.ch oasis.opensciencegrid.org" \
-		--tag pyhf/pyhf-combine-converter:latest
+		--tag pyhf/pyhf-combine-converter:latest \
+		--tag pyhf/pyhf-combine-converter:cmssw-11.2.0-python3
 
 run_dirty:
 	docker run \
