@@ -7,6 +7,7 @@ image:
 	docker build . \
 		-f docker/Dockerfile \
 		--build-arg BASE_IMAGE=aperloff/cms-cvmfs-docker:latest \
+		--build-arg CVMFS_MOUNTS="cms.cern.ch oasis.opensciencegrid.org" \
 		--tag pyhf/pyhf-combine-converter:debug-local
 
 run:
