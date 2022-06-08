@@ -1,0 +1,304 @@
+{
+  "channels": [
+    {
+      "name": "e_tau",
+      "samples": [
+        {
+          "name": "higgs",
+          "data": [
+            0.34
+          ],
+          "modifiers": [
+            {
+              "name": "mu",
+              "type": "normfactor",
+              "data": null
+            },
+            {
+              "name": "lumi",
+              "type": "normsys",
+              "data": {
+                "hi": 1.11,
+                "lo": 0.9009009009009008
+              }
+            },
+            {
+              "name": "tauid",
+              "type": "normsys",
+              "data": {
+                "hi": 1.23,
+                "lo": 0.8130081300813008
+              }
+            },
+            {
+              "name": "effic",
+              "type": "normsys",
+              "data": {
+                "hi": 1.04,
+                "lo": 0.9615384615384615
+              }
+            }
+          ]
+        },
+        {
+          "name": "ZTT",
+          "data": [
+            190.0
+          ],
+          "modifiers": [
+            {
+              "name": "tauid",
+              "type": "normsys",
+              "data": {
+                "hi": 1.23,
+                "lo": 0.8130081300813008
+              }
+            },
+            {
+              "name": "ZtoLL",
+              "type": "normsys",
+              "data": {
+                "hi": 1.04,
+                "lo": 0.9615384615384615
+              }
+            },
+            {
+              "name": "effic",
+              "type": "normsys",
+              "data": {
+                "hi": 1.04,
+                "lo": 0.9615384615384615
+              }
+            }
+          ]
+        },
+        {
+          "name": "QCD",
+          "data": [
+            327.0
+          ],
+          "modifiers": [
+            {
+              "name": "QCDel",
+              "type": "normsys",
+              "data": {
+                "hi": 1.2,
+                "lo": 0.8333333333333334
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "mu_tau",
+      "samples": [
+        {
+          "name": "higgs",
+          "data": [
+            0.57
+          ],
+          "modifiers": [
+            {
+              "name": "mu",
+              "type": "normfactor",
+              "data": null
+            },
+            {
+              "name": "lumi",
+              "type": "normsys",
+              "data": {
+                "hi": 1.11,
+                "lo": 0.9009009009009008
+              }
+            },
+            {
+              "name": "tauid",
+              "type": "normsys",
+              "data": {
+                "hi": 1.23,
+                "lo": 0.8130081300813008
+              }
+            },
+            {
+              "name": "effic",
+              "type": "normsys",
+              "data": {
+                "hi": 1.04,
+                "lo": 0.9615384615384615
+              }
+            }
+          ]
+        },
+        {
+          "name": "ZTT",
+          "data": [
+            329.0
+          ],
+          "modifiers": [
+            {
+              "name": "tauid",
+              "type": "normsys",
+              "data": {
+                "hi": 1.23,
+                "lo": 0.8130081300813008
+              }
+            },
+            {
+              "name": "ZtoLL",
+              "type": "normsys",
+              "data": {
+                "hi": 1.04,
+                "lo": 0.9615384615384615
+              }
+            },
+            {
+              "name": "effic",
+              "type": "normsys",
+              "data": {
+                "hi": 1.04,
+                "lo": 0.9615384615384615
+              }
+            }
+          ]
+        },
+        {
+          "name": "QCD",
+          "data": [
+            259.0
+          ],
+          "modifiers": [
+            {
+              "name": "QCDmu",
+              "type": "normsys",
+              "data": {
+                "hi": 1.1,
+                "lo": 0.9090909090909091
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "e_mu",
+      "samples": [
+        {
+          "name": "higgs",
+          "data": [
+            0.15
+          ],
+          "modifiers": [
+            {
+              "name": "mu",
+              "type": "normfactor",
+              "data": null
+            },
+            {
+              "name": "lumi",
+              "type": "normsys",
+              "data": {
+                "hi": 1.11,
+                "lo": 0.9009009009009008
+              }
+            },
+            {
+              "name": "effic",
+              "type": "normsys",
+              "data": {
+                "hi": 1.04,
+                "lo": 0.9615384615384615
+              }
+            }
+          ]
+        },
+        {
+          "name": "ZTT",
+          "data": [
+            88.0
+          ],
+          "modifiers": [
+            {
+              "name": "ZtoLL",
+              "type": "normsys",
+              "data": {
+                "hi": 1.04,
+                "lo": 0.9615384615384615
+              }
+            },
+            {
+              "name": "effic",
+              "type": "normsys",
+              "data": {
+                "hi": 1.04,
+                "lo": 0.9615384615384615
+              }
+            }
+          ]
+        },
+        {
+          "name": "other",
+          "data": [
+            14.0
+          ],
+          "modifiers": [
+            {
+              "name": "lumi",
+              "type": "normsys",
+              "data": {
+                "hi": 1.11,
+                "lo": 0.9009009009009008
+              }
+            },
+            {
+              "name": "effic",
+              "type": "normsys",
+              "data": {
+                "hi": 1.04,
+                "lo": 0.9615384615384615
+              }
+            },
+            {
+              "name": "other",
+              "type": "normsys",
+              "data": {
+                "hi": 1.1,
+                "lo": 0.9090909090909091
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "name": "e_tau",
+      "data": [
+        517.0
+      ]
+    },
+    {
+      "name": "mu_tau",
+      "data": [
+        540.0
+      ]
+    },
+    {
+      "name": "e_mu",
+      "data": [
+        101.0
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "name": "Measurement",
+      "config": {
+        "poi": "mu",
+        "parameters": []
+      }
+    }
+  ],
+  "version": "1.0.0"
+}

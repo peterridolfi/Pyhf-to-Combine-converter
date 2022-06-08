@@ -1,16 +1,16 @@
 from modulefinder import Module
 import string
-import CMSSW_11_2_0.pyhf as pyhf
+import pyhf
 
 import json
-import CMSSW_11_2_0.hist as hist
-import CMSSW_11_2_0.python.HiggsAnalysis.CombinedLimit.DatacardParser as DP
+import hist
+import HiggsAnalysis.CombinedLimit.DatacardParser as DP
 
 import sys
 from sys import exit
 from optparse import OptionParser
 
-from CMSSW_11_2_0.python.HiggsAnalysis.CombinedLimit.Datacard import Datacard
+from HiggsAnalysis.CombinedLimit.Datacard import Datacard
 
 parser = OptionParser()
 DP.addDatacardParserOptions(parser)
