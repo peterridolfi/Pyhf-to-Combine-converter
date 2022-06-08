@@ -12,6 +12,7 @@ image:
 
 run:
 	docker run \
+		--rm \
 		-it \
 		-P \
 		--device /dev/fuse \
@@ -30,6 +31,7 @@ image_dirty:
 
 run_dirty:
 	docker run \
+		--rm \
 		-it \
 		-P \
 		--device /dev/fuse \
