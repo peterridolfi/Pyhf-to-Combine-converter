@@ -17,9 +17,9 @@ parser = OptionParser()
 DP.addDatacardParserOptions(parser)
 options, args = parser.parse_args()
 
-@click.command()
-@click.argument('filename')
-def openFileName(filename)->Datacard:
+
+    
+def openFile(filename):
     with open(filename) as dc_file:
         DC = Datacard()
         DC = DP.parseCard(file=dc_file, options=options)
@@ -104,17 +104,22 @@ def toJSON(spec: dict):
     addMods(spec)
     
         
-
 spec = {"channels": [], "observations": [], "measurements": [], "version": "1.0.0"}
-toJSON(spec)
 
-@click.command()
-@click.option('-n', default = "converted_workspace.json")
+
 def writeFileName(name):
     with open(name, "w") as file:
         file.write(json.dumps(spec, indent=2))
 
+@click.command()
+@click.argument('filename')
+@click.option('-n', default = "converted_workspace.json")
+def execute(filename, n):
+    openFile(filename)
+    toJSON(spec)
+    writeFileName(n)
+
 if __name__=="__main__":
-    writeFileName()
+    execute()
 
 
