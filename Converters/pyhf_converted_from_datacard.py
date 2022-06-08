@@ -9,6 +9,7 @@ import HiggsAnalysis.CombinedLimit.DatacardParser as DP
 import sys
 from sys import exit
 from optparse import OptionParser
+import click
 
 from HiggsAnalysis.CombinedLimit.Datacard import Datacard
 
@@ -16,11 +17,18 @@ parser = OptionParser()
 DP.addDatacardParserOptions(parser)
 options, args = parser.parse_args()
 
+@click.command()
+@click.argument('filename')
+def openFileName(filename)->Datacard:
+    with open(filename) as dc_file:
+        DC = Datacard()
+        DC = DP.parseCard(file=dc_file, options=options)
+        return DC
 
-with open(sys.argv[1]) as dc_file:
-    DC = Datacard()
-    DC = DP.parseCard(file=dc_file, options=options)
-        
+DC = Datacard()
+if __name__=="__main__":
+    DC = openFileName()
+    
 
 channels = [channel for channel in DC.bins]
 observations = [obs for channel, obs in DC.obs.items()]
@@ -94,11 +102,19 @@ def toJSON(spec: dict):
     addMeasurements(spec)
     addNormFactor(spec)
     addMods(spec)
-    with open("converted_workspace.json", "w") as file:
-        file.write(json.dumps(spec, indent=2))
+    
         
 
 spec = {"channels": [], "observations": [], "measurements": [], "version": "1.0.0"}
-
 toJSON(spec)
+
+@click.command()
+@click.option('-n', default = "converted_workspace.json")
+def writeFileName(name):
+    with open(name, "w") as file:
+        file.write(json.dumps(spec, indent=2))
+
+if __name__=="__main__":
+    writeFileName()
+
 
