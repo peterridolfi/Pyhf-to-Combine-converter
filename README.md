@@ -48,7 +48,7 @@ As noted in the [using the cms-cvmfs-docker image tutorial][cvmfs-image-tutorial
 
 #### Linux
 
-On Linux systems the `--security-opt` option is needed
+On Linux systems the [`--security-opt` option][security-opt-option] is needed
 
 ```console
 $ docker run \
@@ -76,4 +76,5 @@ $ docker run \
 ```
 
 [Docker Hub]: https://hub.docker.com/r/pyhf/pyhf-combine-converter/tags
+[security-opt-option]: https://docs.docker.com/engine/reference/commandline/run/#optional-security-options---security-opt
 [cvmfs-image-tutorial]: https://awesome-workshop.github.io/docker-singularity-hats/07-cms-cvmfs-docker/index.html
