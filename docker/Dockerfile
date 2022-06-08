@@ -32,6 +32,8 @@ RUN . /cvmfs/cms.cern.ch/cmsset_default.sh && \
     python3 -m pip --no-cache-dir --verbose install --upgrade --user pip setuptools wheel && \
     python3 -m pip --no-cache-dir --verbose install --ignore-installed --upgrade --user 'pyhf[xmlio,minuit,contrib]' && \
     echo 'export PATH=/home/cmsusr/.local/bin:${PATH}' >> /home/cmsusr/.bashrc && \
-    echo 'printf "\n# Setup the environment with:\n# $ cmsenv\n"' >> /home/cmsusr/.bashrc
+    echo 'printf "\n# Sourcing cmsenv ..."' >> /home/cmsusr/.bashrc && \
+    echo 'cmsenv' >> /home/cmsusr/.bashrc && \
+    echo 'printf " DONE\n"' >> /home/cmsusr/.bashrc
 
-WORKDIR /home/cmsusr/"${CMSSW_VERSION}"/src
+WORKDIR /home/cmsusr/"${CMSSW_VERSION}"/workarea
