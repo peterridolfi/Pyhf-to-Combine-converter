@@ -1,41 +1,40 @@
+from email.policy import default
 from modulefinder import Module
 import string
 import pyhf
-
+import uproot
 import json
 import hist
+import numpy
 import HiggsAnalysis.CombinedLimit.DatacardParser as DP
 
 import sys
 from sys import exit
 from optparse import OptionParser
-import click
+
 
 from HiggsAnalysis.CombinedLimit.Datacard import Datacard
 
 parser = OptionParser()
 DP.addDatacardParserOptions(parser)
+parser.add_option("-O", "--out-file", dest = "outfile", default = "converted_workspace.json" )
 options, args = parser.parse_args()
 
 
-    
-def openFile(filename):
-    with open(filename) as dc_file:
-        DC = Datacard()
-        DC = DP.parseCard(file=dc_file, options=options)
-        return DC
-
 DC = Datacard()
-if __name__=="__main__":
-    DC = openFileName()
+with open(args[0]) as dc_file:
+    DC = Datacard()
+    DC = DP.parseCard(file=dc_file, options=options)
     
-
 channels = [channel for channel in DC.bins]
 observations = [obs for channel, obs in DC.obs.items()]
 samples = [sample for sample in DC.processes]
 exp_values = DC.exp
 sig = DC.isSignal
 mods = DC.systs
+   
+
+
 
 
 
@@ -111,15 +110,11 @@ def writeFileName(name):
     with open(name, "w") as file:
         file.write(json.dumps(spec, indent=2))
 
-@click.command()
-@click.argument('filename')
-@click.option('-n', default = "converted_workspace.json")
-def execute(filename, n):
-    openFile(filename)
-    toJSON(spec)
-    writeFileName(n)
 
-if __name__=="__main__":
-    execute()
+
+toJSON(spec)
+writeFileName(options.outfile)
+
+
 
 

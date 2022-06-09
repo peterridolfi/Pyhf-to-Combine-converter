@@ -1,64 +1,6 @@
 {
-  "channels": [
-    {
-      "name": "bin1",
-      "samples": [
-        {
-          "name": "ggh4G",
-          "data": [
-            4.76
-          ],
-          "modifiers": [
-            {
-              "name": "mu",
-              "type": "normfactor",
-              "data": null
-            },
-            {
-              "name": "deltaS",
-              "type": "normsys",
-              "data": {
-                "hi": 1.2,
-                "lo": 0.8333333333333334
-              }
-            }
-          ]
-        },
-        {
-          "name": "Bckg",
-          "data": [
-            1.47
-          ],
-          "modifiers": [
-            {
-              "name": "deltaB",
-              "type": "normsys",
-              "data": {
-                "hi": 1.5,
-                "lo": 0.6666666666666666
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "observations": [
-    {
-      "name": "bin1",
-      "data": [
-        0.0
-      ]
-    }
-  ],
-  "measurements": [
-    {
-      "name": "Measurement",
-      "config": {
-        "poi": "mu",
-        "parameters": []
-      }
-    }
-  ],
+  "channels": [],
+  "observations": [],
+  "measurements": [],
   "version": "1.0.0"
 }
