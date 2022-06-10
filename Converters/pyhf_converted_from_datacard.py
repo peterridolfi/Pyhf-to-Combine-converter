@@ -95,7 +95,7 @@ def addChannels(spec: dict):
         for idxc, channel in enumerate(channels):
             spec["channels"].append({"name": channel, "samples": []})
             hist = getHist(DC.shapeMap, channel, "data_obs")
-            data = hist.to_numpy()[0].tolist()
+            data = hist.values().tolist()
             spec["observations"].append({"name": channel, "data": data})
     else:
         for idxc, channel in enumerate(channels):
@@ -107,7 +107,7 @@ def addSamples(spec: dict):
         for idxc, channel in enumerate(channels):
             for idxs, sample in enumerate(samples):
                 hist = getHist(DC.shapeMap, channel, sample)
-                data = hist.to_numpy()[0].tolist()
+                data = hist.values().tolist()
                 if sample in exp_values[channel].keys():
                     spec["channels"][idxc]["samples"].append(
                     {
@@ -150,7 +150,7 @@ def addMods(spec: dict):
     for syst in mods:
         name = syst[0]
         mod_type = syst[2]
-        if mod_type == "lnN":
+        if mod_type == "lnN":  ##normsys
             for idxc, channel in enumerate(channels):
                 for idxs, sample in enumerate(exp_values[channel].keys()):
                     if sample in exp_values[channel].keys():
@@ -165,15 +165,15 @@ def addMods(spec: dict):
                                     },
                                 }
                             )
-        if "shape" in mod_type:
+        if "shape" in mod_type: ##histosys
             for idxc, channel in enumerate(channels):
                 for idxs, sample in enumerate(samples):
                     if syst[4][channel][sample] != 0:    
                         if sample in exp_values[channel].keys():    
                             histUp = getUncertUp(DC.shapeMap, channel, sample, name)
                             histDown = getUncertDown(DC.shapeMap, channel, sample, name)
-                            hi_data = histUp.to_numpy()[0].tolist()
-                            lo_data = histDown.to_numpy()[0].tolist()
+                            hi_data = histUp.values().tolist()
+                            lo_data = histDown.values().tolist()
                             spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                             {
                                 "name": name,
@@ -181,6 +181,39 @@ def addMods(spec: dict):
                                 "data": {"hi_data": [syst[4][channel][sample]*count for count in hi_data], "lo_data": [syst[4][channel][sample]*count for count in lo_data]},
                             }
                         )
+    for idxc, channel in enumerate(channels):  ##staterror
+        if channel in DC.binParFlags.keys():
+            if DC.binParFlags[channel][1] == True:
+                for idxs, sample in enumerate(samples):
+                    if sample in exp_values[channel].keys():
+                        hist = getHist(DC.shapeMap, channel, sample)
+                        err = hist.errors().tolist()
+                        spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
+                        {
+                            "name": "my_stat_err",
+                            "type": "staterror",
+                            "data": err
+                        }
+                    )
+            else:
+                for idxs, sample in enumerate(samples):
+                    if sample in exp_values[channel].keys():
+                        if DC.isSignal[sample] == False:
+                            hist = getHist(DC.shapeMap, channel, sample)
+                            err = hist.errors().tolist()
+                            spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
+                            {
+                                "name": "my_stat_err",
+                                "type": "staterror",
+                                "data": err
+                            }
+                        )
+            
+                
+
+
+
+
 
 
 
@@ -198,6 +231,7 @@ def writeFileName(name):
         
 spec = {"channels": [], "observations": [], "measurements": [], "version": "1.0.0"}
 toJSON(spec)
+
 writeFileName(options.outfile)
 
 
