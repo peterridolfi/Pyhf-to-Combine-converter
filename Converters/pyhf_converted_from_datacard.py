@@ -35,6 +35,8 @@ exp_values = DC.exp
 sig = DC.isSignal
 mods = DC.systs
 
+
+
    
 
 def getShapeFile(shapeMap: dict, channel, sample)->string:
@@ -130,20 +132,32 @@ def addSamples(spec: dict):
 
 
 def addMeasurements(spec: dict):
-    for idxs, sample in enumerate(samples):
-        if sig[sample] == True:
-            spec["measurements"].append(
-                {"name": "Measurement", "config": {"poi": "mu", "parameters": []}}
-            )
+    for idxc, channel in enumerate(channels):
+        for idxs, sample in enumerate(samples):
+            if sig[sample] == True:
+                if (channel + "AND" + sample) in DC.rateParams.keys():
+                    name = DC.rateParams[channel + "AND" + sample][0][0][0]
+                    spec["measurements"].append(
+                        {"name": "Measurement", "config": {"poi": name, "parameters": []}}
+                    )
+                else:
+                    spec["measurements"].append(
+                        {"name": "Measurement", "config": {"poi": "mu", "parameters": []}}
+                    )
 
 
 def addNormFactor(spec: dict):
     for idxc, channel in enumerate(channels):
         for idxs, sample in enumerate(samples):
-            if sig[sample] == True:
+            if (channel + "AND" + sample) in DC.rateParams.keys():
+                    name = DC.rateParams[channel + "AND" + sample][0][0][0]
+                    spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
+                        {"name": name, "type": "normfactor", "data": []}
+                    )
+            elif sig[sample] == True:
                 spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
-                    {"name": "mu", "type": "normfactor", "data": None}
-                )
+                        {"name": "mu", "type": "normfactor", "data": []}
+                    )
 
 
 def addMods(spec: dict):
@@ -181,24 +195,13 @@ def addMods(spec: dict):
                                 "data": {"hi_data": [syst[4][channel][sample]*count for count in hi_data], "lo_data": [syst[4][channel][sample]*count for count in lo_data]},
                             }
                         )
-    for idxc, channel in enumerate(channels):  ##staterror
+    for idxc, channel in enumerate(channels):  ##staterror/shapesys
+
         if channel in DC.binParFlags.keys():
-            if DC.binParFlags[channel][1] == True:
-                for idxs, sample in enumerate(samples):
-                    if sample in exp_values[channel].keys():
-                        hist = getHist(DC.shapeMap, channel, sample)
-                        err = hist.errors().tolist()
-                        spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
-                        {
-                            "name": "my_stat_err",
-                            "type": "staterror",
-                            "data": err
-                        }
-                    )
-            else:
-                for idxs, sample in enumerate(samples):
-                    if sample in exp_values[channel].keys():
-                        if DC.isSignal[sample] == False:
+            if DC.binParFlags[channel][0] >= 0: #if BB lite enabled
+                if DC.binParFlags[channel][1] == True:
+                    for idxs, sample in enumerate(samples):
+                        if sample in exp_values[channel].keys():
                             hist = getHist(DC.shapeMap, channel, sample)
                             err = hist.errors().tolist()
                             spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
@@ -208,15 +211,48 @@ def addMods(spec: dict):
                                 "data": err
                             }
                         )
+                else:
+                    for idxs, sample in enumerate(samples):
+                        if sample in exp_values[channel].keys():
+                            if DC.isSignal[sample] == False:
+                                hist = getHist(DC.shapeMap, channel, sample)
+                                err = hist.errors().tolist()
+                                spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
+                                {
+                                    "name": "my_stat_err",
+                                    "type": "staterror",
+                                    "data": err
+                                }
+                            )
+            else: ##if user wants total BB (shapesys)
+                if DC.binParFlags[channel][1] == True:
+                    for idxs, sample in enumerate(samples):
+                        if sample in exp_values[channel].keys():
+                            hist = getHist(DC.shapeMap, channel, sample)
+                            err = hist.errors().tolist()
+                            spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
+                            {
+                                "name": "my_shapesys",
+                                "type": "shapesys",
+                                "data": err
+                            }
+                        )
+                else:
+                    for idxs, sample in enumerate(samples):
+                        if sample in exp_values[channel].keys():
+                            if DC.isSignal[sample] == False:
+                                hist = getHist(DC.shapeMap, channel, sample)
+                                err = hist.errors().tolist()
+                                spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
+                                {
+                                    "name": "my_shapesys",
+                                    "type": "shapesys",
+                                    "data": err
+                                }
+                            )
+
             
                 
-
-
-
-
-
-
-
 def toJSON(spec: dict):
     addChannels(spec)
     addSamples(spec)
