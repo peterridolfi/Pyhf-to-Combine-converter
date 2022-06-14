@@ -152,11 +152,11 @@ def addNormFactor(spec: dict):
             if (channel + "AND" + sample) in DC.rateParams.keys():
                     name = DC.rateParams[channel + "AND" + sample][0][0][0]
                     spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
-                        {"name": name, "type": "normfactor", "data": []}
+                        {"name": name, "type": "normfactor", "data": None}
                     )
             elif sig[sample] == True:
                 spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
-                        {"name": "mu", "type": "normfactor", "data": []}
+                        {"name": "mu", "type": "normfactor", "data": None}
                     )
 
 
@@ -192,13 +192,13 @@ def addMods(spec: dict):
                             {
                                 "name": name,
                                 "type": "histosys",
-                                "data": {"hi_data": [syst[4][channel][sample]*count for count in hi_data], "lo_data": [syst[4][channel][sample]*count for count in lo_data]},
+                                "data": {"hi_data": [count / syst[4][channel][sample] for count in hi_data], "lo_data": [count / syst[4][channel][sample] for count in lo_data]},
                             }
                         )
     for idxc, channel in enumerate(channels):  ##staterror/shapesys
 
         if channel in DC.binParFlags.keys():
-            if DC.binParFlags[channel][0] >= 0: #if BB lite enabled
+            if DC.binParFlags[channel][0] > 0: #if BB lite enabled
                 if DC.binParFlags[channel][1] == True:
                     for idxs, sample in enumerate(samples):
                         if sample in exp_values[channel].keys():
@@ -232,7 +232,7 @@ def addMods(spec: dict):
                             err = hist.errors().tolist()
                             spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                             {
-                                "name": "my_shapesys",
+                                "name": "my_shapesys_" + channel + sample,
                                 "type": "shapesys",
                                 "data": err
                             }
@@ -245,7 +245,7 @@ def addMods(spec: dict):
                                 err = hist.errors().tolist()
                                 spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                                 {
-                                    "name": "my_shapesys",
+                                    "name": "my_shapesys_" + channel + sample,
                                     "type": "shapesys",
                                     "data": err
                                 }
