@@ -198,58 +198,32 @@ def addMods(spec: dict):
     for idxc, channel in enumerate(channels):  ##staterror/shapesys
 
         if channel in DC.binParFlags.keys():
-            if DC.binParFlags[channel][0] > 0: #if BB lite enabled
-                if DC.binParFlags[channel][1] == True:
-                    for idxs, sample in enumerate(samples):
-                        if sample in exp_values[channel].keys():
-                            hist = getHist(DC.shapeMap, channel, sample)
-                            err = hist.errors().tolist()
-                            spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
-                            {
-                                "name": "my_stat_err",
-                                "type": "staterror",
-                                "data": err
-                            }
-                        )
-                else:
-                    for idxs, sample in enumerate(samples):
-                        if sample in exp_values[channel].keys():
-                            if DC.isSignal[sample] == False:
-                                hist = getHist(DC.shapeMap, channel, sample)
-                                err = hist.errors().tolist()
-                                spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
-                                {
-                                    "name": "my_stat_err",
-                                    "type": "staterror",
-                                    "data": err
-                                }
-                            )
-            else: ##if user wants total BB (shapesys)
-                if DC.binParFlags[channel][1] == True:
-                    for idxs, sample in enumerate(samples):
-                        if sample in exp_values[channel].keys():
-                            hist = getHist(DC.shapeMap, channel, sample)
-                            err = hist.errors().tolist()
-                            spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
-                            {
-                                "name": "my_shapesys_" + channel + sample,
-                                "type": "shapesys",
-                                "data": err
-                            }
-                        )
-                else:
-                    for idxs, sample in enumerate(samples):
-                        if sample in exp_values[channel].keys():
-                            if DC.isSignal[sample] == False:
-                                hist = getHist(DC.shapeMap, channel, sample)
-                                err = hist.errors().tolist()
-                                spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
-                                {
-                                    "name": "my_shapesys_" + channel + sample,
-                                    "type": "shapesys",
-                                    "data": err
-                                }
-                            )
+            if DC.binParFlags[channel][0] == 0: #if BB lite enabled               
+                for idxs, sample in enumerate(samples):
+                    if sample in exp_values[channel].keys():
+                        hist = getHist(DC.shapeMap, channel, sample)
+                        err = hist.errors().tolist()
+                        spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
+                        {
+                            "name": "my_stat_err",
+                            "type": "staterror",
+                            "data": err
+                        }
+                    )
+
+            elif DC.binParFlags[channel][0] > 0: ##if user wants total BB (shapesys)               
+                for idxs, sample in enumerate(samples):
+                    if sample in exp_values[channel].keys():
+                        hist = getHist(DC.shapeMap, channel, sample)
+                        err = hist.errors().tolist()
+                        spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
+                        {
+                            "name": "my_shapesys_" + channel + sample,
+                            "type": "shapesys",
+                            "data": err
+                        }
+                    )
+                
 
             
                 

@@ -2,7 +2,7 @@ imax 1
 jmax 1
 kmax *
 ---------------
-shapes bin1 * simple-shape.root $PROCESS $PROCESS_$SYSTEMATIC
+shapes * * simple-shape.root $PROCESS $PROCESS_$SYSTEMATIC
 ---------------
 bin bin1
 observation -1
@@ -18,4 +18,6 @@ alpha  shape    -           1   uncertainty on background shape and normalizatio
 sigma  shape    0.5         -   uncertainty on signal resolution. Assume the histogram is a 2 sigma shift, 
 #                                so divide the unit gaussian by 2 before doing the interpolation
 --------------------------------
-* autoMCStats 0 1 1
+gamma rateParam bin1 background 1
+--------------------------------
+* autoMCStats 100 0 1

@@ -103,6 +103,11 @@
           ],
           "modifiers": [
             {
+              "name": "gamma",
+              "type": "normfactor",
+              "data": null
+            },
+            {
               "name": "lumi",
               "type": "normsys",
               "data": {
