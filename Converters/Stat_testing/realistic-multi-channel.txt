@@ -7,6 +7,7 @@
 imax 3  number of channels
 jmax *  number of backgrounds ('*' = automatic)
 kmax *  number of nuisance parameters (sources of systematical uncertainties)
+shapes * * FAKE
 ------------
 # three channels, each with it's number of observed events 
 bin          e_tau mu_tau e_mu

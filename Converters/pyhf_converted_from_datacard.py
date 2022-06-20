@@ -140,7 +140,7 @@ def addMeasurements(spec: dict):
                     spec["measurements"].append(
                         {"name": "Measurement", "config": {"poi": name, "parameters": []}}
                     )
-                elif spec["measurements"] == None:
+                elif spec["measurements"] == []:
                     spec["measurements"].append(
                         {"name": "Measurement", "config": {"poi": "mu", "parameters": []}}
                     )
