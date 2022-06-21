@@ -34,9 +34,6 @@ samples = [sample for sample in DC.processes]
 exp_values = DC.exp
 sig = DC.isSignal
 mods = DC.systs
-
-
-
    
 
 def getShapeFile(shapeMap: dict, channel, sample)->string:
@@ -241,6 +238,7 @@ def writeFileName(name):
         
 spec = {"channels": [], "observations": [], "measurements": [], "version": "1.0.0"}
 toJSON(spec)
+
 
 writeFileName(options.outfile)
 
