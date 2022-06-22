@@ -11,7 +11,7 @@ shapes * * FAKE
 ------------
 # three channels, each with it's number of observed events 
 bin          e_tau mu_tau e_mu
-observation   517   540   101     
+observation   526   546   106     
 ------------
 # now we list the expected events for signal and all backgrounds in those three bins
 # the second 'process' line must have a positive number for backgrounds, and 0 for signal

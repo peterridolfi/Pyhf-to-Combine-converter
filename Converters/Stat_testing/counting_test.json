@@ -275,37 +275,23 @@
     {
       "name": "e_tau",
       "data": [
-        517.0
+        521.0
       ]
     },
     {
       "name": "mu_tau",
       "data": [
-        540.0
+        546.0
       ]
     },
     {
       "name": "e_mu",
       "data": [
-        101.0
+        106.0
       ]
     }
   ],
   "measurements": [
-    {
-      "name": "Measurement",
-      "config": {
-        "poi": "mu",
-        "parameters": []
-      }
-    },
-    {
-      "name": "Measurement",
-      "config": {
-        "poi": "mu",
-        "parameters": []
-      }
-    },
     {
       "name": "Measurement",
       "config": {
