@@ -238,6 +238,7 @@ def writeFileName(name):
         
 spec = {"channels": [], "observations": [], "measurements": [], "version": "1.0.0"}
 toJSON(spec)
+print(DC.rateParams)
 
 
 writeFileName(options.outfile)

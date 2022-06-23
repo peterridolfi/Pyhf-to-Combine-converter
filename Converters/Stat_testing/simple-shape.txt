@@ -2,7 +2,7 @@ imax 1
 jmax 1
 kmax *
 ---------------
-shapes * * simple-shape.root $PROCESS $PROCESS_$SYSTEMATIC
+shapes * * shapes.root $CHANNEL/$PROCESS $CHANNEL/$PROCESS_$SYSTEMATIC
 ---------------
 bin bin1
 observation -1

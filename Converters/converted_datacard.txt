@@ -1,0 +1,26 @@
+imax 1
+jmax 1
+kmax20
+shape bin1 signal shapes.root bin1/signal bin1/signal_$SYSTEMATIC
+shape bin1 background shapes.root bin1/background bin1/background_$SYSTEMATIC
+
+---------------------------------
+bin bin1 
+observation -1 
+---------------------------------
+bin     bin1  bin1  
+process     signal  background  
+process     0  1  
+rate     -1  -1  
+---------------------------------
+alpha  shape  bin1  
+bgnorm  lnN  bin1  
+lumi  lnN  bin1  
+sigma  shape  bin1  
+
+---------------------------------
+mu rateParam bin1 signal 1
+gamma rateParam bin1 background 1
+
+---------------------------------
+bin1 autoMCStats 100000 0 1
