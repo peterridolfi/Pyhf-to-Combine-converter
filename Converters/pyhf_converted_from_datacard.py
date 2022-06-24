@@ -36,7 +36,7 @@ sig = DC.isSignal
 mods = DC.systs
    
 
-def getShapeFile(shapeMap: dict, channel, sample)->string:
+def getShapeFile(shapeMap: dict, channel, sample)->string:   
     file = ''
     if not channel in shapeMap.keys():
         if '*' in shapeMap.keys():
@@ -45,6 +45,9 @@ def getShapeFile(shapeMap: dict, channel, sample)->string:
                     file = shapeMap["*"]["*"][0]
             else:
                 file = shapeMap["*"][sample][0]
+    elif not sample in shapeMap[channel]:
+        if "*" in shapeMap[channel].keys():
+            file = shapeMap[channel]["*"][0]
     else:
         file = shapeMap[channel][sample][0]
     return file
@@ -58,6 +61,9 @@ def getHistPath(shapeMap: dict, channel, sample)->string:
                     path = shapeMap["*"]["*"][1].replace("$CHANNEL", channel).replace("$PROCESS", sample)
             else:
                 path = shapeMap["*"][sample][1].replace("$CHANNEL", channel)
+    elif not sample in shapeMap[channel]:        
+        if "*" in shapeMap[channel].keys():
+            path = shapeMap[channel]["*"][1].replace("$PROCESS", sample)
     else:
         path = shapeMap[channel][sample][1]
     return path
@@ -71,6 +77,9 @@ def getUncertPath(shapeMap: dict, channel, sample, name)->string:
                     path = shapeMap["*"]["*"][2].replace("$CHANNEL", channel).replace("$PROCESS", sample).replace("$SYSTEMATIC", name)
             else:
                 path = shapeMap["*"][sample][2].replace("$CHANNEL", channel).replace("SYSTEMATIC", name)
+    elif not sample in shapeMap[channel]:       
+        if "*" in shapeMap[channel].keys():
+            path = shapeMap[channel]["*"][2].replace("$PROCESS", sample).replace("$SYSTEMATIC", name)
     else:
         path = shapeMap[channel][sample][2].replace("$SYSTEMATIC", name)
     return path
@@ -185,11 +194,28 @@ def addMods(spec: dict):
                             histDown = getUncertDown(DC.shapeMap, channel, sample, name)
                             hi_data = histUp.values().tolist()
                             lo_data = histDown.values().tolist()
+                            data =  spec["channels"][idxc]["samples"][idxs]["data"]
+                            hi = 0
+                            lo = 0
+                            nom = 0
+                            for i in hi_data:
+                                hi = hi + i
+                            for i in lo_data:
+                                lo = lo + i
+                            for i in data:
+                                nom = nom + i
                             spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                             {
                                 "name": name,
                                 "type": "histosys",
                                 "data": {"hi_data": [count / syst[4][channel][sample] for count in hi_data], "lo_data": [count / syst[4][channel][sample] for count in lo_data]},
+                            }
+                            )
+                            spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
+                            {
+                                "name": name,
+                                "type": "normsys",
+                                "data": {"hi": nom/hi , "lo": nom/lo},
                             }
                         )
     for idxc, channel in enumerate(channels):  ##staterror/shapesys
@@ -215,11 +241,14 @@ def addMods(spec: dict):
                         err = hist.errors().tolist()
                         spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                         {
-                            "name": "my_shapesys_" + channel + sample,
+                            "name": "my_shapesys" + channel + sample,
                             "type": "shapesys",
                             "data": err
                         }
                     )
+
+
+            
                 
 
             
@@ -230,6 +259,7 @@ def toJSON(spec: dict):
     addMeasurements(spec)
     addNormFactor(spec)
     addMods(spec)
+    
 
 def writeFileName(name):
     with open(name, "w") as file:
@@ -238,8 +268,6 @@ def writeFileName(name):
         
 spec = {"channels": [], "observations": [], "measurements": [], "version": "1.0.0"}
 toJSON(spec)
-print(DC.rateParams)
-
 
 writeFileName(options.outfile)
 

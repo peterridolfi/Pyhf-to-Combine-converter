@@ -5,8 +5,7 @@ import awkward as ak
 import vector
 
 file = uproot.open('uproot-tutorial-file.root')
-with uproot.recreate('test.root') as file:
-    file['Events'] = np.histogram([0, 1, 2, 3, 4], bins = 5, range = [0, 5], weights = [1, 2, 3, 4, 5])
+
 
 tree = file['Events']
 branches  =tree.arrays()

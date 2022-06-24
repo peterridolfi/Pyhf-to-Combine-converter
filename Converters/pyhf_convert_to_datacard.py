@@ -271,11 +271,11 @@ def writeDataCard(path):
     with open(path, 'w') as f:
         f.write("imax " + str(size(DC.bins)) + "\n") 
         f.write("jmax " + str(size(DC.processes)- size(DC.signals))+ "\n") 
-        f.write("kmax" + str(size(DC.systs))+ "\n")  
+        f.write("kmax " + str(size(DC.systs, 0))+ "\n")  
         if DC.hasShapes:
             for channel in DC.shapeMap.keys():
                 for sample in DC.shapeMap[channel].keys():
-                    f.write("shape " + channel + " " + sample + " " + DC.shapeMap[channel][sample][0] + " " + DC.shapeMap[channel][sample][1] + " " + DC.shapeMap[channel][sample][2] + "\n")    
+                    f.write("shape " + sample + " " + channel + " " + DC.shapeMap[channel][sample][0] + " " + DC.shapeMap[channel][sample][1] + " " + DC.shapeMap[channel][sample][2] + "\n")    
         f.write('\n---------------------------------\n') 
         f.write("bin ")
         for bin in DC.bins:

@@ -1,0 +1,70 @@
+{
+  "channels": [
+    {
+      "name": "b1",
+      "samples": [
+        {
+          "name": "sig",
+          "data": [
+            50.0
+          ],
+          "modifiers": [
+            {
+              "name": "mu",
+              "type": "normfactor",
+              "data": null
+            }
+          ]
+        },
+        {
+          "name": "bkg1",
+          "data": [
+            99.0
+          ],
+          "modifiers": []
+        },
+        {
+          "name": "bkg2",
+          "data": [
+            154.0
+          ],
+          "modifiers": []
+        },
+        {
+          "name": "bkg3",
+          "data": [
+            50.0
+          ],
+          "modifiers": [
+            {
+              "name": "norm3",
+              "type": "normsys",
+              "data": {
+                "hi": 1.2,
+                "lo": 0.8333333333333334
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "name": "b1",
+      "data": [
+        289.0
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "name": "Measurement",
+      "config": {
+        "poi": "mu",
+        "parameters": []
+      }
+    }
+  ],
+  "version": "1.0.0"
+}
