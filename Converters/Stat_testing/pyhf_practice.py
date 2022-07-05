@@ -19,11 +19,6 @@ workspace = pyhf.Workspace({
               "name": "mu",
               "type": "normfactor",
               "data": None
-            },
-            {
-              "name": "my_stat_error",
-              "type": "staterror",
-              "data": [1, 1, 1]
             }
           ]
         },
@@ -34,9 +29,11 @@ workspace = pyhf.Workspace({
           ],
           "modifiers": [
             {
-              "name": "my_stat_error",
-              "type": "staterror",
-              "data": [5, 5, 5]
+                "name": "shape",
+                "type": "histosys",
+                "data": {"hi_data": [55, 75, 90], "lo_data": [45, 65, 70]}
+            
+
             }
           ]
         }
@@ -66,7 +63,7 @@ workspace = pyhf.Workspace({
 model = workspace.model()
 poi_values = np.linspace(1, 5 , 5)
 observations = workspace.data(model, include_auxdata = True)
-print(model.expected_actualdata([1, 1, 1, 1]))
+print(model.expected_actualdata([1, 2]))
 
 
 

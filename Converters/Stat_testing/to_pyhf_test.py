@@ -12,9 +12,9 @@ import random
 
 
 
-fit = uproot.open("fitDiagnosticsTest.root"), 
-b1total = [337.7, 340.3, 343.2, 346.2, 349.5, 353, 356.8, 360.9, 365.2, 369.9]
-plt.plot(np.linspace(-2, 1.6, 10).tolist(), b1total, label = "combine yields", alpha = 0.5)
+fit = uproot.open("fitDiagnosticsTest.root")
+hist = fit["shapes_fit_s/b1/total"].values().tolist()
+plt.hist(np.linspace(0, 10, 10), bins=10, weights = hist, range=(0, 10), label = "combine yields", alpha = 0.5)
 
 '''
 file = uproot.open('higgsCombineTest.MultiDimFit.mH120.root')
@@ -48,12 +48,37 @@ with open('converted_workspace.json') as file:
 ws = pyhf.Workspace(spec)
 model = ws.model()
 observations = ws.data(model)
-pars = np.linspace(-2, 1.6, 10).tolist()
-exp = []
-for p in pars:
-    exp.append(model.expected_actualdata([1.5, p]))
-print(np.linspace(-2, 1.6, 10).tolist())
-plt.plot(np.linspace(-2, 1.6, 10).tolist(), exp, label = "pyhf yields", alpha = 0.5)
+data = [
+            22.100000381469727,
+            20.649999618530273,
+            18.700000762939453,
+            16.950000762939453,
+            16.600000381469727,
+            14.699999809265137,
+            13.399999618530273,
+            10.949999809265137,
+            10.800000190734863,
+            9.449999809265137
+          ]
+err = [
+                1.051189802081432,
+                1.016120071645079,
+                0.9669539802906859,
+                0.9205976319760986,
+                0.91104335791443,
+                0.8573214099741124,
+                0.8185352771872451,
+                0.7399324293474372,
+                0.7348469228349536,
+                0.687386354243376
+              ]
+percent = [err[i] / data[i] for i, num in enumerate(data)]
+fit = [0.410499, -.18183, -.51804, -.23517, -.15169, .16846, -.25026, -.89728, -.21374, .15744, -.19908]
+
+exp = model.expected_actualdata([0.410499]+[1+percent[i]*fit[i+1] for i, num in enumerate(percent)])
+
+
+plt.hist(np.linspace(0, 10, 10), bins=10, weights = exp, range=(0, 10), label = "pyhf yields", alpha = 0.5)
 plt.legend()
 plt.savefig('exp_data_counting')
 
