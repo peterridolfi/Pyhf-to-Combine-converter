@@ -175,7 +175,7 @@ def addMods(spec: dict):
                 for idxs, sample in enumerate(exp_values[channel].keys()):
                     if sample in exp_values[channel].keys():
                         if syst[4][channel][sample] != 0:
-                            if "/" not in syst[4][channel][sample]:
+                            if "/" not in str(syst[4][channel][sample]):
                                 spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                                     {
                                         "name": name,
@@ -222,9 +222,16 @@ def addMods(spec: dict):
                             {
                                 "name": name,
                                 "type": "histosys",
-                                "data": {"hi_data": [count / syst[4][channel][sample] for count in hi_data], "lo_data": [count / syst[4][channel][sample] for count in lo_data]},
+                                "data": {"hi_data": hi_data, "lo_data": lo_data},
                             }
                             )
+                            spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
+                            {
+                                "name": name,
+                                "type": "normsys",
+                                "data": {"hi": nom/hi , "lo": nom/lo},
+                            }
+                        )
                             
 
     for idxc, channel in enumerate(channels):  ##staterror/shapesys

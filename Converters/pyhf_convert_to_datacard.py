@@ -258,15 +258,16 @@ def addRateParams():
             (spec["channels"][idxc]["samples"])
         ):
             for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]): 
-                if "normfactor" in mod["type"] or "lumi" in spec["channels"][idxc]["parameters"]:
+                if "normfactor" in mod["type"] or spec["channels"][idxc]["parameters"] != None:
                     if mod["name"] not in workspace.get_measurement()['config']['poi']:
                         DC.rateParams.update({channel + "AND" + sample["name"]: []})
+            for idxl, lumi in spec["channels"][idxc]["parameters"]:
+                    DC.rateParams[channel + "AND" + sample["name"]].append([[lumi["name"], 1, 0], ''])
             for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]):
                 if "normfactor" in mod["type"]:
                     if mod["name"] not in workspace.get_measurement()['config']['poi']:
                         DC.rateParams[channel + "AND" + sample["name"]].append([[mod["name"], 1, 0], ''])
-                if "lumi" in spec["channels"][idxc]["parameters"]:
-                    DC.rateParams[channel + "AND" + sample["name"]].append([[mod["name"], 1, 0], ''])
+                
             
 
 def writeDataCard(path):

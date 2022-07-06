@@ -11,7 +11,7 @@ process         sig    bkg1    bkg2   bkg3
 process         0      1       2      3
 rate            50     99      154    50
 -------------------------------------------
-b1   autoMCStats   0   1   1
+shape3  shape   -      -        -     1
 
 
 
