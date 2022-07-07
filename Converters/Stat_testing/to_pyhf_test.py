@@ -22,7 +22,7 @@ observations = ws.data(model)
 poi_values = np.linspace(0, 3, 50).tolist()
 NLL = []
 for poi in poi_values:
-    NLL.append(pyhf.infer.mle.twice_nll(pars=[poi, -1], data=observations, pdf=model))
+    NLL.append(pyhf.infer.mle.twice_nll(pars=[poi, 1], data=observations, pdf=model))
 plt.plot(poi_values, NLL, label = "pyhf NLL")
 
 

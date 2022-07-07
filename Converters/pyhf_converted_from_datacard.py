@@ -144,7 +144,7 @@ def addMeasurements(spec: dict):
                 if (channel + "AND" + sample) in DC.rateParams.keys():
                     name = DC.rateParams[channel + "AND" + sample][0][0][0]
                     spec["measurements"].append(
-                        {"name": "Measurement", "config": {"poi": name, "parameters": []}}
+                        {"name": "Measurement_" + name, "config": {"poi": name, "parameters": []}}
                     )
                 elif spec["measurements"] == []:
                     spec["measurements"].append(
@@ -160,7 +160,7 @@ def addNormFactor(spec: dict):
                     spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                         {"name": name, "type": "normfactor", "data": None}
                     )
-            elif sig[sample] == True:
+            elif sig[sample] == True: ##add signal strength modifier
                 spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                         {"name": "mu", "type": "normfactor", "data": None}
                     )
@@ -229,7 +229,7 @@ def addMods(spec: dict):
                             {
                                 "name": name,
                                 "type": "normsys",
-                                "data": {"hi": nom/hi , "lo": nom/lo},
+                                "data": {"hi": nom/hi , "lo": nom/lo}, ##normalization
                             }
                         )
                             

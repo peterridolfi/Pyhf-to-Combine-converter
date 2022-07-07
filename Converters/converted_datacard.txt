@@ -1,26 +1,24 @@
-imax 1
+imax 3
 jmax 1
-kmax20
-shape bin1 signal shapes.root bin1/signal bin1/signal_$SYSTEMATIC
-shape bin1 background shapes.root bin1/background bin1/background_$SYSTEMATIC
+kmax 7
 
 ---------------------------------
-bin bin1 
-observation -1 
+bin e_tau mu_tau e_mu 
+observation [521.0] [546.0] [106.0] 
 ---------------------------------
-bin     bin1  bin1  
-process     signal  background  
-process     0  1  
-rate     -1  -1  
+bin     e_tau    e_tau    e_tau    mu_tau    mu_tau    mu_tau    e_mu    e_mu    e_mu    
+process     higgs    ZTT    QCD    higgs    ZTT    QCD    higgs    ZTT    other    
+process     0     2     1     0     2     1     0     2     4     
+rate     0.34     190.0     327.0     0.57     329.0     259.0     0.15     88.0     14.0     
 ---------------------------------
-alpha  shape  bin1  
-bgnorm  lnN  bin1  
-lumi  lnN  bin1  
-sigma  shape  bin1  
+QCDel  lnN  -       -       0.8333333333333334/1.2  -       -       -       -       -       -       
+QCDmu  lnN  -       -       -       -       -       0.9090909090909091/1.1  -       -       -       
+ZtoLL  lnN  -       0.9615384615384615/1.04  -       -       0.9615384615384615/1.04  -       -       0.9615384615384615/1.04  -       
+effic  lnN  0.9615384615384615/1.04  0.9615384615384615/1.04  -       0.9615384615384615/1.04  0.9615384615384615/1.04  -       0.9615384615384615/1.04  0.9615384615384615/1.04  0.9615384615384615/1.04  
+lumi  lnN  0.9009009009009008/1.11  -       -       0.9009009009009008/1.11  -       -       0.9009009009009008/1.11  -       0.9009009009009008/1.11  
+other  lnN  -       -       -       -       -       -       -       -       0.9090909090909091/1.1  
+tauid  lnN  0.8130081300813008/1.23  0.8130081300813008/1.23  -       0.8130081300813008/1.23  0.8130081300813008/1.23  -       -       -       -       
 
 ---------------------------------
-mu rateParam bin1 signal 1
-gamma rateParam bin1 background 1
 
 ---------------------------------
-bin1 autoMCStats 100000 0 1
