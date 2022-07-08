@@ -22,7 +22,8 @@ observations = ws.data(model)
 poi_values = np.linspace(0, 3, 50).tolist()
 NLL = []
 for poi in poi_values:
-    NLL.append(37*(pyhf.infer.mle.twice_nll(pars=[poi, 1], data=observations, pdf=model)-71.83)/(147.84-71.83))
+    NLL.append(-1*(model.logpdf(pars=[poi, 1], data=observations))-35.91)
+
 plt.plot(poi_values, NLL, label = "pyhf NLL")
 file = uproot.open('higgsCombineTest.MultiDimFit.mH120.root')
 tree = file['limit']
