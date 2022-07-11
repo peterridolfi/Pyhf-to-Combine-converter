@@ -232,17 +232,12 @@ def addRateParams():
         for idxs, sample in enumerate(
             (spec["channels"][idxc]["samples"])
         ):
-            for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]): ##normfactor
-                if "normfactor" in mod["type"]:
-                    if mod["name"] not in workspace.get_measurement()['config']['poi']:
-                        DC.rateParams.update({channel + "AND" + sample["name"]: []})
-                        DC.rateParams[channel + "AND" + sample["name"]].append([[mod["name"], 1, 0], ''])
+            for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]): ##normfactor or lumi
+                if "normfactor" in mod["type"] or "lumi" in mod["type"]:
+                    DC.rateParams.update({channel + "AND" + sample["name"]: []})
+                    DC.rateParams[channel + "AND" + sample["name"]].append([[mod["name"], 1, 0], ''])
                         
-            if "parameters" in spec["channels"][idxc].keys(): ##lumi
-                for idxl, lumi in spec["channels"][idxc]["parameters"]:
-                    if lumi["name"] not in workspace.get_measurement()['config']['poi']:
-                        DC.rateParams.update({channel + "AND" + sample["name"]: []})
-                        DC.rateParams[channel + "AND" + sample["name"]].append([[lumi["name"], 1, 0], ''])
+            
             
                 
             
