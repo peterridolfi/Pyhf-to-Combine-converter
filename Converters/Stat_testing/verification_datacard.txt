@@ -1,7 +1,7 @@
 imax 1
 jmax 3
 kmax *
-
+shapes * b1 shapes-test.root $PROCESS $PROCESS_$SYSTEMATIC
 ---------------
 bin b1
 observation 289
@@ -11,7 +11,7 @@ process         sig    bkg1    bkg2   bkg3
 process         0      1       2      3
 rate            50     99      154    50
 -------------------------------------------
-
+shape3  shape   -      -       -      1.0
 
 
 

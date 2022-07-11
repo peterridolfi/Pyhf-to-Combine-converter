@@ -66,12 +66,12 @@ def addChannels():
             h_data[...] = np.stack(
                 [
                     spec["observations"][idxc]["data"],
-                    [0 for i in range(channel_bins[channel])],
+                    [0 for i in range(channel_bins[channel["name"]])],
                 ],
                 axis=-1,
             )
             
-            file[channel+ "/data_obs"] = h_data
+            file[channel["name"]+ "/data_obs"] = h_data
 
 
 def addSamples():
@@ -85,7 +85,7 @@ def addSamples():
                     }
                 )
         else:  ##shapes
-            DC.shapeMap.update({channel: {}})
+            DC.shapeMap.update({channel["name"]: {}})
             DC.hasShapes = True
             for idxs, sample in enumerate(channel["samples"]):
                 DC.exp[channel["name"]].update(
@@ -96,31 +96,31 @@ def addSamples():
                     for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"])
                 ]
                 if "histosys" in mods:
-                    DC.shapeMap[channel].update(
+                    DC.shapeMap[channel["name"]].update(
                         {
                             spec["channels"][idxc]["samples"][idxs]["name"]: [
                                 options.shapefile,
-                                channel+
+                                channel["name"]+
                                 "/" + spec["channels"][idxc]["samples"][idxs]["name"],
-                                channel+
+                                channel["name"]+
                                 "/" + spec["channels"][idxc]["samples"][idxs]["name"]
                                 + "_$SYSTEMATIC",
                             ]
                         }    
                     )
                 else:
-                    DC.shapeMap[channel].update(
+                    DC.shapeMap[channel["name"]].update(
                         {
                             spec["channels"][idxc]["samples"][idxs]["name"]: [
                                 options.shapeFile,
-                                channel+
+                                channel["name"]+
                                 "/" + spec["channels"][idxc]["samples"][idxs]["name"]
                                 ]
                         }
                     )
                 if "staterror" in mods:
                     h_data = hist.Hist.new.Regular(
-                        channel_bins[channel], 0, channel_bins[channel]
+                        channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
                     ).Weight()
                     h_data[...] = np.stack(
                         [
@@ -131,10 +131,10 @@ def addSamples():
                         ],
                         axis=-1,
                     )
-                    DC.binParFlags.update({channel : True})
+                    DC.binParFlags.update({channel["name"] : True})
                 elif "shapesys" in mods:
                     h_data = hist.Hist.new.Regular(
-                        channel_bins[channel], 0, channel_bins[channel]
+                        channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
                     ).Weight()
                     h_data[...] = np.stack(
                         [
@@ -145,19 +145,19 @@ def addSamples():
                         ],
                         axis=-1,
                     )
-                    DC.binParFlags.update({channel : True})
+                    DC.binParFlags.update({channel["name"] : True})
                 else:
                     h_data = hist.Hist.new.Regular(
-                        channel_bins[channel], 0, channel_bins[channel]
+                        channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
                     ).Weight()
                     h_data[...] = np.stack(
                         [
                             spec["channels"][idxc]["samples"][idxs]["data"],
-                            [0 for i in range(channel_bins[channel])],
+                            [0 for i in range(channel_bins[channel["name"]])],
                         ],
                         axis=-1,
                     )
-                file[channel+  "/" + spec["channels"][idxc]["samples"][idxs]["name"]] = h_data
+                file[channel["name"]+  "/" + spec["channels"][idxc]["samples"][idxs]["name"]] = h_data
 
 
 def addMods():
@@ -191,7 +191,7 @@ def addMods():
                             {sample["name"]: str(mods[names.index(name)]["data"]["lo"]) + "/" + str(mods[names.index(name)]["data"]["hi"])} ##asymmetric lnN
                         )
                     if "shape" in type:
-                        syst[4][channel["name"]].update({sample: 1.0})
+                        syst[4][channel["name"]].update({sample["name"]: 1.0})
                         hi_data = hist.Hist.new.Regular(
                         channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
                         ).Weight()
@@ -212,8 +212,8 @@ def addMods():
                         ],
                         axis=-1,
                         )
-                        file[channel+  "/" + spec["channels"][idxc]["samples"][idxs]["name"] + "_" + name + "Up"] = hi_data
-                        file[channel+  "/" + spec["channels"][idxc]["samples"][idxs]["name"] + "_" + name + "Down"] = lo_data
+                        file[channel["name"]+  "/" + spec["channels"][idxc]["samples"][idxs]["name"] + "_" + name + "Up"] = hi_data
+                        file[channel["name"]+  "/" + spec["channels"][idxc]["samples"][idxs]["name"] + "_" + name + "Down"] = lo_data
 def addSignal():
     signalMods = []
     for modifier in modifiers:
@@ -248,9 +248,10 @@ def writeDataCard(path):
         f.write("jmax " + str(size(DC.processes)- size(DC.signals))+ "\n") 
         f.write("kmax " + str(size(DC.systs, 0))+ "\n")  
         if DC.hasShapes:
+            f.write("shape  data_obs "  + " " + channel + "  " + DC.shapeMap[channel][sample][0] + "  " + DC.shapeMap[channel][sample][1] +"\n")    
             for channel in DC.shapeMap.keys():
                 for sample in DC.shapeMap[channel].keys():
-                    f.write("shape " + sample + " " + channel + " " + DC.shapeMap[channel][sample][0] + " " + DC.shapeMap[channel][sample][1] + " " + DC.shapeMap[channel][sample][2] + "\n")    
+                    f.write("shape " + sample + "  " + channel + "  " + DC.shapeMap[channel][sample][0] + "  " + DC.shapeMap[channel][sample][1] + "  " + DC.shapeMap[channel][sample][2] + "\n")    
         f.write('\n---------------------------------\n') 
         f.write("bin ")
         for bin in DC.obs.keys():
@@ -282,7 +283,7 @@ def writeDataCard(path):
         for channel in DC.bins:
             for sample in DC.exp[channel].keys():
                 
-                f.write(str(DC.exp[channel][sample][0]) + "     ")
+                f.write(str(DC.exp[channel][sample]) + "     ")
         f.write('\n---------------------------------\n') 
         for syst in DC.systs:
             f.write(syst[0] + "  " + syst[2] + "  ")

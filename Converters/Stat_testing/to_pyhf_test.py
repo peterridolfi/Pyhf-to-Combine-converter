@@ -24,28 +24,29 @@ poi_values = np.linspace(0, 3, 50).tolist()
 nuisances = model.config.suggested_init()[1:]
 NLL = []
 for poi in poi_values:
-    NLL.append(-1*(model.logpdf(pars=[poi], data=observations))-35.91)
+    NLL.append(-1*(model.logpdf(pars=[poi] + nuisances, data=observations))-35.91)
 ##plt.plot(poi_values, NLL, label = "pyhf NLL")
-
-mu_values = np.linspace(0, 3, 250)
-nlls = []
-for mu in mu_values:
-    nll = 0
-    rates_per_bin = model.expected_data(mu, include_auxdata=False)
-    for i, bin_rate in enumerate(rates_per_bin):
-        # build up negative log likelihood as sum over log Poisson likelihoods per bin
-        nll +=  -scipy.stats.poisson.logpmf(observations[i], bin_rate)
-    nlls.append(nll)
-nlls = nlls - min(nlls)  # offset to set minimum to zero
-plt.plot(mu_values, nlls, label = "pyhf_manual_NLL")
-plt.xlabel("mu")
-plt.ylabel("$\Delta$ NLL")
 
 file = uproot.open('higgsCombineTest.MultiDimFit.mH120.root')
 tree = file['limit']
 branches = tree.arrays()
-plt.plot(np.linspace(0, 3, 50), branches['deltaNLL'][1:], label  = "combine NLL")
+plt.plot(branches['r'], branches['deltaNLL'], label  = "combine NLL")
 file.close()
+
+mu_values = branches['r']
+nlls = []
+for mu in mu_values:
+    nll = 0
+    rates_per_bin = model.expected_data([mu] + nuisances, include_auxdata=False)
+    for i, bin_rate in enumerate(rates_per_bin):
+        # build up negative log likelihood as sum over log Poisson likelihoods per bin
+        nll +=  -scipy.stats.poisson.logpmf(observations[i], bin_rate)
+    nlls.append(nll)
+
+nlls = nlls - min(nlls)  # offset to set minimum to zero
+plt.plot(mu_values, nlls, label = "pyhf_manual_NLL")
+plt.xlabel("mu")
+plt.ylabel("$\Delta$ NLL")
 plt.legend()
 
 plt.savefig('NLLplot')
