@@ -9,12 +9,55 @@ import matplotlib.pyplot as plt
 from pyhf.contrib.viz import brazil
 import uproot
 import math
+from pyhf import get_backend
+from pyhf.exceptions import UnspecifiedPOI
+
+def twice_nll(pars, data, pdf):
+    
+    return -2 * pdf.logpdf(pars, data)
+
+def _validate_fit_inputs(init_pars, par_bounds, fixed_params):
+    for par_idx, (value, bound) in enumerate(zip(init_pars, par_bounds)):
+        if not (bound[0] <= value <= bound[1]):
+            raise ValueError(
+                f"fit initialization parameter (index: {par_idx}, value: {value}) lies outside of its bounds: {bound}"
+                + "\nTo correct this adjust the initialization parameter values in the model spec or those given"
+                + "\nas arguments to pyhf.infer.fit. If this value is intended, adjust the range of the parameter"
+                + "\nbounds."
+            )
+
+##Fitting with specific error tolerance
+with open("converted_workspace.json") as file:
+    spec = json.load(file)
+ws = pyhf.Workspace(spec)
+model = ws.model()
+observations = ws.data(model)
+_, opt = get_backend()
+init_pars = model.config.suggested_init()
+par_bounds = model.config.suggested_bounds()
+fixed_params = model.config.suggested_fixed()
+_validate_fit_inputs(init_pars, par_bounds, fixed_params)
+    # get fixed vals from the model
+fixed_vals = [
+    (index, init)
+    for index, (init, is_fixed) in enumerate(zip(init_pars, fixed_params))
+    if is_fixed
+]
+
+print(opt.minimize(
+    twice_nll, observations, model, init_pars, par_bounds, fixed_vals, tolerance = 0.00001)
+)
 
 
 
 
 
+    
 
+
+
+##NLL PLOTS
+'''
 with open("converted_workspace.json") as file:
     spec = json.load(file)
 ws = pyhf.Workspace(spec)
@@ -50,12 +93,13 @@ plt.ylabel("$\Delta$ NLL")
 plt.legend()
 
 plt.savefig('NLLplot')
+'''
     
 
 
 
 
-
+##YIELDS
 '''
 fit = uproot.open("fitDiagnosticsTest.root")
 hist = fit["shapes_prefit/b1/total"].values().tolist()
@@ -83,7 +127,7 @@ observations = ws.data(model)
 print(pyhf.infer.mle.fit(data = observations, pdf = model))
 print(model.config.par_order)'''
 
-
+##CLs plot
 """fig, ax = plt.subplots()
 fig.set_size_inches(10.5, 7)
 ax.set_title("Hypothesis Tests")
