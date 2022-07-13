@@ -86,11 +86,20 @@ def addSamples():
                 )
         else:  ##shapes
             DC.shapeMap.update({channel["name"]: {}})
+            DC.shapeMap[channel["name"]].update(
+                {
+                    'data_obs': [
+                        options.shapefile,
+                        channel["name"]+"/"+'data_obs'
+                    ]
+                }
+            )
             DC.hasShapes = True
             for idxs, sample in enumerate(channel["samples"]):
                 DC.exp[channel["name"]].update(
                     {sample["name"]: -1}
                 )
+                
                 mods = [
                     spec["channels"][idxc]["samples"][idxs]["modifiers"][i]["type"]
                     for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"])
@@ -112,7 +121,7 @@ def addSamples():
                     DC.shapeMap[channel["name"]].update(
                         {
                             spec["channels"][idxc]["samples"][idxs]["name"]: [
-                                options.shapeFile,
+                                options.shapefile,
                                 channel["name"]+
                                 "/" + spec["channels"][idxc]["samples"][idxs]["name"]
                                 ]
@@ -127,7 +136,7 @@ def addSamples():
                             spec["channels"][idxc]["samples"][idxs]["data"],
                             spec["channels"][idxc]["samples"][idxs]["modifiers"][
                                 mods.index("staterror")
-                            ]["data"],
+                            ]["data"]^2,
                         ],
                         axis=-1,
                     )
@@ -141,7 +150,7 @@ def addSamples():
                             spec["channels"][idxc]["samples"][idxs]["data"],
                             spec["channels"][idxc]["samples"][idxs]["modifiers"][
                                 mods.index("shapesys")
-                            ]["data"],
+                            ]["data"]^2,
                         ],
                         axis=-1,
                     )
@@ -247,11 +256,14 @@ def writeDataCard(path):
         f.write("imax " + str(size(DC.bins)) + "\n") 
         f.write("jmax " + str(size(DC.processes)- size(DC.signals))+ "\n") 
         f.write("kmax " + str(size(DC.systs, 0))+ "\n")  
-        if DC.hasShapes:
-            f.write("shape  data_obs "  + " " + channel + "  " + DC.shapeMap[channel][sample][0] + "  " + DC.shapeMap[channel][sample][1] +"\n")    
+        if DC.hasShapes:  
             for channel in DC.shapeMap.keys():
                 for sample in DC.shapeMap[channel].keys():
-                    f.write("shape " + sample + "  " + channel + "  " + DC.shapeMap[channel][sample][0] + "  " + DC.shapeMap[channel][sample][1] + "  " + DC.shapeMap[channel][sample][2] + "\n")    
+                    f.write("shape " + sample + "  " + channel + "  " + DC.shapeMap[channel][sample][0] + "  " + DC.shapeMap[channel][sample][1])
+                    if size(DC.shapeMap[channel][sample]) > 2:
+                        f.write("  " + DC.shapeMap[channel][sample][2] + "\n")  
+                    else:
+                        f.write("\n")
         f.write('\n---------------------------------\n') 
         f.write("bin ")
         for bin in DC.obs.keys():
@@ -333,9 +345,9 @@ def writeDataCard(path):
 addChannels()
 addSamples()
 addMods()
-print(DC.systs[0][4])
 addSignal()
 addRateParams()
+
 file.close()
 writeDataCard(options.outdatacard)
 
