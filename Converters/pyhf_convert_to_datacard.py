@@ -59,7 +59,10 @@ def addChannels():
             DC.obs.update({channel["name"]: spec["observations"][idxc]["data"]})
             
         else:
-            DC.obs.update({channel["name"]: -1})
+            data = 0
+            for i in spec["observations"][idxc]["data"]:
+                data = data + spec["observations"][idxc]["data"][i]
+            DC.obs.update({channel["name"]: data})
             h_data = hist.Hist.new.Regular(
                 channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
             ).Weight()
@@ -96,8 +99,11 @@ def addSamples():
             )
             DC.hasShapes = True
             for idxs, sample in enumerate(channel["samples"]):
+                data = 0
+                for i in sample["data"]:
+                    data = data + spec["observations"][idxc]["data"][i]
                 DC.exp[channel["name"]].update(
-                    {sample["name"]: -1}
+                    {sample["name"]: data}
                 )
                 
                 mods = [
@@ -236,13 +242,18 @@ def addSignal():
                         DC.isSignal.update({sample["name"]: True})
                         DC.signals.append(sample["name"])
 
-def addRateParams():   
+def addRateParams():
+    signalMods = []
+    for modifier in modifiers:
+        if modifier[0] == workspace.get_measurement()['config']['poi']:
+            signalMods.append(modifier[0])
+        
     for idxc, channel in enumerate(channels):
         for idxs, sample in enumerate(
             (spec["channels"][idxc]["samples"])
         ):
-            for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]): ##normfactor or lumi
-                if "normfactor" in mod["type"] or "lumi" in mod["type"]:
+            if sample["name"] not in DC.signals:
+                for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]): ##normfactor or lumi 
                     DC.rateParams.update({channel + "AND" + sample["name"]: []})
                     DC.rateParams[channel + "AND" + sample["name"]].append([[mod["name"], 1, 0], ''])
                         

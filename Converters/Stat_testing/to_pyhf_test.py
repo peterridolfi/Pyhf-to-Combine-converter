@@ -94,37 +94,36 @@ plt.savefig('NLLplot')
     
 
 ##NLL plots for fitting, minimization
-with open("two_bin_test.json") as file:
+with open("./multi_vs_single_bin/two_bin_test.json") as file:
     spec2 = json.load(file)
 ws2 = pyhf.Workspace(spec2)
 model2 = ws2.model()
 observations2 = ws2.data(model2)
-with open("single_bin_1_test.json") as file:
+with open("./multi_vs_single_bin/single_bin_1_test.json") as file:
     spec1a = json.load(file)
 ws1a = pyhf.Workspace(spec1a)
 model1a = ws1a.model()
 observations1a = ws1a.data(model1a)
-with open("single_bin_2_test.json") as file:
+with open("./multi_vs_single_bin/single_bin_2_test.json") as file:
     spec1b = json.load(file)
 ws1b = pyhf.Workspace(spec1b)
 model1b = ws1b.model()
 observations1b = ws1b.data(model1b)
 
-print(pyhf.infer.mle.fit(data = observations2, pdf = model2))
-print(pyhf.infer.mle.fit(data = observations1a, pdf = model1a))
-print(pyhf.infer.mle.fit(data = observations1b, pdf = model1b))
 
 
-
-file = uproot.open('higgsCombineTest.MultiDimFit.mH120_1.root')
+file = uproot.open('./multi_vs_single_bin/higgsCombineTest.MultiDimFit.mH120_1.root')
 tree = file['limit']
 branches = tree.arrays()
-plt.plot(branches['r'], branches['deltaNLL'], label  = "combine NLL singlebin1")
+NLL = []
+for nll in branches['deltaNLL'][1:]:
+    NLL.append(nll - min(branches['deltaNLL']))
+plt.plot(branches['r'][1:], NLL, label  = "combine NLL singlebin1")
 file.close()
-print(pyhf.infer.mle.fit(data = observations1a, pdf = model1a))
 
 
-mu_values = branches['r']
+
+mu_values = branches['r'][1:]
 nlls = []
 for mu in mu_values:
     nll = 0
@@ -136,21 +135,22 @@ for mu in mu_values:
 
 nlls = nlls - min(nlls)  # offset to set minimum to zero
 plt.plot(mu_values, nlls, label = "pyhf_manual_NLL_singlebin1")
-plt.xlabel("mu")
-plt.ylabel("$\Delta$ NLL")
-plt.legend()
 
-plt.savefig('NLLplot')
 
-file = uproot.open('higgsCombineTest.MultiDimFit.mH120_2.root')
+
+
+file = uproot.open('./multi_vs_single_bin/higgsCombineTest.MultiDimFit.mH120_2.root')
 tree = file['limit']
 branches = tree.arrays()
-plt.plot(branches['r'], branches['deltaNLL'], label  = "combine NLL singlebin2")
+NLL = []
+for nll in branches['deltaNLL'][1:]:
+    NLL.append(nll - min(branches['deltaNLL']))
+plt.plot(branches['r'][1:], NLL, label  = "combine NLL singlebin2")
 file.close()
-print(pyhf.infer.mle.fit(data = observations1b, pdf = model1b))
 
 
-mu_values = branches['r']
+
+mu_values = branches['r'][1:]
 nlls = []
 for mu in mu_values:
     nll = 0
@@ -162,11 +162,39 @@ for mu in mu_values:
 
 nlls = nlls - min(nlls)  # offset to set minimum to zero
 plt.plot(mu_values, nlls, label = "pyhf_manual_NLL_singlebin2")
+
+
+
+
+file = uproot.open('./multi_vs_single_bin/higgsCombineTest.MultiDimFit.mH120_multi.root')
+tree = file['limit']
+branches = tree.arrays()
+NLL = []
+for nll in branches['deltaNLL'][1:]:
+    NLL.append(nll - min(branches['deltaNLL']))
+plt.plot(branches['r'][1:], NLL, label  = "combine NLL two_bin")
+file.close()
+
+
+
+mu_values = branches['r'][1:]
+nlls = []
+for mu in mu_values:
+    nll = 0
+    rates_per_bin = model2.expected_data(mu, include_auxdata=False)
+    for i, bin_rate in enumerate(rates_per_bin):
+        # build up negative log likelihood as sum over log Poisson likelihoods per bin
+        nll +=  -scipy.stats.poisson.logpmf(observations2[i], bin_rate)
+    nlls.append(nll)
+
+nlls = nlls - min(nlls)  # offset to set minimum to zero
+plt.plot(mu_values, nlls, label = "pyhf_manual_NLL_two_bin")
 plt.xlabel("mu")
 plt.ylabel("$\Delta$ NLL")
 plt.legend()
-
 plt.savefig('NLLplot')
+
+
 
 
 ##YIELDS

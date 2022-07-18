@@ -7,12 +7,10 @@ bin b1
 observation 12 
 ---------------------------------
 bin     b1    b1    b1    b1    
-process     sig    bkg1    bkg2    bkg3    
-process     0     1     2     3     
-rate     5     8     1     2     
+process     sig    bkg1    bk2   bk3
+process     0     1    2     3    
+rate     5     8      1     2
 ---------------------------------
 
 ---------------------------------
-mu rateParam b1 sig 1
 
----------------------------------
