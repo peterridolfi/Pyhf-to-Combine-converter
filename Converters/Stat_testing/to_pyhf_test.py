@@ -118,7 +118,7 @@ branches = tree.arrays()
 NLL = []
 for nll in branches['deltaNLL'][1:]:
     NLL.append(nll - min(branches['deltaNLL']))
-plt.plot(branches['r'][1:], NLL, label  = "combine NLL singlebin1")
+
 file.close()
 
 
@@ -134,7 +134,7 @@ for mu in mu_values:
     nlls.append(nll)
 
 nlls = nlls - min(nlls)  # offset to set minimum to zero
-plt.plot(mu_values, nlls, label = "pyhf_manual_NLL_singlebin1")
+plt.plot(mu_values, nlls-NLL, label = "singlebin1 difference")
 
 
 
@@ -145,7 +145,7 @@ branches = tree.arrays()
 NLL = []
 for nll in branches['deltaNLL'][1:]:
     NLL.append(nll - min(branches['deltaNLL']))
-plt.plot(branches['r'][1:], NLL, label  = "combine NLL singlebin2")
+
 file.close()
 
 
@@ -161,7 +161,7 @@ for mu in mu_values:
     nlls.append(nll)
 
 nlls = nlls - min(nlls)  # offset to set minimum to zero
-plt.plot(mu_values, nlls, label = "pyhf_manual_NLL_singlebin2")
+plt.plot(mu_values, nlls-NLL, label = "singlebin2 difference")
 
 
 
@@ -172,7 +172,7 @@ branches = tree.arrays()
 NLL = []
 for nll in branches['deltaNLL'][1:]:
     NLL.append(nll - min(branches['deltaNLL']))
-plt.plot(branches['r'][1:], NLL, label  = "combine NLL two_bin")
+
 file.close()
 
 
@@ -188,11 +188,13 @@ for mu in mu_values:
     nlls.append(nll)
 
 nlls = nlls - min(nlls)  # offset to set minimum to zero
-plt.plot(mu_values, nlls, label = "pyhf_manual_NLL_two_bin")
+plt.plot(mu_values, nlls-NLL, label = "two_bin_difference")
 plt.xlabel("mu")
 plt.ylabel("$\Delta$ NLL")
 plt.legend()
 plt.savefig('NLLplot')
+
+print(pyhf.infer.mle.fit(pdf = model2, data = observations2))
 
 
 

@@ -1,11 +1,11 @@
 from ctypes import sizeof
 from operator import indexOf
 from unicodedata import name
+import numpy as np
 from numpy.core.fromnumeric import size
 from pyhf import parameters
 import pyhf
 import uproot
-import numpy as np
 import hist
 from hist import Hist
 import matplotlib.pyplot as plt
@@ -59,9 +59,7 @@ def addChannels():
             DC.obs.update({channel["name"]: spec["observations"][idxc]["data"]})
             
         else:
-            data = 0
-            for i in spec["observations"][idxc]["data"]:
-                data = data + spec["observations"][idxc]["data"][i]
+            data = sum(spec["observations"][idxc]["data"])
             DC.obs.update({channel["name"]: data})
             h_data = hist.Hist.new.Regular(
                 channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
@@ -99,9 +97,7 @@ def addSamples():
             )
             DC.hasShapes = True
             for idxs, sample in enumerate(channel["samples"]):
-                data = 0
-                for i in sample["data"]:
-                    data = data + spec["observations"][idxc]["data"][i]
+                data = sum(sample["data"])
                 DC.exp[channel["name"]].update(
                     {sample["name"]: data}
                 )
@@ -230,9 +226,12 @@ def addMods():
                         file[channel["name"]+  "/" + spec["channels"][idxc]["samples"][idxs]["name"] + "_" + name + "Up"] = hi_data
                         file[channel["name"]+  "/" + spec["channels"][idxc]["samples"][idxs]["name"] + "_" + name + "Down"] = lo_data
 def addSignal():
+    measurements = []
+    for im, measurement in enumerate(spec["measurements"]):
+        measurements.append(measurement["config"]["poi"])
     signalMods = []
     for modifier in modifiers:
-        if modifier[0] == workspace.get_measurement()['config']['poi']:
+        if modifier[0] in measurements:
             signalMods.append(modifier[0])       
     for idxc, channel in enumerate(channels):
         for idxs, sample in enumerate(spec["channels"][idxc]["samples"]):
@@ -243,17 +242,20 @@ def addSignal():
                         DC.signals.append(sample["name"])
 
 def addRateParams():
+    measurements = []
+    for im, measurement in enumerate(spec["measurements"]):
+        measurements.append(measurement["config"]["poi"])
     signalMods = []
     for modifier in modifiers:
-        if modifier[0] == workspace.get_measurement()['config']['poi']:
+        if modifier[0] in measurements:
             signalMods.append(modifier[0])
         
     for idxc, channel in enumerate(channels):
         for idxs, sample in enumerate(
             (spec["channels"][idxc]["samples"])
         ):
-            if sample["name"] not in DC.signals:
-                for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]): ##normfactor or lumi 
+            for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]): ##normfactor or lumi 
+                if "normfactor" in mod["type"] or "lumi" in mod["type"]:
                     DC.rateParams.update({channel + "AND" + sample["name"]: []})
                     DC.rateParams[channel + "AND" + sample["name"]].append([[mod["name"], 1, 0], ''])
                         

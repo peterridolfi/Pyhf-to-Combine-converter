@@ -14,7 +14,7 @@ observation 27
 bin     b1    b1    b1    b1    
 process     sig    bkg1    bkg2    bkg3    
 process     0     1     2     3     
-rate     10     19      2    4     
+rate     10     19     2     4     
 ---------------------------------
 
 ---------------------------------
