@@ -255,7 +255,7 @@ def addRateParams():
             (spec["channels"][idxc]["samples"])
         ):
             for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]): ##normfactor or lumi 
-                if "normfactor" in mod["type"] or "lumi" in mod["type"]:
+                if "normfactor" in mod["type"] or "lumi" in mod["type"] or "shapefactor" in mod["type"]:
                     DC.rateParams.update({channel + "AND" + sample["name"]: []})
                     DC.rateParams[channel + "AND" + sample["name"]].append([[mod["name"], 1, 0], ''])
                         

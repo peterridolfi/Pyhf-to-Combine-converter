@@ -232,6 +232,8 @@ def addMods(spec: dict):
                                 "data": {"hi": nom/hi , "lo": nom/lo}, ##normalization
                             }
                         )
+        else:
+            raise NotImplementedError
                             
 
     for idxc, channel in enumerate(channels):  ##staterror/shapesys
