@@ -1,11 +1,11 @@
 imax 1
 jmax 3
-kmax 0
-shape data_obs  b1  shapes.root  b1/data_obs
-shape sig  b1  shapes.root  b1/sig
-shape bkg1  b1  shapes.root  b1/bkg1
-shape bkg2  b1  shapes.root  b1/bkg2
-shape bkg3  b1  shapes.root  b1/bkg3
+kmax 1
+shapes data_obs  b1  shapes.root  b1/data_obs
+shapes sig  b1  shapes.root  b1/sig
+shapes bkg1  b1  shapes.root  b1/bkg1
+shapes bkg2  b1  shapes.root  b1/bkg2
+shapes bkg3  b1  shapes.root  b1/bkg3
 
 ---------------------------------
 bin b1 
@@ -16,7 +16,6 @@ process     sig    bkg1    bkg2    bkg3
 process     0     1     2     3     
 rate     10     19     2     4     
 ---------------------------------
-
+lumi lnN - 1.01 1.01 1.01
 ---------------------------------
 
----------------------------------

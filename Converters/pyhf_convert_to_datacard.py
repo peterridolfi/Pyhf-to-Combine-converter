@@ -272,7 +272,7 @@ def writeDataCard(path):
         if DC.hasShapes:  
             for channel in DC.shapeMap.keys():
                 for sample in DC.shapeMap[channel].keys():
-                    f.write("shape " + sample + "  " + channel + "  " + DC.shapeMap[channel][sample][0] + "  " + DC.shapeMap[channel][sample][1])
+                    f.write("shapes " + sample + "  " + channel + "  " + DC.shapeMap[channel][sample][0] + "  " + DC.shapeMap[channel][sample][1])
                     if size(DC.shapeMap[channel][sample]) > 2:
                         f.write("  " + DC.shapeMap[channel][sample][2] + "\n")  
                     else:

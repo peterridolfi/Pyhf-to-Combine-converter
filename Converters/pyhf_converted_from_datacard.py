@@ -199,7 +199,7 @@ def addMods(spec: dict):
                                 }
                             )
 
-        if "shape" in mod_type: ##histosys
+        elif "shape" in mod_type: ##histosys
             for idxc, channel in enumerate(channels):
                 for idxs, sample in enumerate(samples):
                     if syst[4][channel][sample] != 0:    
@@ -208,16 +208,8 @@ def addMods(spec: dict):
                             histDown = getUncertDown(DC.shapeMap, channel, sample, name)
                             hi_data = histUp.values().tolist()
                             lo_data = histDown.values().tolist()
-                            data =  spec["channels"][idxc]["samples"][idxs]["data"]
-                            hi = 0
-                            lo = 0
-                            nom = 0
-                            for i in hi_data:
-                                hi = hi + i
-                            for i in lo_data:
-                                lo = lo + i
-                            for i in data:
-                                nom = nom + i
+                            
+                            
                             spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                             {
                                 "name": name,
@@ -225,13 +217,8 @@ def addMods(spec: dict):
                                 "data": {"hi_data": hi_data, "lo_data": lo_data},
                             }
                             )
-                            spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
-                            {
-                                "name": name,
-                                "type": "normsys",
-                                "data": {"hi": nom/hi , "lo": nom/lo}, ##normalization
-                            }
-                        )
+                            
+                        
         else:
             raise NotImplementedError
                             

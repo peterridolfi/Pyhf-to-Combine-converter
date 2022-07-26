@@ -23,7 +23,13 @@
             
               11
             ],
-            "modifiers": []
+            "modifiers": [
+              {
+                "name": "lumi",
+                "type": "normsys",
+                "data": {"hi": 1.01, "lo": 0.99009901}
+              }
+            ]
           },
           {
             "name": "bkg2",
@@ -31,7 +37,13 @@
               
               1
             ],
-            "modifiers": []
+            "modifiers": [
+              {
+                "name": "lumi",
+                "type": "normsys",
+                "data": {"hi": 1.01, "lo": 0.99009901}
+              }
+            ]
           },
           {
             "name": "bkg3",
@@ -40,6 +52,11 @@
               2
             ],
             "modifiers": [
+              {
+                "name": "lumi",
+                "type": "normsys",
+                "data": {"hi": 1.01, "lo": 0.99009901}
+              }
             ]
           }
         ]

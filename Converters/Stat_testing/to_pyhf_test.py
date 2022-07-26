@@ -1,5 +1,6 @@
 
 from array import array
+from signal import Sigmasks
 import scipy
 from pyhf import workspace
 import pyhf
@@ -92,7 +93,7 @@ plt.legend()
 plt.savefig('NLLplot')
 '''
     
-
+'''
 ##NLL plots for fitting, minimization
 with open("./multi_vs_single_bin/two_bin_test.json") as file:
     spec2 = json.load(file)
@@ -127,14 +128,15 @@ mu_values = branches['r'][1:]
 nlls = []
 for mu in mu_values:
     nll = 0
-    rates_per_bin = model1a.expected_data(mu, include_auxdata=False)
+    rates_per_bin = model1a.expected_data([mu, 0], include_auxdata=False)
     for i, bin_rate in enumerate(rates_per_bin):
         # build up negative log likelihood as sum over log Poisson likelihoods per bin
         nll +=  -scipy.stats.poisson.logpmf(observations1a[i], bin_rate)
     nlls.append(nll)
 
 nlls = nlls - min(nlls)  # offset to set minimum to zero
-plt.plot(mu_values, nlls-NLL, label = "singlebin1 difference")
+plt.plot(mu_values, nlls, label = "singlebin1 pyhf scan")
+plt.plot(mu_values, NLL, label = "singlebin1 combine scan")
 
 
 
@@ -154,14 +156,15 @@ mu_values = branches['r'][1:]
 nlls = []
 for mu in mu_values:
     nll = 0
-    rates_per_bin = model1b.expected_data(mu, include_auxdata=False)
+    rates_per_bin = model1b.expected_data([mu, 0], include_auxdata=False)
     for i, bin_rate in enumerate(rates_per_bin):
         # build up negative log likelihood as sum over log Poisson likelihoods per bin
         nll +=  -scipy.stats.poisson.logpmf(observations1b[i], bin_rate)
     nlls.append(nll)
 
 nlls = nlls - min(nlls)  # offset to set minimum to zero
-plt.plot(mu_values, nlls-NLL, label = "singlebin2 difference")
+plt.plot(mu_values, nlls, label = "singlebin2 pyhf scan")
+plt.plot(mu_values, NLL, label = "singlebin2 combine scan")
 
 
 
@@ -181,20 +184,22 @@ mu_values = branches['r'][1:]
 nlls = []
 for mu in mu_values:
     nll = 0
-    rates_per_bin = model2.expected_data(mu, include_auxdata=False)
+    rates_per_bin = model2.expected_data([mu, 0], include_auxdata=False)
     for i, bin_rate in enumerate(rates_per_bin):
         # build up negative log likelihood as sum over log Poisson likelihoods per bin
         nll +=  -scipy.stats.poisson.logpmf(observations2[i], bin_rate)
     nlls.append(nll)
 
 nlls = nlls - min(nlls)  # offset to set minimum to zero
-plt.plot(mu_values, nlls-NLL, label = "two_bin_difference")
+plt.plot(mu_values, nlls, label = "two_bin pyhf scan")
+plt.plot(mu_values, NLL, label = "two bin combine scan")
 plt.xlabel("mu")
 plt.ylabel("$\Delta$ NLL")
 plt.legend()
 plt.savefig('NLLplot')
 
 print(pyhf.infer.mle.fit(pdf = model2, data = observations2))
+'''
 
 
 
@@ -238,5 +243,49 @@ plt.savefig('shapes_brazil_band')
 
 
 
+##NLL plots for fitting, minimization
+with open("./verification_model/converted_workspace.json") as file:
+    spec2 = json.load(file)
+ws2 = pyhf.Workspace(spec2)
+model2 = ws2.model()
+observations2 = ws2.data(model2)
 
+
+
+file = uproot.open('./verification_model/higgsCombineTest.MultiDimFit.mH120.root')
+tree = file['limit']
+branches = tree.arrays()
+NLL = []
+for nll in branches['deltaNLL'][1:]:
+    NLL.append(nll - min(branches['deltaNLL']))
+##sigma = branches['sigma'][0]
+##shape = branches['shape'][0]
+##norm1 = branches['norm1'][0]
+##shape1 = branches['shape1'][0]
+##norm2 = branches['norm2'][0]
+##norm3 = branches['norm3'][0]
+##shape3 = branches['shape3'][0]
+
+
+
+
+mu_values = branches['r'][1:]
+nlls = []
+for mu in mu_values:
+    nll = 0
+    rates_per_bin = model2.expected_data([mu], include_auxdata=False)
+    for i, bin_rate in enumerate(rates_per_bin):
+        # build up negative log likelihood as sum over log Poisson likelihoods per bin
+        nll +=  -scipy.stats.poisson.logpmf(observations2[i], bin_rate)
+    nlls.append(nll)
+
+nlls = nlls - min(nlls)  # offset to set minimum to zero
+plt.plot(mu_values, nlls, label = "two_bin pyhf scan")
+plt.plot(mu_values, NLL, label = "two bin combine scan")
+plt.xlabel("mu")
+plt.ylabel("$\Delta$ NLL")
+plt.legend()
+plt.savefig('NLLplot')
+
+file.close()
 
