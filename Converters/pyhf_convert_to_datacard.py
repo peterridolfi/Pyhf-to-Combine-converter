@@ -254,10 +254,11 @@ def addRateParams():
         for idxs, sample in enumerate(
             (spec["channels"][idxc]["samples"])
         ):
-            for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]): ##normfactor or lumi 
-                if "normfactor" in mod["type"] or "lumi" in mod["type"] or "shapefactor" in mod["type"]:
-                    DC.rateParams.update({channel + "AND" + sample["name"]: []})
-                    DC.rateParams[channel + "AND" + sample["name"]].append([[mod["name"], 1, 0], ''])
+            if sample["name"] not in signalMods:
+                for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]): ##normfactor or lumi 
+                    if "normfactor" in mod["type"] or "lumi" in mod["type"] or "shapefactor" in mod["type"]:
+                        DC.rateParams.update({channel + "AND" + sample["name"]: []})
+                        DC.rateParams[channel + "AND" + sample["name"]].append([[mod["name"], 1, 0], ''])
                         
             
             
@@ -302,7 +303,7 @@ def writeDataCard(path):
                 if sample in DC.signals:
                     f.write(str(0) + "     ")
                 else:
-                    f.write(str(DC.processes.index(sample) + 1) + "     ")
+                    f.write(str(-1*DC.processes.index(sample)) + "     ")
         f.write("\n")
         f.write("rate     ")
         for channel in DC.bins:

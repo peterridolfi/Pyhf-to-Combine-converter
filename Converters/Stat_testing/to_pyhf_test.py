@@ -258,12 +258,12 @@ branches = tree.arrays()
 NLL = []
 for nll in branches['deltaNLL'][1:]:
     NLL.append(nll - min(branches['deltaNLL']))
-##sigma = branches['sigma'][0]
+sigma = branches['sigma'][0]
 ##shape = branches['shape'][0]
-##norm1 = branches['norm1'][0]
+norm1 = branches['norm1'][0]
 ##shape1 = branches['shape1'][0]
-##norm2 = branches['norm2'][0]
-##norm3 = branches['norm3'][0]
+norm2 = branches['norm2'][0]
+norm3 = branches['norm3'][0]
 ##shape3 = branches['shape3'][0]
 
 
@@ -273,7 +273,7 @@ mu_values = branches['r'][1:]
 nlls = []
 for mu in mu_values:
     nll = 0
-    rates_per_bin = model2.expected_data([mu], include_auxdata=False)
+    rates_per_bin = model2.expected_data([mu, sigma, norm1, norm2, norm3], include_auxdata=False)
     for i, bin_rate in enumerate(rates_per_bin):
         # build up negative log likelihood as sum over log Poisson likelihoods per bin
         nll +=  -scipy.stats.poisson.logpmf(observations2[i], bin_rate)

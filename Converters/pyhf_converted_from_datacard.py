@@ -141,15 +141,9 @@ def addMeasurements(spec: dict):
     for idxc, channel in enumerate(channels):
         for idxs, sample in enumerate(samples):
             if sig[sample] == True:
-                if (channel + "AND" + sample) in DC.rateParams.keys():
-                    name = DC.rateParams[channel + "AND" + sample][0][0][0]
-                    spec["measurements"].append(
-                        {"name": "Measurement_" + name, "config": {"poi": name, "parameters": []}}
-                    )
-                elif spec["measurements"] == []:
-                    spec["measurements"].append(
-                        {"name": "Measurement", "config": {"poi": "mu", "parameters": []}}
-                    )
+                spec["measurements"].append(
+                    {"name": "Measurement_"+sample, "config": {"poi": "mu_"+sample, "parameters": []}}
+                )
 
 
 def addNormFactor(spec: dict):
@@ -162,7 +156,7 @@ def addNormFactor(spec: dict):
                     )
             elif sig[sample] == True: ##add signal strength modifier
                 spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
-                        {"name": "mu", "type": "normfactor", "data": None}
+                        {"name": "mu_" + sample, "type": "normfactor", "data": None}
                     )
 
 
