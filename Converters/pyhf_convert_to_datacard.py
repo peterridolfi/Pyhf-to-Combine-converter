@@ -136,9 +136,11 @@ def addSamples():
                     h_data[...] = np.stack(
                         [
                             spec["channels"][idxc]["samples"][idxs]["data"],
-                            spec["channels"][idxc]["samples"][idxs]["modifiers"][
+                            [spec["channels"][idxc]["samples"][idxs]["modifiers"][
                                 mods.index("staterror")
-                            ]["data"]^2,
+                            ]["data"][i]^2 for i in spec["channels"][idxc]["samples"][idxs]["modifiers"][
+                                mods.index("staterror")
+                            ]["data"]],
                         ],
                         axis=-1,
                     )
