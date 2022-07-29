@@ -24,11 +24,7 @@
               11
             ],
             "modifiers": [
-              {
-                "name": "lumi",
-                "type": "normsys",
-                "data": {"hi": 1.01, "lo": 0.99009901}
-              }
+              
             ]
           },
           {
@@ -38,11 +34,7 @@
               1
             ],
             "modifiers": [
-              {
-                "name": "lumi",
-                "type": "normsys",
-                "data": {"hi": 1.01, "lo": 0.99009901}
-              }
+              
             ]
           },
           {
@@ -52,11 +44,7 @@
               2
             ],
             "modifiers": [
-              {
-                "name": "lumi",
-                "type": "normsys",
-                "data": {"hi": 1.01, "lo": 0.99009901}
-              }
+              
             ]
           }
         ]

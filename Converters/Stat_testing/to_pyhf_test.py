@@ -93,13 +93,14 @@ plt.legend()
 plt.savefig('NLLplot')
 '''
     
-'''
+
 ##NLL plots for fitting, minimization
 with open("./multi_vs_single_bin/two_bin_test.json") as file:
-    spec2 = json.load(file)
-ws2 = pyhf.Workspace(spec2)
-model2 = ws2.model()
-observations2 = ws2.data(model2)
+    spec = json.load(file)
+ws = pyhf.Workspace(spec)
+model = ws.model()
+observations = ws.data(model)
+'''
 with open("./multi_vs_single_bin/single_bin_1_test.json") as file:
     spec1a = json.load(file)
 ws1a = pyhf.Workspace(spec1a)
@@ -290,8 +291,8 @@ for mu in mu_values:
     nlls.append(nll)
 
 nlls = nlls - min(nlls)  # offset to set minimum to zero
-plt.plot(mu_values, nlls, label = "two_bin pyhf scan")
-plt.plot(mu_values, NLL, label = "two bin combine scan")
+plt.plot(mu_values, nlls, label = "pyhf scan")
+plt.plot(mu_values, NLL, label = "combine scan")
 plt.xlabel("mu")
 plt.ylabel("$\Delta$ NLL")
 plt.legend()
@@ -299,6 +300,6 @@ plt.savefig('NLLplot')
 
 file.close()
 
-print(model2.config.par_order)
-print(pyhf.infer.mle.fit(data = observations2, pdf = model2))
+
+print(pyhf.infer.mle.fit(data = observations, pdf = model, tolerance = 0.000001))
 
