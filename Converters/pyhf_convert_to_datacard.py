@@ -311,7 +311,7 @@ def writeDataCard(path):
                 if sample in DC.signals:
                     f.write(str(-1*DC.processes.index(sample)) + "     ")
                 else:
-                    f.write(str(DC.processes.index(sample)) + "     ")
+                    f.write(str(DC.processes.index(sample) + 1) + "     ")
         f.write("\n")
         f.write("rate     ")
         for channel in DC.bins:

@@ -94,12 +94,7 @@ plt.savefig('NLLplot')
 '''
     
 
-##NLL plots for fitting, minimization
-with open("./multi_vs_single_bin/two_bin_test.json") as file:
-    spec = json.load(file)
-ws = pyhf.Workspace(spec)
-model = ws.model()
-observations = ws.data(model)
+
 '''
 with open("./multi_vs_single_bin/single_bin_1_test.json") as file:
     spec1a = json.load(file)
@@ -245,7 +240,7 @@ plt.savefig('shapes_brazil_band')
 
 
 ##NLL plots for fitting, minimization
-with open("./verification_model/converted_workspace.json") as file:
+with open("./verification_model/converted_workspace_floats.json") as file:
     spec2 = json.load(file)
 ws2 = pyhf.Workspace(spec2)
 model2 = ws2.model()
@@ -266,6 +261,7 @@ norm1 = branches['norm1'][0]
 norm2 = branches['norm2'][0]
 norm3 = branches['norm3'][0]
 ##shape3 = branches['shape3'][0]
+'''
 staterr0 = branches['prop_binb1_bin0'][0]
 staterr1 = branches['prop_binb1_bin1'][0]
 staterr2 = branches['prop_binb1_bin2'][0] 
@@ -276,6 +272,7 @@ staterr6 = branches['prop_binb1_bin6'][0]
 staterr7 = branches['prop_binb1_bin7'][0]
 staterr8 = branches['prop_binb1_bin8'][0]
 staterr9 = branches['prop_binb1_bin9'][0]
+'''
 
 
 
@@ -284,7 +281,7 @@ mu_values = branches['r'][1:]
 nlls = []
 for mu in mu_values:
     nll = 0
-    rates_per_bin = model2.expected_data([mu, sigma, staterr0, staterr1, staterr2, staterr3, staterr4, staterr5, staterr6, staterr7, staterr8, staterr9, norm1, norm2, norm3], include_auxdata=False)
+    rates_per_bin = model2.expected_data([mu, sigma, norm1, norm2, norm3], include_auxdata=False)
     for i, bin_rate in enumerate(rates_per_bin):
         # build up negative log likelihood as sum over log Poisson likelihoods per bin
         nll +=  -scipy.stats.poisson.logpmf(observations2[i], bin_rate)
@@ -301,5 +298,6 @@ plt.savefig('NLLplot')
 file.close()
 
 
-print(pyhf.infer.mle.fit(data = observations, pdf = model, tolerance = 0.000001))
+
+
 
