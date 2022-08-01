@@ -12,6 +12,7 @@ import uproot
 import math
 from pyhf import get_backend
 from pyhf.exceptions import UnspecifiedPOI
+from operator import indexOf
 
 
 ##Fitting with specific error tolerance
@@ -248,20 +249,24 @@ observations2 = ws2.data(model2)
 
 
 
-file = uproot.open('./verification_model/higgsCombineTest.MultiDimFit.mH120.root')
+file = uproot.open('./verification_model/higgsCombineTest.MultiDimFit.mH120_fitscan.root')
 tree = file['limit']
 branches = tree.arrays()
+mu_values = branches['r'][1:]
 NLL = []
 for nll in branches['deltaNLL'][1:]:
     NLL.append(nll - min(branches['deltaNLL']))
+plt.plot(mu_values, NLL, label = "combine scan")
+
+'''
 sigma = branches['sigma'][0]
-##shape = branches['shape'][0]
+shape = branches['shape'][0]
 norm1 = branches['norm1'][0]
-##shape1 = branches['shape1'][0]
+shape1 = branches['shape1'][0]
 norm2 = branches['norm2'][0]
 norm3 = branches['norm3'][0]
-##shape3 = branches['shape3'][0]
-'''
+shape3 = branches['shape3'][0]
+
 staterr0 = branches['prop_binb1_bin0'][0]
 staterr1 = branches['prop_binb1_bin1'][0]
 staterr2 = branches['prop_binb1_bin2'][0] 
@@ -276,20 +281,35 @@ staterr9 = branches['prop_binb1_bin9'][0]
 
 
 
-
+'''
 mu_values = branches['r'][1:]
 nlls = []
 for mu in mu_values:
     nll = 0
-    rates_per_bin = model2.expected_data([mu, sigma, norm1, norm2, norm3], include_auxdata=False)
+    pyhf.set_backend("numpy", "minuit")
+    params, n = pyhf.infer.mle.fit(data = observations2, pdf = model2, init_pars = [mu, 0], fixed_params = [True, False], return_fitted_val = True)
+    rates_per_bin = model2.expected_data(params, include_auxdata=False)
     for i, bin_rate in enumerate(rates_per_bin):
         # build up negative log likelihood as sum over log Poisson likelihoods per bin
         nll +=  -scipy.stats.poisson.logpmf(observations2[i], bin_rate)
     nlls.append(nll)
-
-nlls = nlls - min(nlls)  # offset to set minimum to zero
 plt.plot(mu_values, nlls, label = "pyhf scan")
-plt.plot(mu_values, NLL, label = "combine scan")
+
+
+'''
+NLL = []
+for poi in mu_values:
+    params, nll = pyhf.infer.mle.fit(data = observations2, pdf = model2, init_pars = [poi, 0], fixed_params = [True, False], return_fitted_val = True)
+    NLL.append(nll)
+
+
+  # offset to set minimum to zero
+NLL = NLL - min(NLL)
+plt.plot(mu_values, [i/2 for i in NLL], label = "pyhf scan")
+print(mu_values[indexOf(NLL, min(NLL))])
+print(pyhf.infer.mle.fit(data = observations2, pdf = model2))
+
+
 plt.xlabel("mu")
 plt.ylabel("$\Delta$ NLL")
 plt.legend()
