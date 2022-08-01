@@ -1,11 +1,11 @@
 imax 1
 jmax 3
 kmax 4
-shapes data_obs  b1  shapes.root  b1/data_obs
-shapes sig  b1  shapes.root  b1/sig
-shapes bkg1  b1  shapes.root  b1/bkg1
-shapes bkg2  b1  shapes.root  b1/bkg2
-shapes bkg3  b1  shapes.root  b1/bkg3
+shapes data_obs  b1  shapes-test.root  data_obs
+shapes sig  b1  shapes-test.root  sig
+shapes bkg1  b1  shapes-test.root  bkg1
+shapes bkg2  b1  shapes-test.root  bkg2
+shapes bkg3  b1  shapes-test.root  bkg3
 
 ---------------------------------
 bin b1 
