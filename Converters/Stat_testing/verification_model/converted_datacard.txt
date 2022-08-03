@@ -1,0 +1,23 @@
+imax 1
+jmax 3
+kmax 0
+shapes data_obs  b1  shapes.root  b1/data_obs
+shapes sig  b1  shapes.root  b1/sig
+shapes bkg1  b1  shapes.root  b1/bkg1
+shapes bkg2  b1  shapes.root  b1/bkg2
+shapes bkg3  b1  shapes.root  b1/bkg3
+
+---------------------------------
+bin b1 
+observation 289.0 
+---------------------------------
+bin     b1    b1    b1    b1    
+process     sig    bkg1    bkg2    bkg3    
+process     -3     1     2     3     
+rate     49.99899916630238     99.22000041604042     154.30000114440918     50.0     
+---------------------------------
+
+---------------------------------
+
+---------------------------------
+b1 autoMCStats 0 0 2

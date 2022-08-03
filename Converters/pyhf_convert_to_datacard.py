@@ -1,4 +1,5 @@
 from ctypes import sizeof
+from errno import ESTALE
 from operator import indexOf
 from unicodedata import name
 import numpy as np
@@ -30,6 +31,8 @@ with open(args[0]) as serialized:
 workspace = pyhf.Workspace(spec)
 model = workspace.model()
 
+
+
 channels = model.config.channels
 channel_bins = model.config.channel_nbins
 samples = model.config.samples
@@ -40,9 +43,10 @@ lumi = model.config.parameters
 systs = []
 for mod in modifiers:
     if 'normfactor' not in mod:
-        if 'shapesys' not in mod:
-            if 'staterror' not in mod:
-                systs.append(mod)
+        if 'lumi' not in mod:
+            if 'shapesys' not in mod:
+                if 'staterror' not in mod:
+                    systs.append(mod)
 
 
 DC = Datacard()
@@ -133,12 +137,11 @@ def addSamples():
                     h_data = hist.Hist.new.Regular(
                         channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
                     ).Weight()
+                    
                     h_data[...] = np.stack(
                         [
                             spec["channels"][idxc]["samples"][idxs]["data"],
-                            [spec["channels"][idxc]["samples"][idxs]["modifiers"][
-                                mods.index("staterror")
-                            ]["data"][i]**2 for i in spec["channels"][idxc]["samples"][idxs]["modifiers"][
+                            [i**2 for i in spec["channels"][idxc]["samples"][idxs]["modifiers"][
                                 mods.index("staterror")
                             ]["data"]],
                         ],
@@ -152,9 +155,7 @@ def addSamples():
                     h_data[...] = np.stack(
                         [
                             spec["channels"][idxc]["samples"][idxs]["data"],
-                            [spec["channels"][idxc]["samples"][idxs]["modifiers"][
-                                mods.index("shapesys")
-                            ]["data"][i]**2 for i in spec["channels"][idxc]["samples"][idxs]["modifiers"][
+                            [i**2 for i in spec["channels"][idxc]["samples"][idxs]["modifiers"][
                                 mods.index("shapesys")
                             ]["data"]],
                         ],
@@ -190,10 +191,10 @@ def addMods():
                 DC.systs[im][4].update({channel["name"]: {}}) 
                 for idxs, sample in enumerate(channel["samples"]):
                     for i in DC.systs:
-                            i[4][channel["name"]].update({sample["name"]: 0.0})      
+                            i[4][channel["name"]].update({sample["name"]: 0.0})  
     for idxc, channel in enumerate(spec["channels"]):
         for idxs, sample in enumerate(channel["samples"]):
-            mods = [sample["modifiers"][i] for i, m in enumerate(sample["modifiers"])]
+            mods = [i for i in sample["modifiers"]]
             names = []
             for mod in mods:
                 names.append(mod["name"])
@@ -202,33 +203,61 @@ def addMods():
                 type = syst[2]
                 if name in names:  ##if systematic is a modifier for this sample
                     if "lnN" in type:
-                        syst[4][channel["name"]].update(
-                            {sample["name"]: str(mods[names.index(name)]["data"]["lo"]) + "/" + str(mods[names.index(name)]["data"]["hi"])} ##asymmetric lnN
-                        )
+                        flag = False
+                        curr = -1
+                        while flag == False:
+                            try: 
+                                curr = names[curr+1:].index(name)
+                            except:
+                                curr == -1
+                                flag = True
+                            if mods[curr]["type"] == "normsys":
+                                syst[4][channel["name"]].update(
+                                    {sample["name"]: str(mods[curr]["data"]["lo"]) + "/" + str(mods[names.index(name)]["data"]["hi"])} ##asymmetric lnN
+                                )
+                                flag = True   
+                        
+                            
+                            
+                        
                     if "shape" in type:
-                        syst[4][channel["name"]].update({sample["name"]: 1.0})
-                        hi_data = hist.Hist.new.Regular(
-                        channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
-                        ).Weight()
-                        hi_data[...] = np.stack(
-                        [
-                            mods[names.index(name)]["data"]["hi_data"],
-                            [0 for i in range(channel_bins[channel["name"]])],
-                        ],
-                        axis=-1,
-                        )
-                        lo_data = hist.Hist.new.Regular(
-                        channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
-                        ).Weight()
-                        lo_data[...] = np.stack(
-                        [
-                            mods[names.index(name)]["data"]["lo_data"],
-                            [0 for i in range(channel_bins[channel["name"]])],
-                        ],
-                        axis=-1,
-                        )
-                        file[channel["name"]+  "/" + spec["channels"][idxc]["samples"][idxs]["name"] + "_" + name + "Up"] = hi_data
-                        file[channel["name"]+  "/" + spec["channels"][idxc]["samples"][idxs]["name"] + "_" + name + "Down"] = lo_data
+                        flag = False
+                        curr = -1
+                        while flag == False:
+                            try: 
+                                curr = names[curr+1:].index(name)
+                            except:
+                                curr == -1
+                                flag = True
+                            if mods[curr]["type"] == "histosys":
+                                syst[4][channel["name"]].update({sample["name"]: 1.0})
+                                hi_data = hist.Hist.new.Regular(
+                                channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
+                                ).Weight()
+                                hi_data[...] = np.stack(
+                                [
+                                    mods[curr]["data"]["hi_data"],
+                                    [0 for i in range(channel_bins[channel["name"]])],
+                                ],
+                                axis=-1,
+                                )
+                                lo_data = hist.Hist.new.Regular(
+                                channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
+                                ).Weight()
+                                lo_data[...] = np.stack(
+                                [
+                                    mods[curr]["data"]["lo_data"],
+                                    [0 for i in range(channel_bins[channel["name"]])],
+                                ],
+                                axis=-1,
+                                )
+                                file[channel["name"]+  "/" + spec["channels"][idxc]["samples"][idxs]["name"] + "_" + name + "Up"] = hi_data
+                                file[channel["name"]+  "/" + spec["channels"][idxc]["samples"][idxs]["name"] + "_" + name + "Down"] = lo_data
+                                flag = True
+                            
+                      
+                            
+                                
 def addSignal():
     measurements = []
     for im, measurement in enumerate(spec["measurements"]):
