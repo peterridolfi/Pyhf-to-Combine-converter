@@ -2,6 +2,7 @@ from array import array
 from email.policy import default
 from modulefinder import Module
 import string
+from numpy.core.fromnumeric import size
 from hist import Hist
 import pyhf
 import uproot
@@ -169,7 +170,7 @@ def addMods(spec: dict):
                 for idxs, sample in enumerate(exp_values[channel].keys()):
                     if sample in exp_values[channel].keys():
                         if syst[4][channel][sample] != 0:
-                            if "/" not in str(syst[4][channel][sample]):
+                            if size(syst[4][channel][sample]) == 1:
                                 spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                                     {
                                         "name": name,
@@ -181,7 +182,7 @@ def addMods(spec: dict):
                                 }
                             )
                             else:
-                                data = syst[4][channel][sample].split("/")
+                                data = [i for i in syst[4][channel][sample]]
                                 spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                                     {
                                         "name": name,
@@ -202,8 +203,16 @@ def addMods(spec: dict):
                             histDown = getUncertDown(DC.shapeMap, channel, sample, name)
                             hi_data = histUp.values().tolist()
                             lo_data = histDown.values().tolist()
-                            
-                            
+                            data = spec["channels"][idxc]["samples"][idxs]["data"]
+                            hi = 0
+                            lo = 0
+                            nom = 0
+                            for i in hi_data:
+                                hi = hi + i
+                            for i in lo_data:
+                                lo = lo + i
+                            for i in data:
+                                nom = nom + i
                             spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                             {
                                 "name": name,
@@ -211,6 +220,13 @@ def addMods(spec: dict):
                                 "data": {"hi_data": hi_data, "lo_data": lo_data},
                             }
                             )
+                            spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
+                            {
+                                "name": name,
+                                "type": "normsys",
+                                "data": {"hi": nom/hi , "lo": nom/lo},
+                            }
+                        )
                             
                         
         else:

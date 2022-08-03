@@ -339,28 +339,17 @@ def writeDataCard(path):
         for idxc, channel in enumerate(channels):
             if channel in DC.binParFlags.keys():
                 if DC.binParFlags[channel] == True: ##double check to be safe
-                    includeSignal = False
                     shapesys = False
                     staterror  = False
                     for idxs, sample in enumerate(spec["channels"][idxc]["samples"]):
                         if "shapesys" in [mod["type"] for i, mod in enumerate(sample["modifiers"])]:
-                            if sample in DC.signals:
-                                includeSignal = True
                             shapesys = True
                         elif "staterror" in [mod["type"] for i, mod in enumerate(sample["modifiers"])]:
-                            if sample in DC.signals:
-                                includeSignal = True
                             staterror = True
                     if shapesys == True:
-                        if includeSignal == True:
-                            f.write(channel + " autoMCStats " + str(100000) + " " + str(1) + " " + str(1))
-                        else:
-                            f.write(channel + " autoMCStats " + str(100000) + " " + str(0) + " " + str(1))
+                        f.write(channel + " autoMCStats " + str(100000) + " " + str(0) + " " + str(2))
                     if staterror == True:
-                        if includeSignal == True:
-                            f.write(channel + " autoMCStats " + str(0) + " " + str(1) + " " + str(1))
-                        else:
-                            f.write(channel + " autoMCStats " +str(0) + " " + str(0) + " " + str(1))
+                        f.write(channel + " autoMCStats " +str(0) + " " + str(0) + " " + str(2))
         f.close()
 
 

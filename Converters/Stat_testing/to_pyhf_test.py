@@ -299,14 +299,14 @@ plt.plot(mu_values, nlls, label = "pyhf scan")
 '''
 NLL = []
 for poi in mu_values:
-    params, nll = pyhf.infer.mle.fit(data = observations2, pdf = model2, init_pars = [poi, 0], fixed_params = [True, False], return_fitted_val = True)
+    params, nll = pyhf.infer.mle.fit(data = observations2, pdf = model2, init_pars = [poi, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], fixed_params = [True, False, False, False, False, False, False, False, False, False, False], return_fitted_val = True)
     NLL.append(nll)
 
 
   # offset to set minimum to zero
 NLL = NLL - min(NLL)
 plt.plot(mu_values, [i/2 for i in NLL], label = "pyhf scan")
-print(mu_values[indexOf(NLL, min(NLL))])
+
 print(pyhf.infer.mle.fit(data = observations2, pdf = model2))
 
 
