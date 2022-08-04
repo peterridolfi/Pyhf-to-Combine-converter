@@ -145,6 +145,8 @@ def addMeasurements(spec: dict):
                 spec["measurements"].append(
                     {"name": "Measurement_"+sample, "config": {"poi": "mu_"+sample, "parameters": []}}
                 )
+                for param in DC.rateParams[channel + "AND" + sample]:
+                    spec["measurements"][len(spec["measurements"]-1)]["config"]["parameters"].append({"name": param[0][0], "fixed": False, "inits": [param[0][1]], "bounds": [param[0][3]]})
 
 
 def addNormFactor(spec: dict):

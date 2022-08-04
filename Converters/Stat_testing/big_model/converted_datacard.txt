@@ -1,6 +1,6 @@
 imax 26
 jmax -2
-kmax 482
+kmax 483
 shapes data_obs  os2l_6j3bL_CR__HT_all  shapes.root  os2l_6j3bL_CR__HT_all/data_obs
 shapes tttt  os2l_6j3bL_CR__HT_all  shapes.root  os2l_6j3bL_CR__HT_all/tttt  os2l_6j3bL_CR__HT_all/tttt_$SYSTEMATIC
 shapes TTL  os2l_6j3bL_CR__HT_all  shapes.root  os2l_6j3bL_CR__HT_all/TTL  os2l_6j3bL_CR__HT_all/TTL_$SYSTEMATIC
@@ -199,6 +199,17 @@ shapes ttH  ljets_ge10j4b_SR__BDT_opt4__full  shapes.root  ljets_ge10j4b_SR__BDT
 shapes singletop  ljets_ge10j4b_SR__BDT_opt4__full  shapes.root  ljets_ge10j4b_SR__BDT_opt4__full/singletop
 shapes vjets  ljets_ge10j4b_SR__BDT_opt4__full  shapes.root  ljets_ge10j4b_SR__BDT_opt4__full/vjets
 shapes others  ljets_ge10j4b_SR__BDT_opt4__full  shapes.root  ljets_ge10j4b_SR__BDT_opt4__full/others
+shapes data_obs  ljets_8jge5b_CR__HT_all  shapes.root  ljets_8jge5b_CR__HT_all/data_obs
+shapes tttt  ljets_8jge5b_CR__HT_all  shapes.root  ljets_8jge5b_CR__HT_all/tttt
+shapes TTL  ljets_8jge5b_CR__HT_all  shapes.root  ljets_8jge5b_CR__HT_all/TTL
+shapes TTC  ljets_8jge5b_CR__HT_all  shapes.root  ljets_8jge5b_CR__HT_all/TTC
+shapes TTB  ljets_8jge5b_CR__HT_all  shapes.root  ljets_8jge5b_CR__HT_all/TTB
+shapes ttW  ljets_8jge5b_CR__HT_all  shapes.root  ljets_8jge5b_CR__HT_all/ttW
+shapes ttZ  ljets_8jge5b_CR__HT_all  shapes.root  ljets_8jge5b_CR__HT_all/ttZ
+shapes ttH  ljets_8jge5b_CR__HT_all  shapes.root  ljets_8jge5b_CR__HT_all/ttH
+shapes singletop  ljets_8jge5b_CR__HT_all  shapes.root  ljets_8jge5b_CR__HT_all/singletop
+shapes vjets  ljets_8jge5b_CR__HT_all  shapes.root  ljets_8jge5b_CR__HT_all/vjets
+shapes others  ljets_8jge5b_CR__HT_all  shapes.root  ljets_8jge5b_CR__HT_all/others
 shapes data_obs  ljets_9jge5b_SR__BDT_opt4__full  shapes.root  ljets_9jge5b_SR__BDT_opt4__full/data_obs
 shapes tttt  ljets_9jge5b_SR__BDT_opt4__full  shapes.root  ljets_9jge5b_SR__BDT_opt4__full/tttt  ljets_9jge5b_SR__BDT_opt4__full/tttt_$SYSTEMATIC
 shapes TTL  ljets_9jge5b_SR__BDT_opt4__full  shapes.root  ljets_9jge5b_SR__BDT_opt4__full/TTL  ljets_9jge5b_SR__BDT_opt4__full/TTL_$SYSTEMATIC
@@ -239,6 +250,40 @@ shapes Diboson  CRttbarCO2l_MeePVCO  shapes.root  CRttbarCO2l_MeePVCO/Diboson
 shapes others  CRttbarCO2l_MeePVCO  shapes.root  CRttbarCO2l_MeePVCO/others
 shapes rarettVV  CRttbarCO2l_MeePVCO  shapes.root  CRttbarCO2l_MeePVCO/rarettVV  CRttbarCO2l_MeePVCO/rarettVV_$SYSTEMATIC
 shapes ttt  CRttbarCO2l_MeePVCO  shapes.root  CRttbarCO2l_MeePVCO/ttt  CRttbarCO2l_MeePVCO/ttt_$SYSTEMATIC
+shapes data_obs  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/data_obs
+shapes tttt  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/tttt
+shapes ttW  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/ttW  CR1b3lm_1bin/ttW_$SYSTEMATIC
+shapes ttZ  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/ttZ
+shapes ttH  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/ttH
+shapes ttbar_CO  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/ttbar_CO
+shapes ttbar_HFe  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/ttbar_HFe
+shapes ttbar_gstr  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/ttbar_gstr
+shapes ttbar_HFm  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/ttbar_HFm
+shapes ttbar_light  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/ttbar_light
+shapes ttbar_other  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/ttbar_other
+shapes singleTop  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/singleTop
+shapes ttWW  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/ttWW
+shapes Diboson  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/Diboson
+shapes others  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/others
+shapes rarettVV  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/rarettVV
+shapes ttt  CR1b3lm_1bin  shapes.root  CR1b3lm_1bin/ttt
+shapes data_obs  CR1b3le_1bin  shapes.root  CR1b3le_1bin/data_obs
+shapes tttt  CR1b3le_1bin  shapes.root  CR1b3le_1bin/tttt
+shapes ttW  CR1b3le_1bin  shapes.root  CR1b3le_1bin/ttW  CR1b3le_1bin/ttW_$SYSTEMATIC
+shapes ttZ  CR1b3le_1bin  shapes.root  CR1b3le_1bin/ttZ
+shapes ttH  CR1b3le_1bin  shapes.root  CR1b3le_1bin/ttH
+shapes ttbar_CO  CR1b3le_1bin  shapes.root  CR1b3le_1bin/ttbar_CO
+shapes ttbar_HFe  CR1b3le_1bin  shapes.root  CR1b3le_1bin/ttbar_HFe
+shapes ttbar_gstr  CR1b3le_1bin  shapes.root  CR1b3le_1bin/ttbar_gstr
+shapes ttbar_HFm  CR1b3le_1bin  shapes.root  CR1b3le_1bin/ttbar_HFm
+shapes ttbar_light  CR1b3le_1bin  shapes.root  CR1b3le_1bin/ttbar_light
+shapes ttbar_other  CR1b3le_1bin  shapes.root  CR1b3le_1bin/ttbar_other
+shapes singleTop  CR1b3le_1bin  shapes.root  CR1b3le_1bin/singleTop
+shapes ttWW  CR1b3le_1bin  shapes.root  CR1b3le_1bin/ttWW
+shapes Diboson  CR1b3le_1bin  shapes.root  CR1b3le_1bin/Diboson
+shapes others  CR1b3le_1bin  shapes.root  CR1b3le_1bin/others
+shapes rarettVV  CR1b3le_1bin  shapes.root  CR1b3le_1bin/rarettVV
+shapes ttt  CR1b3le_1bin  shapes.root  CR1b3le_1bin/ttt
 shapes data_obs  CRttW2l  shapes.root  CRttW2l/data_obs
 shapes tttt  CRttW2l  shapes.root  CRttW2l/tttt  CRttW2l/tttt_$SYSTEMATIC
 shapes ttW  CRttW2l  shapes.root  CRttW2l/ttW  CRttW2l/ttW_$SYSTEMATIC
@@ -275,9 +320,6 @@ shapes Diboson  SR_AllBDT  shapes.root  SR_AllBDT/Diboson  SR_AllBDT/Diboson_$SY
 shapes others  SR_AllBDT  shapes.root  SR_AllBDT/others  SR_AllBDT/others_$SYSTEMATIC
 shapes rarettVV  SR_AllBDT  shapes.root  SR_AllBDT/rarettVV  SR_AllBDT/rarettVV_$SYSTEMATIC
 shapes ttt  SR_AllBDT  shapes.root  SR_AllBDT/ttt  SR_AllBDT/ttt_$SYSTEMATIC
-shapes  *  ljets_8jge5b_CR__HT_all  FAKE 
-shapes  *  CR1b3lm_1bin  FAKE 
-shapes  *  CR1b3le_1bin  FAKE 
 
 ---------------------------------
 bin os2l_6j3bL_CR__HT_all os2l_7j3bL_CR__HT_all os2l_ge8j3bL_SR__BDT_opt4__full os2l_6j3bH_CR__HT_all os2l_7j3bH_CR__HT_all os2l_ge8j3bH_SR__BDT_opt4__full os2l_6jge4b_CR__HT_all os2l_7jge4b_SR__BDT_opt4__full os2l_ge8jge4b_SR__BDT_opt4__full ljets_8j3bL_CR__HT_all ljets_9j3bL_CR__HT_all ljets_ge10j3bL_SR__BDT_opt4__full ljets_8j3bH_CR__HT_all ljets_9j3bH_CR__HT_all ljets_ge10j3bH_SR__BDT_opt4__full ljets_8j4b_CR__HT_all ljets_9j4b_SR__BDT_opt4__full ljets_ge10j4b_SR__BDT_opt4__full ljets_8jge5b_CR__HT_all ljets_9jge5b_SR__BDT_opt4__full ljets_ge10jge5b_SR__BDT_opt4__full CRttbarCO2l_MeePVCO CR1b3lm_1bin CR1b3le_1bin CRttW2l SR_AllBDT 
@@ -703,6 +745,7 @@ TTL_var3c  shape  -       -       -       -       -       -       -       -     
 TTL_var3c  shape?  -       0.990737/1.00926  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       0.963566/1.03643  -       -       -       -       -       -       -       -       -       1.00718/0.992815  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       0.986555/1.01345  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       0.909151/1.09085  -       -       -       -       -       -       -       -       -       1.04395/0.956052  -       -       -       -       -       -       -       -       -       1.0  -       -       -       -       -       -       -       -       -       1.0  -       -       -       -       -       -       -       -       -       1.0  -       -       -       -       -       -       -       -       -       1.00793/0.992071  -       -       -       -       -       -       -       -       -       1.0  -       -       -       -       -       -       -       -       -       1.0  -       -       -       -       -       -       -       -       -       1.00848/0.991522  -       -       -       -       -       -       -       -       -       1.01659/0.983408  -       -       -       -       -       -       -       -       -       1.00575/0.994253  -       -       -       -       -       -       -       -       -       0.957709/1.04229  -       -       -       -       -       -       -       -       -       1.02933/0.970672  -       -       -       -       -       -       -       -       -       1.08199/0.918011  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       
 VV_Xsec  shape?  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       0.6/1.4  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       0.6/1.4  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       0.6/1.4  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       0.6/1.4  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       0.6/1.4  -       -       -       
 jet_vertex_tagger  shape?  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       0.994292/1.00571  0.99002/1.00998  0.992649/1.00735  0.992522/1.00748  -       0.990288/1.00971  0.991527/1.00847  0.990532/1.00947  0.989058/1.01094  0.989368/1.01063  0.991496/1.0085  0.989176/1.01082  0.989225/1.01077  0.988278/1.01172  0.989533/1.01047  0.991707/1.00829  0.993125/1.00688  1.00638/0.993617  -       -       -       1.00819/0.99181  -       -       -       -       -       -       0.99253/1.00747  -       -       -       1.00879/0.991214  0.990764/1.00924  -       -       -       -       -       0.993623/1.00638  -       -       -       -       0.993454/1.00655  -       -       -       -       -       0.991588/1.00841  0.992968/1.00703  0.992972/1.00703  -       0.993454/1.00655  0.989207/1.01079  0.989797/1.0102  0.989876/1.01012  0.991968/1.00803  0.98998/1.01002  0.992913/1.00709  0.993329/1.00667  0.991495/1.00851  0.990886/1.00911  0.994696/1.0053  -       0.9886/1.0114  0.987445/1.01256  0.987601/1.0124  0.987694/1.01231  -       0.988733/1.01127  0.987577/1.01242  0.981301/1.0187  0.985923/1.01408  0.987666/1.01233  0.987677/1.01232  0.988703/1.0113  0.989652/1.01035  0.988044/1.01196  0.987161/1.01284  0.988558/1.01144  0.989205/1.01079  
+lumi  lnN  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  -       0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  -       0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  -       0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  0.9/1.1  
 nonttbarXS  shape  -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       -       1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       
 nonttbarXS  shape?  -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.03538/0.96462  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.04723/0.952775  1.03219/0.967805  1.03631/0.963686  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       1.0  1.0  1.0  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       
 others_XS  shape?  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       0.5/1.5  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       
@@ -772,267 +815,37 @@ tttt_varRF  shape?  1.03333/0.98659  -       -       -       -       -       -  
 vjets_XS  shape?  -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       0.41/1.59  -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       -       
 
 ---------------------------------
-lumi rateParam CR1b3le_1bin TTL 1
-lumi rateParam CR1b3le_1bin TTC 1
-lumi rateParam CR1b3le_1bin TTB 1
-lumi rateParam CR1b3le_1bin ttW 1
-lumi rateParam CR1b3le_1bin ttZ 1
-lumi rateParam CR1b3le_1bin ttH 1
-lumi rateParam CR1b3le_1bin singletop 1
-lumi rateParam CR1b3le_1bin vjets 1
-lumi rateParam CR1b3le_1bin others 1
-lumi rateParam CR1b3lm_1bin TTL 1
-lumi rateParam CR1b3lm_1bin TTC 1
-lumi rateParam CR1b3lm_1bin TTB 1
-lumi rateParam CR1b3lm_1bin ttW 1
-lumi rateParam CR1b3lm_1bin ttZ 1
-lumi rateParam CR1b3lm_1bin ttH 1
-lumi rateParam CR1b3lm_1bin singletop 1
-lumi rateParam CR1b3lm_1bin vjets 1
-lumi rateParam CR1b3lm_1bin others 1
-lumi rateParam CRttW2l TTL 1
-lumi rateParam CRttW2l TTC 1
-lumi rateParam CRttW2l TTB 1
-lumi rateParam CRttW2l ttW 1
-lumi rateParam CRttW2l ttZ 1
-lumi rateParam CRttW2l ttH 1
-lumi rateParam CRttW2l singletop 1
-lumi rateParam CRttW2l vjets 1
-lumi rateParam CRttW2l others 1
-lumi rateParam CRttbarCO2l_MeePVCO TTL 1
-lumi rateParam CRttbarCO2l_MeePVCO TTC 1
-lumi rateParam CRttbarCO2l_MeePVCO TTB 1
-lumi rateParam CRttbarCO2l_MeePVCO ttW 1
-lumi rateParam CRttbarCO2l_MeePVCO ttZ 1
-lumi rateParam CRttbarCO2l_MeePVCO ttH 1
-lumi rateParam CRttbarCO2l_MeePVCO singletop 1
-lumi rateParam CRttbarCO2l_MeePVCO vjets 1
-lumi rateParam CRttbarCO2l_MeePVCO others 1
-lumi rateParam SR_AllBDT TTL 1
-lumi rateParam SR_AllBDT TTC 1
-lumi rateParam SR_AllBDT TTB 1
-lumi rateParam SR_AllBDT ttW 1
-lumi rateParam SR_AllBDT ttZ 1
-lumi rateParam SR_AllBDT ttH 1
-lumi rateParam SR_AllBDT singletop 1
-lumi rateParam SR_AllBDT vjets 1
-lumi rateParam SR_AllBDT others 1
-lumi rateParam ljets_8j3bH_CR__HT_all TTL 1
-lumi rateParam ljets_8j3bH_CR__HT_all TTC 1
-lumi rateParam ljets_8j3bH_CR__HT_all TTB 1
-lumi rateParam ljets_8j3bH_CR__HT_all ttW 1
-lumi rateParam ljets_8j3bH_CR__HT_all ttZ 1
-lumi rateParam ljets_8j3bH_CR__HT_all ttH 1
-lumi rateParam ljets_8j3bH_CR__HT_all singletop 1
-lumi rateParam ljets_8j3bH_CR__HT_all vjets 1
-lumi rateParam ljets_8j3bH_CR__HT_all others 1
-lumi rateParam ljets_8j3bL_CR__HT_all TTL 1
-lumi rateParam ljets_8j3bL_CR__HT_all TTC 1
-lumi rateParam ljets_8j3bL_CR__HT_all TTB 1
-lumi rateParam ljets_8j3bL_CR__HT_all ttW 1
-lumi rateParam ljets_8j3bL_CR__HT_all ttZ 1
-lumi rateParam ljets_8j3bL_CR__HT_all ttH 1
-lumi rateParam ljets_8j3bL_CR__HT_all singletop 1
-lumi rateParam ljets_8j3bL_CR__HT_all vjets 1
-lumi rateParam ljets_8j3bL_CR__HT_all others 1
-lumi rateParam ljets_8j4b_CR__HT_all TTL 1
-lumi rateParam ljets_8j4b_CR__HT_all TTC 1
-lumi rateParam ljets_8j4b_CR__HT_all TTB 1
-lumi rateParam ljets_8j4b_CR__HT_all ttW 1
-lumi rateParam ljets_8j4b_CR__HT_all ttZ 1
-lumi rateParam ljets_8j4b_CR__HT_all ttH 1
-lumi rateParam ljets_8j4b_CR__HT_all singletop 1
-lumi rateParam ljets_8j4b_CR__HT_all vjets 1
-lumi rateParam ljets_8j4b_CR__HT_all others 1
-lumi rateParam ljets_8jge5b_CR__HT_all TTL 1
-lumi rateParam ljets_8jge5b_CR__HT_all TTC 1
-lumi rateParam ljets_8jge5b_CR__HT_all TTB 1
-lumi rateParam ljets_8jge5b_CR__HT_all ttW 1
-lumi rateParam ljets_8jge5b_CR__HT_all ttZ 1
-lumi rateParam ljets_8jge5b_CR__HT_all ttH 1
-lumi rateParam ljets_8jge5b_CR__HT_all singletop 1
-lumi rateParam ljets_8jge5b_CR__HT_all vjets 1
-lumi rateParam ljets_8jge5b_CR__HT_all others 1
-lumi rateParam ljets_9j3bH_CR__HT_all TTL 1
-lumi rateParam ljets_9j3bH_CR__HT_all TTC 1
-lumi rateParam ljets_9j3bH_CR__HT_all TTB 1
-lumi rateParam ljets_9j3bH_CR__HT_all ttW 1
-lumi rateParam ljets_9j3bH_CR__HT_all ttZ 1
-lumi rateParam ljets_9j3bH_CR__HT_all ttH 1
-lumi rateParam ljets_9j3bH_CR__HT_all singletop 1
-lumi rateParam ljets_9j3bH_CR__HT_all vjets 1
-lumi rateParam ljets_9j3bH_CR__HT_all others 1
-lumi rateParam ljets_9j3bL_CR__HT_all TTL 1
-lumi rateParam ljets_9j3bL_CR__HT_all TTC 1
-lumi rateParam ljets_9j3bL_CR__HT_all TTB 1
-lumi rateParam ljets_9j3bL_CR__HT_all ttW 1
-lumi rateParam ljets_9j3bL_CR__HT_all ttZ 1
-lumi rateParam ljets_9j3bL_CR__HT_all ttH 1
-lumi rateParam ljets_9j3bL_CR__HT_all singletop 1
-lumi rateParam ljets_9j3bL_CR__HT_all vjets 1
-lumi rateParam ljets_9j3bL_CR__HT_all others 1
-lumi rateParam ljets_9j4b_SR__BDT_opt4__full TTL 1
-lumi rateParam ljets_9j4b_SR__BDT_opt4__full TTC 1
-lumi rateParam ljets_9j4b_SR__BDT_opt4__full TTB 1
-lumi rateParam ljets_9j4b_SR__BDT_opt4__full ttW 1
-lumi rateParam ljets_9j4b_SR__BDT_opt4__full ttZ 1
-lumi rateParam ljets_9j4b_SR__BDT_opt4__full ttH 1
-lumi rateParam ljets_9j4b_SR__BDT_opt4__full singletop 1
-lumi rateParam ljets_9j4b_SR__BDT_opt4__full vjets 1
-lumi rateParam ljets_9j4b_SR__BDT_opt4__full others 1
-lumi rateParam ljets_9jge5b_SR__BDT_opt4__full TTL 1
-lumi rateParam ljets_9jge5b_SR__BDT_opt4__full TTC 1
-lumi rateParam ljets_9jge5b_SR__BDT_opt4__full TTB 1
-lumi rateParam ljets_9jge5b_SR__BDT_opt4__full ttW 1
-lumi rateParam ljets_9jge5b_SR__BDT_opt4__full ttZ 1
-lumi rateParam ljets_9jge5b_SR__BDT_opt4__full ttH 1
-lumi rateParam ljets_9jge5b_SR__BDT_opt4__full singletop 1
-lumi rateParam ljets_9jge5b_SR__BDT_opt4__full vjets 1
-lumi rateParam ljets_9jge5b_SR__BDT_opt4__full others 1
-lumi rateParam ljets_ge10j3bH_SR__BDT_opt4__full TTL 1
-lumi rateParam ljets_ge10j3bH_SR__BDT_opt4__full TTC 1
-lumi rateParam ljets_ge10j3bH_SR__BDT_opt4__full TTB 1
-lumi rateParam ljets_ge10j3bH_SR__BDT_opt4__full ttW 1
-lumi rateParam ljets_ge10j3bH_SR__BDT_opt4__full ttZ 1
-lumi rateParam ljets_ge10j3bH_SR__BDT_opt4__full ttH 1
-lumi rateParam ljets_ge10j3bH_SR__BDT_opt4__full singletop 1
-lumi rateParam ljets_ge10j3bH_SR__BDT_opt4__full vjets 1
-lumi rateParam ljets_ge10j3bH_SR__BDT_opt4__full others 1
-lumi rateParam ljets_ge10j3bL_SR__BDT_opt4__full TTL 1
-lumi rateParam ljets_ge10j3bL_SR__BDT_opt4__full TTC 1
-lumi rateParam ljets_ge10j3bL_SR__BDT_opt4__full TTB 1
-lumi rateParam ljets_ge10j3bL_SR__BDT_opt4__full ttW 1
-lumi rateParam ljets_ge10j3bL_SR__BDT_opt4__full ttZ 1
-lumi rateParam ljets_ge10j3bL_SR__BDT_opt4__full ttH 1
-lumi rateParam ljets_ge10j3bL_SR__BDT_opt4__full singletop 1
-lumi rateParam ljets_ge10j3bL_SR__BDT_opt4__full vjets 1
-lumi rateParam ljets_ge10j3bL_SR__BDT_opt4__full others 1
-lumi rateParam ljets_ge10j4b_SR__BDT_opt4__full TTL 1
-lumi rateParam ljets_ge10j4b_SR__BDT_opt4__full TTC 1
-lumi rateParam ljets_ge10j4b_SR__BDT_opt4__full TTB 1
-lumi rateParam ljets_ge10j4b_SR__BDT_opt4__full ttW 1
-lumi rateParam ljets_ge10j4b_SR__BDT_opt4__full ttZ 1
-lumi rateParam ljets_ge10j4b_SR__BDT_opt4__full ttH 1
-lumi rateParam ljets_ge10j4b_SR__BDT_opt4__full singletop 1
-lumi rateParam ljets_ge10j4b_SR__BDT_opt4__full vjets 1
-lumi rateParam ljets_ge10j4b_SR__BDT_opt4__full others 1
-lumi rateParam ljets_ge10jge5b_SR__BDT_opt4__full TTL 1
-lumi rateParam ljets_ge10jge5b_SR__BDT_opt4__full TTC 1
-lumi rateParam ljets_ge10jge5b_SR__BDT_opt4__full TTB 1
-lumi rateParam ljets_ge10jge5b_SR__BDT_opt4__full ttW 1
-lumi rateParam ljets_ge10jge5b_SR__BDT_opt4__full ttZ 1
-lumi rateParam ljets_ge10jge5b_SR__BDT_opt4__full ttH 1
-lumi rateParam ljets_ge10jge5b_SR__BDT_opt4__full singletop 1
-lumi rateParam ljets_ge10jge5b_SR__BDT_opt4__full vjets 1
-lumi rateParam ljets_ge10jge5b_SR__BDT_opt4__full others 1
-lumi rateParam os2l_6j3bH_CR__HT_all TTL 1
-lumi rateParam os2l_6j3bH_CR__HT_all TTC 1
-lumi rateParam os2l_6j3bH_CR__HT_all TTB 1
-lumi rateParam os2l_6j3bH_CR__HT_all ttW 1
-lumi rateParam os2l_6j3bH_CR__HT_all ttZ 1
-lumi rateParam os2l_6j3bH_CR__HT_all ttH 1
-lumi rateParam os2l_6j3bH_CR__HT_all singletop 1
-lumi rateParam os2l_6j3bH_CR__HT_all vjets 1
-lumi rateParam os2l_6j3bH_CR__HT_all others 1
-lumi rateParam os2l_6j3bL_CR__HT_all TTL 1
-lumi rateParam os2l_6j3bL_CR__HT_all TTC 1
-lumi rateParam os2l_6j3bL_CR__HT_all TTB 1
-lumi rateParam os2l_6j3bL_CR__HT_all ttW 1
-lumi rateParam os2l_6j3bL_CR__HT_all ttZ 1
-lumi rateParam os2l_6j3bL_CR__HT_all ttH 1
-lumi rateParam os2l_6j3bL_CR__HT_all singletop 1
-lumi rateParam os2l_6j3bL_CR__HT_all vjets 1
-lumi rateParam os2l_6j3bL_CR__HT_all others 1
-lumi rateParam os2l_6jge4b_CR__HT_all TTL 1
-lumi rateParam os2l_6jge4b_CR__HT_all TTC 1
-lumi rateParam os2l_6jge4b_CR__HT_all TTB 1
-lumi rateParam os2l_6jge4b_CR__HT_all ttW 1
-lumi rateParam os2l_6jge4b_CR__HT_all ttZ 1
-lumi rateParam os2l_6jge4b_CR__HT_all ttH 1
-lumi rateParam os2l_6jge4b_CR__HT_all singletop 1
-lumi rateParam os2l_6jge4b_CR__HT_all vjets 1
-lumi rateParam os2l_6jge4b_CR__HT_all others 1
-lumi rateParam os2l_7j3bH_CR__HT_all TTL 1
-lumi rateParam os2l_7j3bH_CR__HT_all TTC 1
-lumi rateParam os2l_7j3bH_CR__HT_all TTB 1
-lumi rateParam os2l_7j3bH_CR__HT_all ttW 1
-lumi rateParam os2l_7j3bH_CR__HT_all ttZ 1
-lumi rateParam os2l_7j3bH_CR__HT_all ttH 1
-lumi rateParam os2l_7j3bH_CR__HT_all singletop 1
-lumi rateParam os2l_7j3bH_CR__HT_all vjets 1
-lumi rateParam os2l_7j3bH_CR__HT_all others 1
 NF_ttW rateParam os2l_7j3bL_CR__HT_all ttW 1
-lumi rateParam os2l_7j3bL_CR__HT_all ttZ 1
-lumi rateParam os2l_7j3bL_CR__HT_all ttH 1
 NF_ttbar_CO rateParam os2l_7j3bL_CR__HT_all ttbar_CO 1
 NF_ttbar_HFe rateParam os2l_7j3bL_CR__HT_all ttbar_HFe 1
 NF_ttbar_gstr rateParam os2l_7j3bL_CR__HT_all ttbar_gstr 1
 NF_ttbar_HFm rateParam os2l_7j3bL_CR__HT_all ttbar_HFm 1
-lumi rateParam os2l_7j3bL_CR__HT_all ttbar_light 1
-lumi rateParam os2l_7j3bL_CR__HT_all ttbar_other 1
-lumi rateParam os2l_7j3bL_CR__HT_all singleTop 1
-lumi rateParam os2l_7j3bL_CR__HT_all ttWW 1
-lumi rateParam os2l_7j3bL_CR__HT_all Diboson 1
-lumi rateParam os2l_7j3bL_CR__HT_all others 1
-lumi rateParam os2l_7j3bL_CR__HT_all rarettVV 1
 NF_ttW rateParam os2l_7jge4b_SR__BDT_opt4__full ttW 1
-lumi rateParam os2l_7jge4b_SR__BDT_opt4__full ttZ 1
-lumi rateParam os2l_7jge4b_SR__BDT_opt4__full ttH 1
 NF_ttbar_CO rateParam os2l_7jge4b_SR__BDT_opt4__full ttbar_CO 1
 NF_ttbar_HFe rateParam os2l_7jge4b_SR__BDT_opt4__full ttbar_HFe 1
 NF_ttbar_gstr rateParam os2l_7jge4b_SR__BDT_opt4__full ttbar_gstr 1
 NF_ttbar_HFm rateParam os2l_7jge4b_SR__BDT_opt4__full ttbar_HFm 1
-lumi rateParam os2l_7jge4b_SR__BDT_opt4__full ttbar_light 1
-lumi rateParam os2l_7jge4b_SR__BDT_opt4__full ttbar_other 1
-lumi rateParam os2l_7jge4b_SR__BDT_opt4__full singleTop 1
-lumi rateParam os2l_7jge4b_SR__BDT_opt4__full ttWW 1
-lumi rateParam os2l_7jge4b_SR__BDT_opt4__full Diboson 1
-lumi rateParam os2l_7jge4b_SR__BDT_opt4__full others 1
-lumi rateParam os2l_7jge4b_SR__BDT_opt4__full rarettVV 1
 NF_ttW rateParam os2l_ge8j3bH_SR__BDT_opt4__full ttW 1
-lumi rateParam os2l_ge8j3bH_SR__BDT_opt4__full ttZ 1
-lumi rateParam os2l_ge8j3bH_SR__BDT_opt4__full ttH 1
 NF_ttbar_CO rateParam os2l_ge8j3bH_SR__BDT_opt4__full ttbar_CO 1
 NF_ttbar_HFe rateParam os2l_ge8j3bH_SR__BDT_opt4__full ttbar_HFe 1
 NF_ttbar_gstr rateParam os2l_ge8j3bH_SR__BDT_opt4__full ttbar_gstr 1
 NF_ttbar_HFm rateParam os2l_ge8j3bH_SR__BDT_opt4__full ttbar_HFm 1
-lumi rateParam os2l_ge8j3bH_SR__BDT_opt4__full ttbar_light 1
-lumi rateParam os2l_ge8j3bH_SR__BDT_opt4__full ttbar_other 1
-lumi rateParam os2l_ge8j3bH_SR__BDT_opt4__full singleTop 1
-lumi rateParam os2l_ge8j3bH_SR__BDT_opt4__full ttWW 1
-lumi rateParam os2l_ge8j3bH_SR__BDT_opt4__full Diboson 1
-lumi rateParam os2l_ge8j3bH_SR__BDT_opt4__full others 1
-lumi rateParam os2l_ge8j3bH_SR__BDT_opt4__full rarettVV 1
 NF_ttW rateParam os2l_ge8j3bL_SR__BDT_opt4__full ttW 1
-lumi rateParam os2l_ge8j3bL_SR__BDT_opt4__full ttZ 1
-lumi rateParam os2l_ge8j3bL_SR__BDT_opt4__full ttH 1
 NF_ttbar_CO rateParam os2l_ge8j3bL_SR__BDT_opt4__full ttbar_CO 1
 NF_ttbar_HFe rateParam os2l_ge8j3bL_SR__BDT_opt4__full ttbar_HFe 1
 NF_ttbar_gstr rateParam os2l_ge8j3bL_SR__BDT_opt4__full ttbar_gstr 1
 NF_ttbar_HFm rateParam os2l_ge8j3bL_SR__BDT_opt4__full ttbar_HFm 1
-lumi rateParam os2l_ge8j3bL_SR__BDT_opt4__full ttbar_light 1
-lumi rateParam os2l_ge8j3bL_SR__BDT_opt4__full ttbar_other 1
-lumi rateParam os2l_ge8j3bL_SR__BDT_opt4__full singleTop 1
-lumi rateParam os2l_ge8j3bL_SR__BDT_opt4__full ttWW 1
-lumi rateParam os2l_ge8j3bL_SR__BDT_opt4__full Diboson 1
-lumi rateParam os2l_ge8j3bL_SR__BDT_opt4__full others 1
-lumi rateParam os2l_ge8j3bL_SR__BDT_opt4__full rarettVV 1
 NF_ttW rateParam os2l_ge8jge4b_SR__BDT_opt4__full ttW 1
-lumi rateParam os2l_ge8jge4b_SR__BDT_opt4__full ttZ 1
-lumi rateParam os2l_ge8jge4b_SR__BDT_opt4__full ttH 1
 NF_ttbar_CO rateParam os2l_ge8jge4b_SR__BDT_opt4__full ttbar_CO 1
 NF_ttbar_HFe rateParam os2l_ge8jge4b_SR__BDT_opt4__full ttbar_HFe 1
 NF_ttbar_gstr rateParam os2l_ge8jge4b_SR__BDT_opt4__full ttbar_gstr 1
 NF_ttbar_HFm rateParam os2l_ge8jge4b_SR__BDT_opt4__full ttbar_HFm 1
-lumi rateParam os2l_ge8jge4b_SR__BDT_opt4__full ttbar_light 1
-lumi rateParam os2l_ge8jge4b_SR__BDT_opt4__full ttbar_other 1
-lumi rateParam os2l_ge8jge4b_SR__BDT_opt4__full singleTop 1
-lumi rateParam os2l_ge8jge4b_SR__BDT_opt4__full ttWW 1
-lumi rateParam os2l_ge8jge4b_SR__BDT_opt4__full Diboson 1
-lumi rateParam os2l_ge8jge4b_SR__BDT_opt4__full others 1
-lumi rateParam os2l_ge8jge4b_SR__BDT_opt4__full rarettVV 1
 
 ---------------------------------
+CR1b3le_1bin autoMCStats 100000 0 2
+CR1b3le_1bin autoMCStats 0 0 2
+CR1b3lm_1bin autoMCStats 100000 0 2
+CR1b3lm_1bin autoMCStats 0 0 2
 CRttW2l autoMCStats 100000 0 2
 CRttW2l autoMCStats 0 0 2
 CRttbarCO2l_MeePVCO autoMCStats 100000 0 2
@@ -1045,6 +858,8 @@ ljets_8j3bL_CR__HT_all autoMCStats 100000 0 2
 ljets_8j3bL_CR__HT_all autoMCStats 0 0 2
 ljets_8j4b_CR__HT_all autoMCStats 100000 0 2
 ljets_8j4b_CR__HT_all autoMCStats 0 0 2
+ljets_8jge5b_CR__HT_all autoMCStats 100000 0 2
+ljets_8jge5b_CR__HT_all autoMCStats 0 0 2
 ljets_9j3bH_CR__HT_all autoMCStats 100000 0 2
 ljets_9j3bH_CR__HT_all autoMCStats 0 0 2
 ljets_9j3bL_CR__HT_all autoMCStats 100000 0 2

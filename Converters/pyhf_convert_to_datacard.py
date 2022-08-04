@@ -43,10 +43,9 @@ lumi = model.config.parameters
 systs = []
 for mod in modifiers:
     if 'normfactor' not in mod:
-        if 'lumi' not in mod:
-            if 'shapesys' not in mod:
-                if 'staterror' not in mod:
-                    systs.append(mod)
+        if 'shapesys' not in mod:
+            if 'staterror' not in mod:
+                systs.append(mod)
 
 
 DC = Datacard()
@@ -58,8 +57,11 @@ file = uproot.recreate(options.shapefile)
 def addChannels():
     DC.bins = [channel["name"] for i, channel in enumerate(spec["channels"])]
     for idxc, channel in enumerate(spec["channels"]):
+        if channel_bins[channel["name"]] != 1:
+            DC.hasShapes = True
+    for idxc, channel in enumerate(spec["channels"]):
         DC.exp.update({channel["name"] : {}})
-        if channel_bins[channel["name"]] == 1:  ##single bin
+        if DC.hasShapes == False:  ##single bin
             DC.obs.update({channel["name"]: spec["observations"][idxc]["data"][0]})
             
         else:
@@ -83,7 +85,7 @@ def addSamples():
     DC.processes = samples
     
     for idxc, channel in enumerate(spec["channels"]):
-        if channel_bins[channel["name"]] == 1:  ##counting
+        if DC.hasShapes == False:  ##counting
             for idxs, sample in enumerate(channel["samples"]):
                 DC.exp[channel["name"]].update(
                     {
@@ -100,7 +102,6 @@ def addSamples():
                     ]
                 }
             )
-            DC.hasShapes = True
             for idxs, sample in enumerate(channel["samples"]):
                 data = sum(sample["data"])
                 DC.exp[channel["name"]].update(
@@ -186,6 +187,13 @@ def addMods():
                 for idxs, sample in enumerate(channel["samples"]):
                     for i in DC.systs:
                             i[4][channel["name"]].update({sample["name"]: 0.0})
+        if "lumi" in modifier[1]:
+            DC.systs.append((modifier[0], False, "lnN", [], {}))
+            for idxc, channel in enumerate(spec["channels"]):
+                DC.systs[im][4].update({channel["name"]: {}})  
+                for idxs, sample in enumerate(channel["samples"]):
+                    for i in DC.systs:
+                            i[4][channel["name"]].update({sample["name"]: 0.0})
         if "histosys" in modifier[1]:
             DC.systs.append((modifier[0], False, "shape", [], {}))
             for idxc, channel in enumerate(spec["channels"]):
@@ -204,7 +212,7 @@ def addMods():
                 name = syst[0]
                 type = syst[2]
                 if name in names:  ##if systematic name is a modifier for this sample
-                    if "shape?" in type:
+                    if "shape?" in type: ##normsys
                         for mod in mods:
                             if mod["type"] == "normsys" and mod["name"] == name:
                                 if mod["data"]["lo"] == 0:
@@ -219,8 +227,17 @@ def addMods():
                                     syst[4][channel["name"]].update(
                                     {sample["name"]: str(mod["data"]["lo"]) + "/" + str(mod["data"]["hi"])} ##asymmetric lnN
                                 )
-                                
-                    if "shape" in type:
+                    if "lnN" in type: ##lumi only
+                        for mod in mods:
+                            if mod["type"] == "lumi" and mod["name"] == name:
+                                for im, measurement in enumerate(spec["measurements"]):
+                                    for ip, param in enumerate(measurement["config"]["parameters"]):
+                                        if mod["name"] == param["name"]:
+                                            syst[4][channel["name"]].update(
+                                    {sample["name"]: str(param["auxdata"][0]-param["sigmas"][0]) + "/" + str(param["auxdata"][0]+param["sigmas"][0])} ##asymmetric lnN
+                                ) 
+                                            
+                    if "shape" in type: ##histosys
                         for mod in mods:
                             if mod["type"] == "histosys" and mod["name"] == name:
                                 syst[4][channel["name"]].update({sample["name"]: 1.0})
@@ -285,10 +302,13 @@ def addRateParams():
                 if sample["name"] in sig:
                     isSig = True
             if isSig == False:
-                for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]): ##normfactor or lumi 
-                    if "normfactor" in mod["type"] or "lumi" in mod["type"] or "shapefactor" in mod["type"]:
-                        DC.rateParams.update({channel + "AND" + sample["name"]: []})
-                        DC.rateParams[channel + "AND" + sample["name"]].append([[mod["name"], 1, 0], ''])
+                for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]): ##normfactor or shapefactor
+                    if "normfactor" in mod["type"] or "shapefactor" in mod["type"]:
+                        for im, measurement in enumerate(spec["measurements"]):
+                            for ip, param in enumerate(measurement["config"]["parameters"]):
+                                if mod["name"] == param["name"]:
+                                    DC.rateParams.update({channel + "AND" + sample["name"]: []})
+                                    DC.rateParams[channel + "AND" + sample["name"]].append([[mod["name"], 1, 0, param["bounds"]], ''])
                         
             
             
@@ -308,9 +328,7 @@ def writeDataCard(path):
                         f.write("  " + DC.shapeMap[channel][sample][2] + "\n")  
                     else:
                         f.write("\n")
-            for channel in DC.obs.keys():
-                if channel not in DC.shapeMap.keys():
-                    f.write("shapes  *  " + channel + "  FAKE \n")
+            
         f.write('\n---------------------------------\n') 
         f.write("bin ")
         for bin in DC.obs.keys():
@@ -358,7 +376,7 @@ def writeDataCard(path):
         for cAp in DC.rateParams.keys():
             dir = cAp.split("AND")
             for i in range(size(DC.rateParams[cAp], 0)):
-                f.write(str(DC.rateParams[cAp][i][0][0]) + " " + "rateParam " + dir[0] + " " + dir[1] + " " + str(DC.rateParams[cAp][i][0][1]))
+                f.write(str(DC.rateParams[cAp][i][0][0]) + " " + "rateParam " + dir[0] + " " + dir[1] + " " + str(DC.rateParams[cAp][i][0][1]) + " " + DC.rateParams[cAp][i][0][3])
                 f.write("\n")
         f.write('\n---------------------------------\n') 
         for idxc, channel in enumerate(channels):
@@ -385,6 +403,7 @@ addSignal()
 addRateParams()
 file.close()
 writeDataCard(options.outdatacard)
+
 
 
 
