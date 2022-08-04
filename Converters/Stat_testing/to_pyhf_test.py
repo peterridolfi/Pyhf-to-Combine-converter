@@ -239,7 +239,7 @@ plt.savefig('shapes_brazil_band')
 """
 
 
-
+'''
 ##NLL plots for fitting, minimization
 with open("./verification_model/converted_workspace_floats.json") as file:
     spec2 = json.load(file)
@@ -258,7 +258,7 @@ for nll in branches['deltaNLL'][1:]:
     NLL.append(nll - min(branches['deltaNLL']))
 plt.plot(mu_values, NLL, label = "combine scan")
 
-'''
+
 sigma = branches['sigma'][0]
 shape = branches['shape'][0]
 norm1 = branches['norm1'][0]
@@ -297,6 +297,8 @@ plt.plot(mu_values, nlls, label = "pyhf scan")
 
 
 '''
+
+'''
 NLL = []
 for poi in mu_values:
     params, nll = pyhf.infer.mle.fit(data = observations2, pdf = model2, init_pars = [poi, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], fixed_params = [True, False, False, False, False, False, False, False, False, False, False], return_fitted_val = True)
@@ -315,9 +317,14 @@ plt.ylabel("$\Delta$ NLL")
 plt.legend()
 plt.savefig('NLLplot')
 
-file.close()
+file.close()'''
 
-
+with open("./big_model/workspace_Comb.json") as file:
+    spec = json.load(file)
+ws = pyhf.Workspace(spec)
+model = ws.model()
+observations = ws.data(model)
+print(pyhf.infer.mle.fit(data = observations, pdf = model))
 
 
 

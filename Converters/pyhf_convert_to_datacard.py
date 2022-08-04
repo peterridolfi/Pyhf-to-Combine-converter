@@ -60,7 +60,7 @@ def addChannels():
     for idxc, channel in enumerate(spec["channels"]):
         DC.exp.update({channel["name"] : {}})
         if channel_bins[channel["name"]] == 1:  ##single bin
-            DC.obs.update({channel["name"]: spec["observations"][idxc]["data"]})
+            DC.obs.update({channel["name"]: spec["observations"][idxc]["data"][0]})
             
         else:
             data = sum(spec["observations"][idxc]["data"])
@@ -81,12 +81,13 @@ def addChannels():
 
 def addSamples():
     DC.processes = samples
+    
     for idxc, channel in enumerate(spec["channels"]):
         if channel_bins[channel["name"]] == 1:  ##counting
             for idxs, sample in enumerate(channel["samples"]):
                 DC.exp[channel["name"]].update(
                     {
-                        sample["name"]: sample["data"]
+                        sample["name"]: sample["data"][0]
                     }
                 )
         else:  ##shapes
@@ -179,7 +180,7 @@ def addSamples():
 def addMods():
     for im, modifier in enumerate(systs):
         if "normsys" in modifier[1]:
-            DC.systs.append((modifier[0], False, "lnN", [], {}))
+            DC.systs.append((modifier[0], False, "shape?", [], {}))
             for idxc, channel in enumerate(spec["channels"]):
                 DC.systs[im][4].update({channel["name"]: {}})  
                 for idxs, sample in enumerate(channel["samples"]):
@@ -191,52 +192,44 @@ def addMods():
                 DC.systs[im][4].update({channel["name"]: {}}) 
                 for idxs, sample in enumerate(channel["samples"]):
                     for i in DC.systs:
-                            i[4][channel["name"]].update({sample["name"]: 0.0})  
+                            i[4][channel["name"]].update({sample["name"]: 0.0})
+      
     for idxc, channel in enumerate(spec["channels"]):
         for idxs, sample in enumerate(channel["samples"]):
-            mods = [i for i in sample["modifiers"]]
+            mods = sample["modifiers"]
             names = []
             for mod in mods:
                 names.append(mod["name"])
             for syst in DC.systs:
                 name = syst[0]
                 type = syst[2]
-                if name in names:  ##if systematic is a modifier for this sample
-                    if "lnN" in type:
-                        flag = False
-                        curr = -1
-                        while flag == False:
-                            try: 
-                                curr = names[curr+1:].index(name)
-                            except:
-                                curr == -1
-                                flag = True
-                            if mods[curr]["type"] == "normsys":
-                                syst[4][channel["name"]].update(
-                                    {sample["name"]: str(mods[curr]["data"]["lo"]) + "/" + str(mods[names.index(name)]["data"]["hi"])} ##asymmetric lnN
+                if name in names:  ##if systematic name is a modifier for this sample
+                    if "shape?" in type:
+                        for mod in mods:
+                            if mod["type"] == "normsys" and mod["name"] == name:
+                                if mod["data"]["lo"] == 0:
+                                    syst[4][channel["name"]].update(
+                                    {sample["name"]: str(mod["data"]["lo"] + 1e-9) + "/" + str(mod["data"]["hi"])} ##asymmetric lnN
                                 )
-                                flag = True   
-                        
-                            
-                            
-                        
+                                elif mod["data"]["hi"] == 0:
+                                    syst[4][channel["name"]].update(
+                                    {sample["name"]: str(mod["data"]["lo"]) + "/" + str(mod["data"]["hi"] + 1e-9)} ##asymmetric lnN
+                                )
+                                else:
+                                    syst[4][channel["name"]].update(
+                                    {sample["name"]: str(mod["data"]["lo"]) + "/" + str(mod["data"]["hi"])} ##asymmetric lnN
+                                )
+                                
                     if "shape" in type:
-                        flag = False
-                        curr = -1
-                        while flag == False:
-                            try: 
-                                curr = names[curr+1:].index(name)
-                            except:
-                                curr == -1
-                                flag = True
-                            if mods[curr]["type"] == "histosys":
+                        for mod in mods:
+                            if mod["type"] == "histosys" and mod["name"] == name:
                                 syst[4][channel["name"]].update({sample["name"]: 1.0})
                                 hi_data = hist.Hist.new.Regular(
                                 channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
                                 ).Weight()
                                 hi_data[...] = np.stack(
                                 [
-                                    mods[curr]["data"]["hi_data"],
+                                    mod["data"]["hi_data"],
                                     [0 for i in range(channel_bins[channel["name"]])],
                                 ],
                                 axis=-1,
@@ -246,14 +239,14 @@ def addMods():
                                 ).Weight()
                                 lo_data[...] = np.stack(
                                 [
-                                    mods[curr]["data"]["lo_data"],
+                                    mod["data"]["lo_data"],
                                     [0 for i in range(channel_bins[channel["name"]])],
                                 ],
                                 axis=-1,
                                 )
                                 file[channel["name"]+  "/" + spec["channels"][idxc]["samples"][idxs]["name"] + "_" + name + "Up"] = hi_data
                                 file[channel["name"]+  "/" + spec["channels"][idxc]["samples"][idxs]["name"] + "_" + name + "Down"] = lo_data
-                                flag = True
+                                
                             
                       
                             
@@ -315,6 +308,9 @@ def writeDataCard(path):
                         f.write("  " + DC.shapeMap[channel][sample][2] + "\n")  
                     else:
                         f.write("\n")
+            for channel in DC.obs.keys():
+                if channel not in DC.shapeMap.keys():
+                    f.write("shapes  *  " + channel + "  FAKE \n")
         f.write('\n---------------------------------\n') 
         f.write("bin ")
         for bin in DC.obs.keys():
@@ -376,9 +372,9 @@ def writeDataCard(path):
                         elif "staterror" in [mod["type"] for i, mod in enumerate(sample["modifiers"])]:
                             staterror = True
                     if shapesys == True:
-                        f.write(channel + " autoMCStats " + str(100000) + " " + str(0) + " " + str(2))
+                        f.write(channel + " autoMCStats " + str(100000) + " " + str(0) + " " + str(2) + "\n")
                     if staterror == True:
-                        f.write(channel + " autoMCStats " +str(0) + " " + str(0) + " " + str(2))
+                        f.write(channel + " autoMCStats " +str(0) + " " + str(0) + " " + str(2) + "\n")
         f.close()
 
 
@@ -387,7 +383,6 @@ addSamples()
 addMods()
 addSignal()
 addRateParams()
-
 file.close()
 writeDataCard(options.outdatacard)
 
