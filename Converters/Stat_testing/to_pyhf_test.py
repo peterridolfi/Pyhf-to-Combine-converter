@@ -319,12 +319,15 @@ plt.savefig('NLLplot')
 
 file.close()'''
 
-with open("./big_model/workspace_Comb.json") as file:
+with open("./big_model/bottom-squarks.json") as file:
     spec = json.load(file)
 ws = pyhf.Workspace(spec)
 model = ws.model()
 observations = ws.data(model)
-print(pyhf.infer.mle.fit(data = observations, pdf = model))
+for param in pyhf.infer.mle.fit(data = observations, pdf = model):
+    print(param)
+for par in model.config.par_order:
+    print(par)
 
 
 

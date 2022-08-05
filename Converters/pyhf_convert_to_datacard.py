@@ -292,15 +292,18 @@ def addRateParams():
     for modifier in modifiers:
         if modifier[0] in measurements:
             signalMods.append(modifier[0])
+    print(signalMods)
         
     for idxc, channel in enumerate(channels):
         for idxs, sample in enumerate(
             (spec["channels"][idxc]["samples"])
         ):
             isSig = False
-            for sig in signalMods:
-                if sample["name"] in sig:
+            for i, mod in enumerate(sample["modifiers"]):
+                if mod["name"] in signalMods:
                     isSig = True
+            print(sample["name"])
+            print(isSig)
             if isSig == False:
                 for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"]): ##normfactor or shapefactor
                     if "normfactor" in mod["type"] or "shapefactor" in mod["type"]:
@@ -309,6 +312,9 @@ def addRateParams():
                                 if mod["name"] == param["name"]:
                                     DC.rateParams.update({channel + "AND" + sample["name"]: []})
                                     DC.rateParams[channel + "AND" + sample["name"]].append([[mod["name"], 1, 0, param["bounds"]], ''])
+                                else:
+                                    DC.rateParams.update({channel + "AND" + sample["name"]: []})
+                                    DC.rateParams[channel + "AND" + sample["name"]].append([[mod["name"], 1, 0], ''])
                         
             
             
@@ -318,7 +324,7 @@ def addRateParams():
 def writeDataCard(path):
     with open(path, 'w') as f:
         f.write("imax " + str(size(DC.bins)) + "\n") 
-        f.write("jmax " + str(size(DC.processes)- size(DC.signals))+ "\n") 
+        f.write("jmax " + str(size(DC.processes)- size(DC.isSignal.keys()))+ "\n") 
         f.write("kmax " + str(size(DC.systs, 0))+ "\n")  
         if DC.hasShapes:  
             for channel in DC.shapeMap.keys():
@@ -376,7 +382,10 @@ def writeDataCard(path):
         for cAp in DC.rateParams.keys():
             dir = cAp.split("AND")
             for i in range(size(DC.rateParams[cAp], 0)):
-                f.write(str(DC.rateParams[cAp][i][0][0]) + " " + "rateParam " + dir[0] + " " + dir[1] + " " + str(DC.rateParams[cAp][i][0][1]) + " " + DC.rateParams[cAp][i][0][3])
+                if size(DC.rateParams[cAp][i][0]) > 3:
+                    f.write(str(DC.rateParams[cAp][i][0][0]) + " " + "rateParam " + dir[0] + " " + dir[1] + " " + str(DC.rateParams[cAp][i][0][1]) + " " + DC.rateParams[cAp][i][0][3])
+                else:
+                    f.write(str(DC.rateParams[cAp][i][0][0]) + " " + "rateParam " + dir[0] + " " + dir[1] + " " + str(DC.rateParams[cAp][i][0][1]))
                 f.write("\n")
         f.write('\n---------------------------------\n') 
         for idxc, channel in enumerate(channels):
@@ -403,6 +412,8 @@ addSignal()
 addRateParams()
 file.close()
 writeDataCard(options.outdatacard)
+
+
 
 
 
