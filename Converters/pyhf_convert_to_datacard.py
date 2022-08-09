@@ -18,7 +18,7 @@ from modulefinder import Module
 from optparse import OptionParser
 from HiggsAnalysis.CombinedLimit.Datacard import Datacard
 
-parser = OptionParser()
+parser = OptionParser() ##add command line args
 parser.add_option("-o", "--out-file", dest="outfile", default="converted_datacard.txt")
 parser.add_option(
     "-O", "--out-datacard", dest="outdatacard", default="converted_datacard.txt"
@@ -54,7 +54,7 @@ DC = Datacard()
 file = uproot.recreate(options.shapefile)
 
 
-def addChannels():
+def addChannels(): ##add each channel to Datacard object, add observed counts
     DC.bins = [channel["name"] for i, channel in enumerate(spec["channels"])]
     for idxc, channel in enumerate(spec["channels"]):
         if channel_bins[channel["name"]] != 1:
@@ -81,7 +81,7 @@ def addChannels():
             file[channel["name"]+ "/data_obs"] = h_data
 
 
-def addSamples():
+def addSamples(): ##add sample names and expected counts to the Datacard
     DC.processes = samples
     
     for idxc, channel in enumerate(spec["channels"]):
@@ -112,7 +112,7 @@ def addSamples():
                     spec["channels"][idxc]["samples"][idxs]["modifiers"][i]["type"]
                     for i, mod in enumerate(spec["channels"][idxc]["samples"][idxs]["modifiers"])
                 ]
-                if "histosys" in mods:
+                if "histosys" in mods: ##if shape uncertainty histogram is available
                     DC.shapeMap[channel["name"]].update(
                         {
                             spec["channels"][idxc]["samples"][idxs]["name"]: [
@@ -135,7 +135,7 @@ def addSamples():
                                 ]
                         }
                     )
-                if "staterror" in mods:
+                if "staterror" in mods: ##if staterror is present, provide variances for histograms
                     h_data = hist.Hist.new.Regular(
                         channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
                     ).Weight()
@@ -150,7 +150,7 @@ def addSamples():
                         axis=-1,
                     )
                     DC.binParFlags.update({channel["name"] : True})
-                elif "shapesys" in mods:
+                elif "shapesys" in mods: ##for shapesys, also provide variances
                     h_data = hist.Hist.new.Regular(
                         channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
                     ).Weight()
@@ -164,7 +164,7 @@ def addSamples():
                         axis=-1,
                     )
                     DC.binParFlags.update({channel["name"] : True})
-                else:
+                else: ##no staterror or shapesys->0 variance
                     h_data = hist.Hist.new.Regular(
                         channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
                     ).Weight()
@@ -178,23 +178,23 @@ def addSamples():
                 file[channel["name"]+  "/" + spec["channels"][idxc]["samples"][idxs]["name"]] = h_data
 
 
-def addMods():
+def addMods(): ##add systematics to DC
     for im, modifier in enumerate(systs):
-        if "normsys" in modifier[1]:
-            DC.systs.append((modifier[0], False, "shape?", [], {}))
+        if "normsys" in modifier[1]: ##normsys
+            DC.systs.append((modifier[0], False, "shape?", [], {})) ##write normsys as 'shape?' so that Combine doesn't try to combine normsys and histosys mods of the same name
             for idxc, channel in enumerate(spec["channels"]):
                 DC.systs[im][4].update({channel["name"]: {}})  
                 for idxs, sample in enumerate(channel["samples"]):
                     for i in DC.systs:
                             i[4][channel["name"]].update({sample["name"]: 0.0})
-        if "lumi" in modifier[1]:
-            DC.systs.append((modifier[0], False, "lnN", [], {}))
+        if "lumi" in modifier[1]: ##lumi
+            DC.systs.append((modifier[0], False, "lnN", [], {})) ##write lumi as lnN since they act the same way on the model
             for idxc, channel in enumerate(spec["channels"]):
                 DC.systs[im][4].update({channel["name"]: {}})  
                 for idxs, sample in enumerate(channel["samples"]):
                     for i in DC.systs:
                             i[4][channel["name"]].update({sample["name"]: 0.0})
-        if "histosys" in modifier[1]:
+        if "histosys" in modifier[1]: ##histosys
             DC.systs.append((modifier[0], False, "shape", [], {}))
             for idxc, channel in enumerate(spec["channels"]):
                 DC.systs[im][4].update({channel["name"]: {}}) 
@@ -268,7 +268,7 @@ def addMods():
                       
                             
                                 
-def addSignal():
+def addSignal(): ##determine which samples are signal
     measurements = []
     for im, measurement in enumerate(spec["measurements"]):
         measurements.append(measurement["config"]["poi"])
@@ -284,7 +284,7 @@ def addSignal():
                         DC.isSignal.update({sample["name"]: True})
                         DC.signals.append(sample["name"])
 
-def addRateParams():
+def addRateParams(): ##add normfactor mods as rateParams (excluding signal strength)
     measurements = []
     for im, measurement in enumerate(spec["measurements"]):
         measurements.append(measurement["config"]["poi"])
@@ -321,7 +321,7 @@ def addRateParams():
                 
             
 
-def writeDataCard(path):
+def writeDataCard(path): ##manually write each line of the datacard from DC object
     with open(path, 'w') as f:
         f.write("imax " + str(size(DC.bins)) + "\n") 
         f.write("jmax " + str(size(DC.processes)- size(DC.isSignal.keys()))+ "\n") 
@@ -412,30 +412,4 @@ addSignal()
 addRateParams()
 file.close()
 writeDataCard(options.outdatacard)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    
-
-
-
-            
-                    
-                    
-
-
-
-
-
 
