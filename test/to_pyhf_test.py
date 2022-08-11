@@ -324,10 +324,33 @@ with open("./big_model/bottom-squarks.json") as file:
 ws = pyhf.Workspace(spec)
 model = ws.model()
 observations = ws.data(model)
-for param in pyhf.infer.mle.fit(data = observations, pdf = model):
-    print(param)
-for par in model.config.par_order:
-    print(par)
+
+pyhf_pulls = [1.95E-03,1.33E-03,5.49E-02,7.43E-02,6.26E-03,1.33E-03,5.02E-03,3.19E-03,-1.04E-02,-2.17E-04,-1.43E-02,-2.10E-02,5.83E-03,1.33E-03,1.33E-03,2.60E-03,7.66E-03,3.39E-03,1.22E-02,2.18E-03,1.71E-03,3.19E-03,3.64E-03,9.57E-04,-2.62E-03,2.01E-03,3.35E-03,1.15E-03,-1.37E-01,2.27E-01,1.85E-01,2.38E-02,5.60E-02,1.30E-01,-3.84E-02,-1.66E-01,-1.44E-02,-3.53E-02,1.42E-02,-4.68E-02,-6.84E-03,1.89E-02,7.90E-03,-7.21E-03,-4.97E-03,-1.29E-03,1.33E-03,2.62E-03,9.02E-03,3.75E-03]
+combine_pulls = [-3.06E-06,2.21E-11,-3.00E-06,0.00E+00,-2.00E-07,2.21E-11,-1.00E-07,-5.00E-06,0.00E+00,-6.00E-05,-3.00E-05,-1.60E-05,1.82E-05,2.21E-11,2.21E-11,-6.00E-08,-4.00E-07,-1.00E-07,-8.00E-07,-5.00E-08,-3.00E-08,-1.00E-07,-1.00E-07,-6.00E-07,-1.00E-05,1.40E-11,4.80E-07,0.00E+00,7.00E-05,-8.00E-05,7.00E-05,-4.00E-05,3.63E-06,6.72E-05,4.57E-05,5.86E-05,1.21E-04,7.24E-06,8.89E-06,4.38E-05,-1.00E-06,-3.00E-05,3.00E-05,-2.70E-05,2.20E-05,0.00E+00,3.50E-11,0.00E+00,-2.00E-06,-4.00E-06]
+fig, ax = plt.subplots()
+fig.set_size_inches(20, 5)
+
+# set up axes labeling, ranges, etc...
+
+ax.set_xlim(-0.5, len(pyhf_pulls) - 0.5)
+ax.set_title("Pull Plot", fontsize=18)
 
 
+# draw the +/- 2.0 horizontal lines
+ax.hlines([-2, 2], -0.5, len(pyhf_pulls) - 0.5, colors="black", linestyles="dotted")
+# draw the +/- 1.0 horizontal lines
+ax.hlines([-1, 1], -0.5, len(pyhf_pulls) - 0.5, colors="black", linestyles="dashdot")
+# draw the +/- 2.0 sigma band
+ax.fill_between([-0.5, len(pyhf_pulls) - 0.5], [-2, -2], [2, 2], facecolor="yellow")
+# drawe the +/- 1.0 sigma band
+ax.fill_between([-0.5, len(pyhf_pulls) - 0.5], [-1, -1], [1, 1], facecolor="green")
+# draw a horizontal line at pull=0.0
+ax.hlines([0], -0.5, len(pyhf_pulls) - 0.5, colors="black", linestyles="dashed")
+# finally draw the pulls
+ax.scatter(range(len(pyhf_pulls)), pyhf_pulls, color="black")
+
+# finally draw the pulls
+ax.scatter(range(len(combine_pulls)), combine_pulls, color="red")
+
+plt.savefig('pull_plot')
 
