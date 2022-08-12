@@ -6,11 +6,17 @@ import pyhf
 import uproot
 import json
 import numpy
-import HiggsAnalysis.CombinedLimit.DatacardParser as DP
 from optparse import OptionParser
+try:
+    import HiggsAnalysis.CombinedLimit.DatacardParser as DP
+    from HiggsAnalysis.CombinedLimit.Datacard import Datacard
+except:
+    print("Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again")
 
 
-from HiggsAnalysis.CombinedLimit.Datacard import Datacard
+
+
+
 
 parser = OptionParser()
 DP.addDatacardParserOptions(parser)

@@ -9,8 +9,11 @@ import hist
 from hist import Hist
 import json
 from optparse import OptionParser
-from HiggsAnalysis.CombinedLimit.DatacardParser import *
-from HiggsAnalysis.CombinedLimit.Datacard import Datacard
+try:
+    from HiggsAnalysis.CombinedLimit.DatacardParser import *
+    from HiggsAnalysis.CombinedLimit.Datacard import Datacard
+except:
+    print("Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again")
 
 parser = OptionParser()  ##add command line args
 parser.add_option("-o", "--out-file", dest="outfile", default="converted_datacard.txt")

@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pyhf_combine_converter_peterridolfi"
+version = "0.0.1"
+authors = [
+  { name="Peter Ridolfi", email="petey.ridolfi7@gmail.com" },
+]
+description = "A package to translate between pyhf and Combine models"
+readme = "README.md"
+license = { file="LICENSE.txt" }
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/peterridolfi/Pyhf-to-Combine-converter"
+"Bug Tracker" = "https://github.com/peterridolfi/Pyhf-to-Combine-converter/issues"
