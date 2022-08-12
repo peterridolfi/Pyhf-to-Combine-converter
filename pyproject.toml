@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pyhf_combine_converter_peterridolfi"
+name = "pyhf_combine_converter"
 version = "0.0.1"
 authors = [
   { name="Peter Ridolfi", email="petey.ridolfi7@gmail.com" },
