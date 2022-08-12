@@ -16,11 +16,10 @@ except:
     print("Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again")
 
 parser = OptionParser()  ##add command line args
-parser.add_option("-o", "--out-file", dest="outfile", default="converted_datacard.txt")
 parser.add_option(
-    "-O", "--out-datacard", dest="outdatacard", default="converted_datacard.txt"
+    "-O", "--out-datacard", dest="outdatacard", default="converted_datacard.txt", help = "desired name of datacard file"
 )
-parser.add_option("-s", "--shape-file", dest="shapefile", default="shapes.root")
+parser.add_option("-s", "--shape-file", dest="shapefile", default="shapes.root", help = "desired name of shapes file")
 options, args = parser.parse_args()
 
 

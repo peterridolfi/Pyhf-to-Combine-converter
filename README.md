@@ -17,4 +17,18 @@ source /cvmfs/cms.cern.ch/cmsset_default.sh
 cmsenv
 ```
 
+After the container has been built, use the following commands to run the tool
+
+For pyhf->combine:
+
+```
+python3 pyhf_convert_to_datacard.py $JSON_FILE_NAME --shape-file $SHAPES_FILE_NAME --out-datacard $DATACARD_FILE_NAME
+```
+
+For combine->pyhf:
+
+```
+python3 pyhf_converted_from_datacard.py $DATACARD_FILE_NAME --out-file $JSON_FILE_NAME
+
+
 Any questions or issues should be referred to the docs/ folder, in which the translation is put into more detail.

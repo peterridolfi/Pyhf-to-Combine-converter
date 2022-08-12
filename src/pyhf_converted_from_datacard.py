@@ -21,7 +21,7 @@ except:
 parser = OptionParser()
 DP.addDatacardParserOptions(parser)
 parser.add_option(
-    "-O", "--out-file", dest="outfile", default="converted_workspace.json"
+    "-O", "--out-file", dest="outfile", default="converted_workspace.json", help = "desired name of JSON file"
 )
 options, args = parser.parse_args()  ##add command line args
 
