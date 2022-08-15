@@ -320,6 +320,8 @@ plt.savefig('NLLplot')
 
 file.close()'''
 
+##make pull plots
+'''
 with open("./big_model/bottom-squarks.json") as file:
     spec = json.load(file)
 ws = pyhf.Workspace(spec)
@@ -379,4 +381,4 @@ ax.errorbar(
 ax.legend()
 
 plt.savefig('pull_plot')
-
+'''
