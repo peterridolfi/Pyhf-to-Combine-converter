@@ -351,7 +351,7 @@ ax.fill_between([-0.5, len(pyhf_pulls) - 0.5], [-1, -1], [1, 1], facecolor="gree
 # draw a horizontal line at pull=0.0
 ax.hlines([0], -0.5, len(pyhf_pulls) - 0.5, colors="black", linestyles="dashed")
 # finally draw the pulls
-ax.scatter([i + 0.1 for i in range(len(pyhf_pulls))], pyhf_pulls, color="black")
+ax.scatter([i + 0.1 for i in range(len(pyhf_pulls))], pyhf_pulls, color="black", label = "pyhf params")
 ax.errorbar(
     [i + 0.1 for i in range(len(pyhf_pulls))],
     pyhf_pulls,
@@ -365,7 +365,7 @@ ax.errorbar(
 
 
 # finally draw the pulls
-ax.scatter(range(len(combine_pulls)), combine_pulls, color="red")
+ax.scatter(range(len(combine_pulls)), combine_pulls, color="red", label = "Combine params")
 #uncertainties
 ax.errorbar(
     range(len(combine_pulls)),
@@ -376,6 +376,7 @@ ax.errorbar(
     marker=".",
     fmt="none",
 )
+ax.legend()
 
 plt.savefig('pull_plot')
 

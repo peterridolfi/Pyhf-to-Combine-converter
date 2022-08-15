@@ -324,7 +324,7 @@ if __name__ == "__main__":
     with open(args[0]) as dc_file:
         DC = Datacard()
         DC = DP.parseCard(file=dc_file, options=options)
-    print(DC.shapeMap)
+   
 
     channels = [channel for channel in DC.bins]
     observations = [obs for channel, obs in DC.obs.items()]
