@@ -18,7 +18,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-  "pyhf>=0.6",
+  "pyhf>=0.6.3",
   "uproot>=4.2.3",
   "hist>=2.6.1"
 ]
