@@ -2,12 +2,6 @@
 requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
-[tool.hatch.build]
-include = [
-  "src/"
-]
-
-
 [project]
 name = "pyhf_combine_converter"
 version = "0.0.3"
@@ -28,8 +22,6 @@ dependencies = [
   "uproot>=4.2.3",
   "hist>=2.6.1"
 ]
-  
-
 
 [project.urls]
 "Homepage" = "https://github.com/peterridolfi/Pyhf-to-Combine-converter"
