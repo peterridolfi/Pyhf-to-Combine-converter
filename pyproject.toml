@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pyhf_combine_converter"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
   { name="Peter Ridolfi", email="petey.ridolfi7@gmail.com" },
 ]
@@ -18,7 +18,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-  "pyhf>=0.6",
+  "pyhf>=0.6.3",
   "uproot>=4.2.3",
   "hist>=2.6.1"
 ]
