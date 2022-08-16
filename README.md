@@ -1,6 +1,8 @@
 # Pyhf-to-Combine-converter
 Tool to convert models from pyhf to CMS Combine and vise versa
 
+Zenodo DOI: [![DOI](https://zenodo.org/badge/492820903.svg)](https://zenodo.org/badge/latestdoi/492820903)
+
 This tool has been fully verified to produce the same model structure and expected yields, as well as to produce fits that are within 1% of the central value of each other. This has been done through the comparison of NLL plots, pull plots, and raw difference calculations.
 
 In order to use the package, one must first create a docker container that is capable of running Combine. To do so, enter the following commands once you have docker installed.
