@@ -3,37 +3,28 @@ from numpy.core.fromnumeric import size
 import uproot
 import json
 from optparse import OptionParser
+
 try:
     import HiggsAnalysis.CombinedLimit.DatacardParser as DP
     from HiggsAnalysis.CombinedLimit.Datacard import Datacard
 except:
-    print("Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again")
+    print(
+        "Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again."
+    )
 
 
-
-parser = OptionParser()
-DP.addDatacardParserOptions(parser)
-parser.add_option(
-    "-O", "--out-file", dest="outfile", default="converted_workspace.json", help = "desired name of JSON file"
-)
-options, args = parser.parse_args()  ##add command line args
-
-
-
-
-
-def getShapeFile(
-    shapeMap: dict, channel, sample
-) -> string:  ##get shape file of specific sample
+def getShapeFile(shapeMap: dict, channel, sample) -> string:
+    """
+    Get shape file of specific sample
+    """
     file = ""
-    if not channel in shapeMap.keys():
-        if "*" in shapeMap.keys():
-            if not sample in shapeMap["*"]:
-                if "*" in shapeMap["*"].keys():
-                    file = shapeMap["*"]["*"][0]
-            else:
+    if channel not in shapeMap:
+        if "*" in shapeMap:
+            if sample in shapeMap["*"]:
                 file = shapeMap["*"][sample][0]
-    elif not sample in shapeMap[channel]:
+            elif "*" in shapeMap["*"].keys():
+                file = shapeMap["*"]["*"][0]
+    elif sample not in shapeMap[channel]:
         if "*" in shapeMap[channel].keys():
             file = shapeMap[channel]["*"][0]
     else:
@@ -118,11 +109,14 @@ def getUncertDown(
     return hist
 
 
-def addChannels(spec: dict):  ##add each channel and associated observation to the spec
-    if DC.hasShapes:
-        for idxc, channel in enumerate(channels):
+def addChannels(spec: dict, data_card, channels, observations):
+    """
+    Add each channel and associated observation to the spec
+    """
+    if data_card.hasShapes:
+        for channel in channels:
             spec["channels"].append({"name": channel, "samples": []})
-            hist = getHist(DC.shapeMap, channel, "data_obs")
+            hist = getHist(data_card.shapeMap, channel, "data_obs")
             data = hist.values().tolist()
             spec["observations"].append({"name": channel, "data": data})
     else:
@@ -131,23 +125,22 @@ def addChannels(spec: dict):  ##add each channel and associated observation to t
             spec["observations"].append({"name": channel, "data": [observations[idxc]]})
 
 
-def addSamples(spec: dict):  ##add sample names and expected values to spec
-    if DC.hasShapes:
+def addSamples(spec: dict, data_card, channels, samples, exp_values):
+    """
+    Add sample names and expected values to spec
+    """
+    if data_card.hasShapes:
         for idxc, channel in enumerate(channels):
-            for idxs, sample in enumerate(samples):
-                hist = getHist(DC.shapeMap, channel, sample)
+            for sample in samples:
+                hist = getHist(data_card.shapeMap, channel, sample)
                 data = hist.values().tolist()
                 if sample in exp_values[channel].keys():
                     spec["channels"][idxc]["samples"].append(
-                        {
-                            "name": sample,
-                            "data": data,
-                            "modifiers": [],
-                        }
+                        {"name": sample, "data": data, "modifiers": []}
                     )
     else:
         for idxc, channel in enumerate(channels):
-            for idxs, sample in enumerate(samples):
+            for sample in samples:
                 if sample in exp_values[channel].keys():
                     spec["channels"][idxc]["samples"].append(
                         {
@@ -158,18 +151,22 @@ def addSamples(spec: dict):  ##add sample names and expected values to spec
                     )
 
 
-def addMeasurements(spec: dict):  ##add signal measurements to spec
-    for idxc, channel in enumerate(channels):
-        for idxs, sample in enumerate(samples):
+def addMeasurements(spec: dict, data_card, channels, samples, sig):
+    """
+    Add signal measurements to spec
+    """
+    for channel in channels:
+        for sample in samples:
             if sig[sample] == True:
                 spec["measurements"].append(
                     {
-                        "name": "Measurement_" + sample,
-                        "config": {"poi": "mu_" + sample, "parameters": []},
+                        "name": f"Measurement_{sample}",
+                        "config": {"poi": f"mu_{sample}", "parameters": []},
                     }
                 )
-                if channel + "AND" + sample in DC.rateParams.keys():
-                    for param in DC.rateParams[channel + "AND" + sample]:
+
+                if f"{channel}AND{sample}" in data_card.rateParams.keys():
+                    for param in data_card.rateParams[f"{channel}AND{sample}"]:
                         spec["measurements"][len(spec["measurements"] - 1)]["config"][
                             "parameters"
                         ].append(
@@ -182,25 +179,32 @@ def addMeasurements(spec: dict):  ##add signal measurements to spec
                         )
 
 
-def addNormFactor(spec: dict):  ##add all normfactor modifiers to spec
+def addNormFactor(spec: dict, data_card, channels, samples, sig):
+    """
+    Add all normfactor modifiers to spec
+    """
     for idxc, channel in enumerate(channels):
         for idxs, sample in enumerate(samples):
-            if (channel + "AND" + sample) in DC.rateParams.keys():
-                name = DC.rateParams[channel + "AND" + sample][0][0][0]
+            if f"{channel}AND{sample}" in data_card.rateParams.keys():
+                name = data_card.rateParams[f"{channel}AND{sample}"][0][0][0]
                 spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                     {"name": name, "type": "normfactor", "data": None}
                 )
-            elif sig[sample] == True:  ##add signal strength modifier
+
+            elif sig[sample] == True:
                 spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
-                    {"name": "mu_" + sample, "type": "normfactor", "data": None}
+                    {"name": f"mu_{sample}", "type": "normfactor", "data": None}
                 )
 
 
-def addMods(spec: dict):  ##add systematics as modifiers
+def addMods(spec: dict, data_card, channels, samples, exp_values, mods):
+    """
+    Add systematics as modifiers
+    """
     for syst in mods:
         name = syst[0]
         mod_type = syst[2]
-        if mod_type == "lnN":  ##normsys
+        if mod_type == "lnN":  # normsys
             for idxc, channel in enumerate(channels):
                 for idxs, sample in enumerate(exp_values[channel].keys()):
                     if sample in exp_values[channel].keys():
@@ -233,13 +237,17 @@ def addMods(spec: dict):  ##add systematics as modifiers
                                     }
                                 )
 
-        elif "shape" in mod_type:  ##histosys
+        elif "shape" in mod_type:  # histosys
             for idxc, channel in enumerate(channels):
                 for idxs, sample in enumerate(samples):
                     if syst[4][channel][sample] != 0:
                         if sample in exp_values[channel].keys():
-                            histUp = getUncertUp(DC.shapeMap, channel, sample, name)
-                            histDown = getUncertDown(DC.shapeMap, channel, sample, name)
+                            histUp = getUncertUp(
+                                data_card.shapeMap, channel, sample, name
+                            )
+                            histDown = getUncertDown(
+                                data_card.shapeMap, channel, sample, name
+                            )
                             hi_data = histUp.values().tolist()
                             lo_data = histDown.values().tolist()
                             data = spec["channels"][idxc]["samples"][idxs]["data"]
@@ -252,18 +260,16 @@ def addMods(spec: dict):  ##add systematics as modifiers
                                 lo = lo + i
                             for i in data:
                                 nom = nom + i
-                            spec["channels"][idxc]["samples"][idxs][
-                                "modifiers"
-                            ].append(  ##add histosys modifier for shape
+                            # Add histosys modifier for shape
+                            spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                                 {
                                     "name": name,
                                     "type": "histosys",
                                     "data": {"hi_data": hi_data, "lo_data": lo_data},
                                 }
                             )
-                            spec["channels"][idxc]["samples"][idxs][
-                                "modifiers"
-                            ].append(  ##add additional normsys to account for shape/norm split
+                            # Add additional normsys to account for shape/norm split
+                            spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                                 {
                                     "name": name,
                                     "type": "normsys",
@@ -275,21 +281,20 @@ def addMods(spec: dict):  ##add systematics as modifiers
             raise NotImplementedError
 
     for idxc, channel in enumerate(channels):  ##staterror/shapesys
-
-        if channel in DC.binParFlags.keys():
-            if DC.binParFlags[channel][0] == 0:  # if BB lite enabled
+        if channel in data_card.binParFlags.keys():
+            if data_card.binParFlags[channel][0] == 0:  # if BB lite enabled
                 for idxs, sample in enumerate(samples):
                     if sample in exp_values[channel].keys():
-                        hist = getHist(DC.shapeMap, channel, sample)
+                        hist = getHist(data_card.shapeMap, channel, sample)
                         err = hist.errors().tolist()
                         spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                             {"name": "my_stat_err", "type": "staterror", "data": err}
                         )
-
-            elif DC.binParFlags[channel][0] > 0:  ##if user wants total BB (shapesys)
+            # if user wants total BB (shapesys)
+            elif data_card.binParFlags[channel][0] > 0:
                 for idxs, sample in enumerate(samples):
                     if sample in exp_values[channel].keys():
-                        hist = getHist(DC.shapeMap, channel, sample)
+                        hist = getHist(data_card.shapeMap, channel, sample)
                         err = hist.errors().tolist()
                         spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                             {
@@ -300,33 +305,41 @@ def addMods(spec: dict):  ##add systematics as modifiers
                         )
 
 
-def toJSON(spec: dict):
-    addChannels(spec)
-    addSamples(spec)
-    addMeasurements(spec)
-    addNormFactor(spec)
-    addMods(spec)
+def main():
+    parser = OptionParser()
+    DP.addDatacardParserOptions(parser)
+    parser.add_option(
+        "-O",
+        "--out-file",
+        dest="outfile",
+        default="converted_workspace.json",
+        help="desired name of JSON file",
+    )
+    options, args = parser.parse_args()  # add command line args
 
+    data_card = Datacard()  # create Datacard object
+    with open(args[0]) as dc_file:
+        data_card = Datacard()
+        data_card = DP.parseCard(file=dc_file, options=options)
 
-def writeFileName(name):
-    with open(name, "w") as file:
+    channels = [channel for channel in data_card.bins]
+    observations = [obs for channel, obs in data_card.obs.items()]
+    samples = [sample for sample in data_card.processes]
+    exp_values = data_card.exp
+    sig = data_card.isSignal
+    mods = data_card.systs
+    spec = {"channels": [], "observations": [], "measurements": [], "version": "1.0.0"}
+
+    # convert to JSON spec
+    addChannels(spec, data_card, channels, observations)
+    addSamples(spec, data_card, channels, samples, exp_values)
+    addMeasurements(spec, data_card, channels, samples, sig)
+    addNormFactor(spec, data_card, channels, samples, sig)
+    addMods(spec, data_card, channels, samples, exp_values, mods)
+
+    with open(options.outfile, "w") as file:
         file.write(json.dumps(spec, indent=2))
 
+
 if __name__ == "__main__":
-    DC = Datacard()  ##create Datacard object
-    with open(args[0]) as dc_file:
-        DC = Datacard()
-        DC = DP.parseCard(file=dc_file, options=options)
-   
-
-    channels = [channel for channel in DC.bins]
-    observations = [obs for channel, obs in DC.obs.items()]
-    samples = [sample for sample in DC.processes]
-    exp_values = DC.exp
-    sig = DC.isSignal
-    mods = DC.systs
-    spec = {"channels": [], "observations": [], "measurements": [], "version": "1.0.0"}
-    toJSON(spec)
-    writeFileName(options.outfile)
-
-
+    main()
