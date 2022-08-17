@@ -10,7 +10,7 @@ authors = [
 ]
 description = "A package to translate between pyhf and Combine models"
 readme = "README.md"
-license = { file="LICENSE.txt" }
+license = "MIT"
 requires-python = ">=3.7"
 classifiers = [
     "Programming Language :: Python :: 3",
