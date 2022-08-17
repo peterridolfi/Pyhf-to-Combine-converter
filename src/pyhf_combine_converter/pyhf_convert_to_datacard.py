@@ -10,7 +10,6 @@ from hist import Hist
 import json
 from optparse import OptionParser
 try:
-    from HiggsAnalysis.CombinedLimit.DatacardParser import *
     from HiggsAnalysis.CombinedLimit.Datacard import Datacard
 except:
     print("Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again")
