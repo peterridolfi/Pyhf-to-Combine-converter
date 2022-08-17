@@ -4,7 +4,6 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pyhf_combine_converter"
-version = "0.0.4"
 authors = [
   { name="Peter Ridolfi", email="petey.ridolfi7@gmail.com" },
 ]
@@ -22,7 +21,12 @@ dependencies = [
   "uproot>=4.2.3",
   "hist>=2.6.1"
 ]
+dynamic = ["version"]
 
 [project.urls]
 "Homepage" = "https://github.com/peterridolfi/Pyhf-to-Combine-converter"
 "Bug Tracker" = "https://github.com/peterridolfi/Pyhf-to-Combine-converter/issues"
+
+[tool.hatch]
+version.source = "vcs"
+build.hooks.vcs.version-file = "src/pyhf_combine_converter/version.py"
