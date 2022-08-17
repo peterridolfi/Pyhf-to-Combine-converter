@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# dynamic vcs versioning
+*/pyhf_combine_converter/version.py
+
+# General
+.DS_Store
