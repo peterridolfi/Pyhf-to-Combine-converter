@@ -14,15 +14,6 @@ try:
 except:
     print("Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again")
 
-parser = OptionParser()  ##add command line args
-parser.add_option(
-    "-O", "--out-datacard", dest="outdatacard", default="converted_datacard.txt", help = "desired name of datacard file"
-)
-parser.add_option("-s", "--shape-file", dest="shapefile", default="shapes.root", help = "desired name of shapes file")
-options, args = parser.parse_args()
-
-
-
 
 def addChannels():  ##add each channel to Datacard object, add observed counts
     DC.bins = [channel["name"] for i, channel in enumerate(spec["channels"])]
@@ -495,7 +486,14 @@ def writeDataCard(path):  ##manually write each line of the datacard from DC obj
                         )
         f.close()
 
-if __name__ == "__main__":
+def main():
+    parser = OptionParser()  # add command line args
+    parser.add_option(
+        "-O", "--out-datacard", dest="outdatacard", default="converted_datacard.txt", help = "desired name of datacard file"
+    )
+    parser.add_option("-s", "--shape-file", dest="shapefile", default="shapes.root", help = "desired name of shapes file")
+    options, args = parser.parse_args()
+
     with open(args[0]) as serialized:
         spec = json.load(serialized)
     workspace = pyhf.Workspace(spec)
@@ -508,7 +506,7 @@ if __name__ == "__main__":
     modifiers = model.config.modifiers
     lumi = model.config.parameters
 
-    ##generate list of mods without normfactors, shapesys, staterror
+    # generate list of mods without normfactors, shapesys, staterror
     systs = []
     for mod in modifiers:
         if "normfactor" not in mod:
@@ -517,7 +515,7 @@ if __name__ == "__main__":
                     systs.append(mod)
 
 
-    DC = Datacard() 
+    DC = Datacard()
 
 
     file = uproot.recreate(options.shapefile)
@@ -528,3 +526,6 @@ if __name__ == "__main__":
     addRateParams()
     file.close()
     writeDataCard(options.outdatacard)
+
+if __name__ == "__main__":
+    main()
