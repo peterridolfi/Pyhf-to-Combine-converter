@@ -1,0 +1,74 @@
+name: publish distributions
+on:
+  push:
+    branches:
+    - main
+    tags:
+    - v*
+  pull_request:
+    branches:
+    - main
+  workflow_dispatch:
+    inputs:
+      publish:
+        type: choice
+        description: 'Publish to TestPyPI?'
+        options:
+        - false
+        - true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-publish:
+    name: Build and publish Python distro to (Test)PyPI
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install python-build and twine
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install build twine
+        python -m pip list
+
+    - name: Build a wheel and a sdist
+      run: |
+        python -m build .
+
+    - name: Verify the distribution
+      run: twine check dist/*
+
+    - name: List contents of sdist
+      run: python -m tarfile --list dist/pyhf_combine_converter-*.tar.gz
+
+    - name: List contents of wheel
+      run: python -m zipfile --list dist/pyhf_combine_converter-*.whl
+
+    - name: Publish distribution 📦 to Test PyPI
+      # Publish to TestPyPI on tag events of if manually triggered
+      # Compare to 'true' string as booleans get turned into strings in the console
+      if: >-
+        (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && github.repository == 'peterridolfi/Pyhf-to-Combine-converter')
+        || (github.event_name == 'workflow_dispatch' && github.event.inputs.publish == 'true' && github.repository == 'peterridolfi/Pyhf-to-Combine-converter')
+      uses: pypa/gh-action-pypi-publish@v1.5.1
+      with:
+        password: ${{ secrets.test_pypi_password }}
+        repository_url: https://test.pypi.org/legacy/
+        print_hash: true
+
+    - name: Publish distribution 📦 to PyPI
+      if: github.event_name == 'release' && github.event.action == 'published' && github.repository == 'peterridolfi/Pyhf-to-Combine-converter'
+      uses: pypa/gh-action-pypi-publish@v1.5.1
+      with:
+        password: ${{ secrets.pypi_password }}
+        print_hash: true
