@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pyhf_combine_converter"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
   { name="Peter Ridolfi", email="petey.ridolfi7@gmail.com" },
 ]

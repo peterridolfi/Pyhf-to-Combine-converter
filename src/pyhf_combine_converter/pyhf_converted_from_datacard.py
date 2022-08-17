@@ -1,11 +1,7 @@
 import string
 from numpy.core.fromnumeric import size
-import hist
-from hist import Hist
-import pyhf
 import uproot
 import json
-import numpy
 from optparse import OptionParser
 try:
     import HiggsAnalysis.CombinedLimit.DatacardParser as DP
