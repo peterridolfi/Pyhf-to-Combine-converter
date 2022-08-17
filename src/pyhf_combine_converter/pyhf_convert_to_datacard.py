@@ -9,10 +9,13 @@ import hist
 from hist import Hist
 import json
 from optparse import OptionParser
+
 try:
     from HiggsAnalysis.CombinedLimit.Datacard import Datacard
 except:
-    print("Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again")
+    print(
+        "Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again."
+    )
 
 
 def addChannels():  ##add each channel to Datacard object, add observed counts
@@ -486,19 +489,29 @@ def writeDataCard(path):  ##manually write each line of the datacard from DC obj
                         )
         f.close()
 
+
 def main():
     parser = OptionParser()  # add command line args
     parser.add_option(
-        "-O", "--out-datacard", dest="outdatacard", default="converted_datacard.txt", help = "desired name of datacard file"
+        "-O",
+        "--out-datacard",
+        dest="outdatacard",
+        default="converted_datacard.txt",
+        help="desired name of datacard file",
     )
-    parser.add_option("-s", "--shape-file", dest="shapefile", default="shapes.root", help = "desired name of shapes file")
+    parser.add_option(
+        "-s",
+        "--shape-file",
+        dest="shapefile",
+        default="shapes.root",
+        help="desired name of shapes file",
+    )
     options, args = parser.parse_args()
 
     with open(args[0]) as serialized:
         spec = json.load(serialized)
     workspace = pyhf.Workspace(spec)
     model = workspace.model()
-
 
     channels = model.config.channels
     channel_bins = model.config.channel_nbins
@@ -514,9 +527,7 @@ def main():
                 if "staterror" not in mod:
                     systs.append(mod)
 
-
     DC = Datacard()
-
 
     file = uproot.recreate(options.shapefile)
     addChannels()
@@ -526,6 +537,7 @@ def main():
     addRateParams()
     file.close()
     writeDataCard(options.outdatacard)
+
 
 if __name__ == "__main__":
     main()
