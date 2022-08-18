@@ -309,20 +309,19 @@ def addMods(file, spec, data_card, channel_bins, systs):
                                 ] = lo_data
 
 
-def addSignal():  ##determine which samples are signal
-    measurements = []
-    for im, measurement in enumerate(spec["measurements"]):
-        measurements.append(measurement["config"]["poi"])
-    signalMods = []
-    for modifier in modifiers:
-        if modifier[0] in measurements:
-            signalMods.append(modifier[0])
-    for idxc, channel in enumerate(channels):
+def addSignal(spec, data_card, channels, modifiers):
+    """
+    Determine which samples are signal
+    """
+    measurements = [
+        measurement["config"]["poi"] for measurement in spec["measurements"]
+    ]
+    signal_mods = [modifier[0] for modifier in modifiers if modifier[0] in measurements]
+
+    for idxc, _ in enumerate(channels):
         for idxs, sample in enumerate(spec["channels"][idxc]["samples"]):
-            for i, mod in enumerate(
-                spec["channels"][idxc]["samples"][idxs]["modifiers"]
-            ):
-                for sig in signalMods:
+            for mod in spec["channels"][idxc]["samples"][idxs]["modifiers"]:
+                for sig in signal_mods:
                     if sig == mod["name"]:
                         data_card.isSignal.update({sample["name"]: True})
                         data_card.signals.append(sample["name"])
@@ -516,7 +515,7 @@ def main():
     addChannels(file, spec, data_card, channel_bins)
     addSamples(file, spec, data_card, channel_bins, samples, options)
     addMods(file, spec, data_card, channel_bins, systs)
-    addSignal()
+    addSignal(spec, data_card, channels, modifiers)
     addRateParams()
     file.close()
     write_data_card(spec, data_card, channels, options.outdatacard)
