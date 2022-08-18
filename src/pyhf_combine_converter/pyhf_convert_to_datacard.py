@@ -490,12 +490,11 @@ def main():
     lumi = model.config.parameters
 
     # generate list of mods without normfactors, shapesys, staterror
-    systs = []
-    for mod in modifiers:
-        if "normfactor" not in mod:
-            if "shapesys" not in mod:
-                if "staterror" not in mod:
-                    systs.append(mod)
+    systs = [
+        mod
+        for mod in modifiers
+        if "normfactor" not in mod and "shapesys" not in mod and "staterror" not in mod
+    ]
 
     data_card = Datacard()
 
