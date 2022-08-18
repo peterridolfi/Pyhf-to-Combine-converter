@@ -2,7 +2,7 @@ from pyhf_combine_converter import pyhf_converted_from_datacard
 from pyhf_combine_converter import pyhf_convert_to_datacard
 
 # convert to pyhf
-pyhf_converted_from_datacard.main(
+pyhf_converted_from_datacard.pyhf_converted_from_datacard(
     "converted_datacard.txt", outfile="pyhf_workspace.json"
 )
 
