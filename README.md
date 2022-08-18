@@ -1,4 +1,4 @@
-# pyhf-to-Combine-converter
+# pyhf to Combine converter
 
 Tool to convert models from pyhf to CMS Combine and vise versa
 
@@ -47,3 +47,11 @@ combine-to-pyhf $DATACARD_FILE_NAME --out-file $JSON_FILE_NAME
 ```
 
 Any questions or issues should be referred to the docs/ folder, in which the translation is put into more detail.
+
+## Acknowledgements
+
+This work was done as part of [Peter Ridolfi's IRIS-HEP Fellow project](https://iris-hep.org/fellows/peterridolfi.html) which was supported by NSF
+cooperative agreement [OAC-1836650][NSF-award-1836650].
+[![NSF Award Number](https://img.shields.io/badge/NSF-1836650-blue.svg)][NSF-award-1836650]
+
+[NSF-award-1836650]: https://nsf.gov/awardsearch/showAward?AWD_ID=1836650
