@@ -311,9 +311,9 @@ def pyhf_converted_from_datacard(input_datacard, outfile, options=None):
         data_card = Datacard()
         data_card = DP.parseCard(file=dc_file, options=options)
 
-    channels = [channel for channel in data_card.bins]
+    channels = list(data_card.bins)
+    samples = list(data_card.processes)
     observations = [obs for channel, obs in data_card.obs.items()]
-    samples = [sample for sample in data_card.processes]
     exp_values = data_card.exp
     sig = data_card.isSignal
     mods = data_card.systs
