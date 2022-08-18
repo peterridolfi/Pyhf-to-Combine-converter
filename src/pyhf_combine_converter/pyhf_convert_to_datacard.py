@@ -510,7 +510,7 @@ def main():
     options, args = parser.parse_args()
     print(f"{args=}")
     print(f"{options=}")
-    pyhf_convert_to_datacard(options.outdatacard, options.shapefile, *args, options)
+    pyhf_convert_to_datacard(options.outdatacard, options.shapefile, args, options)
 
 
 if __name__ == "__main__":
