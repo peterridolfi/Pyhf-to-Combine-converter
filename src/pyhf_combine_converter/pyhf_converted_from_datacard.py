@@ -305,11 +305,11 @@ def addMods(spec: dict, data_card, channels, samples, exp_values, mods):
                         )
 
 
-def pyhf_converted_from_datacard(outfile, options, args):
+def pyhf_converted_from_datacard(outfile, args, kwargs):
     data_card = Datacard()  # create Datacard object
     with open(args[0]) as dc_file:
         data_card = Datacard()
-        data_card = DP.parseCard(file=dc_file, options=options)
+        data_card = DP.parseCard(file=dc_file, options=kwargs)
 
     channels = [channel for channel in data_card.bins]
     observations = [obs for channel, obs in data_card.obs.items()]
@@ -341,8 +341,9 @@ def main():
         help="desired name of JSON file",
     )
     options, args = parser.parse_args()  # add command line args
-    print(options, args)
-    pyhf_converted_from_datacard(options.outfile, options, args)
+    print(f"{args=}")
+    print(f"{options=}")
+    pyhf_converted_from_datacard(options.outfile, *args, **options)
 
 
 if __name__ == "__main__":
