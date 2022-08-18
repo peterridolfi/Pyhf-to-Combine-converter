@@ -179,20 +179,21 @@ def addMeasurements(spec: dict, data_card, channels, samples, sig):
                         )
 
 
-def addNormFactor(spec: dict, data_card):
+def addNormFactor(spec: dict, data_card, channels, samples, sig):
     """
     Add all normfactor modifiers to spec
     """
     for idxc, channel in enumerate(channels):
         for idxs, sample in enumerate(samples):
-            if (channel + "AND" + sample) in data_card.rateParams.keys():
-                name = data_card.rateParams[channel + "AND" + sample][0][0][0]
+            if f"{channel}AND{sample}" in data_card.rateParams.keys():
+                name = data_card.rateParams[f"{channel}AND{sample}"][0][0][0]
                 spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                     {"name": name, "type": "normfactor", "data": None}
                 )
-            elif sig[sample] == True:  ##add signal strength modifier
+
+            elif sig[sample] == True:
                 spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
-                    {"name": "mu_" + sample, "type": "normfactor", "data": None}
+                    {"name": f"mu_{sample}", "type": "normfactor", "data": None}
                 )
 
 
@@ -338,7 +339,7 @@ def main():
     addChannels(spec, data_card, channels, observations)
     addSamples(spec, data_card, channels, samples, exp_values)
     addMeasurements(spec, data_card, channels, samples, sig)
-    addNormFactor(spec, data_card)
+    addNormFactor(spec, data_card, channels, samples, sig)
     addMods(spec, data_card)
 
     with open(options.outfile, "w") as file:
