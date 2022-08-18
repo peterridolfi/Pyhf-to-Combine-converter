@@ -3,23 +3,14 @@ from numpy.core.fromnumeric import size
 import uproot
 import json
 from optparse import OptionParser
+
 try:
     import HiggsAnalysis.CombinedLimit.DatacardParser as DP
     from HiggsAnalysis.CombinedLimit.Datacard import Datacard
 except:
-    print("Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again")
-
-
-
-parser = OptionParser()
-DP.addDatacardParserOptions(parser)
-parser.add_option(
-    "-O", "--out-file", dest="outfile", default="converted_workspace.json", help = "desired name of JSON file"
-)
-options, args = parser.parse_args()  ##add command line args
-
-
-
+    print(
+        "Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again."
+    )
 
 
 def getShapeFile(
@@ -308,16 +299,22 @@ def toJSON(spec: dict):
     addMods(spec)
 
 
-def writeFileName(name):
-    with open(name, "w") as file:
-        file.write(json.dumps(spec, indent=2))
+def main():
+    parser = OptionParser()
+    DP.addDatacardParserOptions(parser)
+    parser.add_option(
+        "-O",
+        "--out-file",
+        dest="outfile",
+        default="converted_workspace.json",
+        help="desired name of JSON file",
+    )
+    options, args = parser.parse_args()  # add command line args
 
-if __name__ == "__main__":
-    DC = Datacard()  ##create Datacard object
+    DC = Datacard()  # create Datacard object
     with open(args[0]) as dc_file:
         DC = Datacard()
         DC = DP.parseCard(file=dc_file, options=options)
-   
 
     channels = [channel for channel in DC.bins]
     observations = [obs for channel, obs in DC.obs.items()]
@@ -327,6 +324,10 @@ if __name__ == "__main__":
     mods = DC.systs
     spec = {"channels": [], "observations": [], "measurements": [], "version": "1.0.0"}
     toJSON(spec)
-    writeFileName(options.outfile)
+
+    with open(options.outfile, "w") as file:
+        file.write(json.dumps(spec, indent=2))
 
 
+if __name__ == "__main__":
+    main()
