@@ -125,26 +125,22 @@ def addChannels(spec: dict, data_card, channels, observations):
             spec["observations"].append({"name": channel, "data": [observations[idxc]]})
 
 
-def addSamples(spec: dict, data_card):
+def addSamples(spec: dict, data_card, channels, samples, exp_values):
     """
     Add sample names and expected values to spec
     """
     if data_card.hasShapes:
         for idxc, channel in enumerate(channels):
-            for idxs, sample in enumerate(samples):
+            for sample in samples:
                 hist = getHist(data_card.shapeMap, channel, sample)
                 data = hist.values().tolist()
                 if sample in exp_values[channel].keys():
                     spec["channels"][idxc]["samples"].append(
-                        {
-                            "name": sample,
-                            "data": data,
-                            "modifiers": [],
-                        }
+                        {"name": sample, "data": data, "modifiers": []}
                     )
     else:
         for idxc, channel in enumerate(channels):
-            for idxs, sample in enumerate(samples):
+            for sample in samples:
                 if sample in exp_values[channel].keys():
                     spec["channels"][idxc]["samples"].append(
                         {
@@ -339,7 +335,7 @@ def main():
 
     # convert to JSON spec
     addChannels(spec, data_card, channels, observations)
-    addSamples(spec, data_card)
+    addSamples(spec, data_card, channels, samples, exp_values)
     addMeasurements(spec, data_card)
     addNormFactor(spec, data_card)
     addMods(spec, data_card)
