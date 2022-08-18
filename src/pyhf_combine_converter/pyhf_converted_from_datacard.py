@@ -151,21 +151,22 @@ def addSamples(spec: dict, data_card, channels, samples, exp_values):
                     )
 
 
-def addMeasurements(spec: dict, data_card):
+def addMeasurements(spec: dict, data_card, channels, samples, sig):
     """
     Add signal measurements to spec
     """
-    for idxc, channel in enumerate(channels):
-        for idxs, sample in enumerate(samples):
+    for channel in channels:
+        for sample in samples:
             if sig[sample] == True:
                 spec["measurements"].append(
                     {
-                        "name": "Measurement_" + sample,
-                        "config": {"poi": "mu_" + sample, "parameters": []},
+                        "name": f"Measurement_{sample}",
+                        "config": {"poi": f"mu_{sample}", "parameters": []},
                     }
                 )
-                if channel + "AND" + sample in data_card.rateParams.keys():
-                    for param in data_card.rateParams[channel + "AND" + sample]:
+
+                if f"{channel}AND{sample}" in data_card.rateParams.keys():
+                    for param in data_card.rateParams[f"{channel}AND{sample}"]:
                         spec["measurements"][len(spec["measurements"] - 1)]["config"][
                             "parameters"
                         ].append(
@@ -336,7 +337,7 @@ def main():
     # convert to JSON spec
     addChannels(spec, data_card, channels, observations)
     addSamples(spec, data_card, channels, samples, exp_values)
-    addMeasurements(spec, data_card)
+    addMeasurements(spec, data_card, channels, samples, sig)
     addNormFactor(spec, data_card)
     addMods(spec, data_card)
 
