@@ -13,6 +13,13 @@ except:
     )
 
 
+__all__ = ["pyhf_converted_from_datacard"]
+
+
+def __dir__():
+    return __all__
+
+
 def getShapeFile(shapeMap: dict, channel, sample) -> string:
     """
     Get shape file of specific sample
