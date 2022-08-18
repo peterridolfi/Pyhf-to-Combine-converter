@@ -367,145 +367,106 @@ def addRateParams():  ##add normfactor mods as rateParams (excluding signal stre
                                     ].append([[mod["name"], 1, 0], ""])
 
 
-def writeDataCard(
-    path,
-):  ##manually write each line of the datacard from data_card object
+def write_data_card(spec, data_card, channels, path):
+    """
+    Manually write each line of the datacard from data_card object
+    """
     with open(path, "w") as f:
-        f.write("imax " + str(size(data_card.bins)) + "\n")
+        f.write(f"imax {str(size(data_card.bins))}" + "\n")
         f.write(
             "jmax "
             + str(size(data_card.processes) - size(data_card.isSignal.keys()))
             + "\n"
         )
-        f.write("kmax " + str(size(data_card.systs, 0)) + "\n")
+        f.write(f"kmax {str(size(data_card.systs, 0))}" + "\n")
+
         if data_card.hasShapes:
             for channel in data_card.shapeMap.keys():
                 for sample in data_card.shapeMap[channel].keys():
                     f.write(
-                        "shapes "
-                        + sample
-                        + "  "
-                        + channel
-                        + "  "
-                        + data_card.shapeMap[channel][sample][0]
-                        + "  "
-                        + data_card.shapeMap[channel][sample][1]
+                        f"shapes {sample}  {channel}  {data_card.shapeMap[channel][sample][0]}  {data_card.shapeMap[channel][sample][1]}"
                     )
                     if size(data_card.shapeMap[channel][sample]) > 2:
-                        f.write("  " + data_card.shapeMap[channel][sample][2] + "\n")
+                        f.write(f"  {data_card.shapeMap[channel][sample][2]}" + "\n")
                     else:
                         f.write("\n")
 
         f.write("\n---------------------------------\n")
         f.write("bin ")
         for bin in data_card.obs.keys():
-            f.write(bin + " ")
+            f.write(f"{bin} ")
         f.write("\n")
         f.write("observation ")
         for channel in data_card.obs.keys():
-            f.write(str(data_card.obs[channel]) + " ")
+            f.write(f"{str(data_card.obs[channel])} ")
         f.write("\n---------------------------------\n")
         f.write("bin     ")
         for channel in data_card.obs.keys():
             for sample in data_card.exp[channel].keys():
-                f.write(channel + "    ")
+                f.write(f"{channel}    ")
         f.write("\n")
         f.write("process     ")
         for channel in data_card.bins:
             for sample in data_card.exp[channel].keys():
-                f.write(sample + "    ")
+                f.write(f"{sample}    ")
         f.write("\n")
         f.write("process     ")
         for channel in data_card.bins:
             for sample in data_card.exp[channel].keys():
                 if sample in data_card.signals:
-                    f.write(str(-1 * data_card.processes.index(sample)) + "     ")
+                    f.write(f"{str(-1 * data_card.processes.index(sample))}     ")
                 else:
-                    f.write(str(data_card.processes.index(sample) + 1) + "     ")
+                    f.write(f"{str(data_card.processes.index(sample) + 1)}     ")
         f.write("\n")
         f.write("rate     ")
         for channel in data_card.bins:
             for sample in data_card.exp[channel].keys():
 
-                f.write(str(data_card.exp[channel][sample]) + "     ")
+                f.write(f"{str(data_card.exp[channel][sample])}     ")
         f.write("\n---------------------------------\n")
         for syst in data_card.systs:
-            f.write(syst[0] + "  " + syst[2] + "  ")
+            f.write(f"{syst[0]}  {syst[2]}  ")
             for bin in syst[4].keys():
                 for sample in data_card.exp[bin].keys():
                     if syst[4][bin][sample] != 0:
-                        f.write(str(syst[4][bin][sample]) + "  ")
+                        f.write(f"{str(syst[4][bin][sample])}  ")
                     else:
                         f.write("-       ")
 
             f.write("\n")
         f.write("\n---------------------------------\n")
         for cAp in data_card.rateParams.keys():
-            dir = cAp.split("AND")
+            _dir = cAp.split("AND")
             for i in range(size(data_card.rateParams[cAp], 0)):
                 if size(data_card.rateParams[cAp][i][0]) > 3:
                     f.write(
-                        str(data_card.rateParams[cAp][i][0][0])
-                        + " "
-                        + "rateParam "
-                        + dir[0]
-                        + " "
-                        + dir[1]
-                        + " "
-                        + str(data_card.rateParams[cAp][i][0][1])
-                        + " "
-                        + data_card.rateParams[cAp][i][0][3]
+                        f"{str(data_card.rateParams[cAp][i][0][0])} rateParam {_dir[0]} {_dir[1]} {str(data_card.rateParams[cAp][i][0][1])} {data_card.rateParams[cAp][i][0][3]}"
                     )
                 else:
                     f.write(
-                        str(data_card.rateParams[cAp][i][0][0])
-                        + " "
-                        + "rateParam "
-                        + dir[0]
-                        + " "
-                        + dir[1]
-                        + " "
-                        + str(data_card.rateParams[cAp][i][0][1])
+                        f"{str(data_card.rateParams[cAp][i][0][0])} rateParam {_dir[0]} {_dir[1]} {str(data_card.rateParams[cAp][i][0][1])}"
                     )
                 f.write("\n")
         f.write("\n---------------------------------\n")
         for idxc, channel in enumerate(channels):
-            if channel in data_card.binParFlags.keys():
-                if data_card.binParFlags[channel] == True:  ##double check to be safe
-                    shapesys = False
-                    staterror = False
-                    for idxs, sample in enumerate(spec["channels"][idxc]["samples"]):
-                        if "shapesys" in [
-                            mod["type"] for i, mod in enumerate(sample["modifiers"])
-                        ]:
-                            shapesys = True
-                        elif "staterror" in [
-                            mod["type"] for i, mod in enumerate(sample["modifiers"])
-                        ]:
-                            staterror = True
-                    if shapesys == True:
-                        f.write(
-                            channel
-                            + " autoMCStats "
-                            + str(100000)
-                            + " "
-                            + str(0)
-                            + " "
-                            + str(2)
-                            + "\n"
-                        )
-                    if staterror == True:
-                        f.write(
-                            channel
-                            + " autoMCStats "
-                            + str(0)
-                            + " "
-                            + str(0)
-                            + " "
-                            + str(2)
-                            + "\n"
-                        )
-        f.close()
+            if (
+                channel in data_card.binParFlags.keys()
+                and data_card.binParFlags[channel] == True
+            ):
+                # double check to be safe
+                shapesys = False
+                staterror = False
+                for sample in spec["channels"][idxc]["samples"]:
+                    mod_types = [mod["type"] for mod in sample["modifiers"]]
+                    if "shapesys" in mod_types:
+                        shapesys = True
+                    elif "staterror" in mod_types:
+                        staterror = True
+
+                if shapesys:
+                    f.write(f"{channel} autoMCStats 100000 0 2" + "\n")
+                if staterror:
+                    f.write(f"{channel} autoMCStats 0 0 2" + "\n")
 
 
 def main():
@@ -554,7 +515,7 @@ def main():
     addSignal()
     addRateParams()
     file.close()
-    writeDataCard(options.outdatacard)
+    write_data_card(spec, data_card, channels, options.outdatacard)
 
 
 if __name__ == "__main__":
