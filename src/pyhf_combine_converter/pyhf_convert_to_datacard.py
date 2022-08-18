@@ -327,46 +327,34 @@ def addSignal(spec, data_card, channels, modifiers):
                         data_card.signals.append(sample["name"])
 
 
-def addRateParams():  ##add normfactor mods as rateParams (excluding signal strength)
-    measurements = []
-    for im, measurement in enumerate(spec["measurements"]):
-        measurements.append(measurement["config"]["poi"])
-    signalMods = []
-    for modifier in modifiers:
-        if modifier[0] in measurements:
-            signalMods.append(modifier[0])
-    print(signalMods)
+def addRateParams(spec, data_card, channels, modifiers):
+    """
+    Add normfactor mods as rateParams (excluding signal strength).
+    """
+    measurements = [
+        measurement["config"]["poi"] for measurement in spec["measurements"]
+    ]
+    signal_mods = [modifier[0] for modifier in modifiers if modifier[0] in measurements]
 
     for idxc, channel in enumerate(channels):
         for idxs, sample in enumerate((spec["channels"][idxc]["samples"])):
-            isSig = False
-            for i, mod in enumerate(sample["modifiers"]):
-                if mod["name"] in signalMods:
-                    isSig = True
-            print(sample["name"])
-            print(isSig)
-            if isSig == False:
-                for i, mod in enumerate(
-                    spec["channels"][idxc]["samples"][idxs]["modifiers"]
-                ):  ##normfactor or shapefactor
+            is_signal = any(mod["name"] in signal_mods for mod in sample["modifiers"])
+            if not is_signal:
+                for mod in spec["channels"][idxc]["samples"][idxs]["modifiers"]:
+                    # normfactor or shapefactor
                     if "normfactor" in mod["type"] or "shapefactor" in mod["type"]:
-                        for im, measurement in enumerate(spec["measurements"]):
-                            for ip, param in enumerate(
-                                measurement["config"]["parameters"]
-                            ):
+                        for measurement in spec["measurements"]:
+                            for param in measurement["config"]["parameters"]:
+                                data_card.rateParams.update(
+                                    {f"{channel}AND" + sample["name"]: []}
+                                )
                                 if mod["name"] == param["name"]:
-                                    data_card.rateParams.update(
-                                        {channel + "AND" + sample["name"]: []}
-                                    )
                                     data_card.rateParams[
-                                        channel + "AND" + sample["name"]
+                                        f"{channel}AND" + sample["name"]
                                     ].append([[mod["name"], 1, 0, param["bounds"]], ""])
                                 else:
-                                    data_card.rateParams.update(
-                                        {channel + "AND" + sample["name"]: []}
-                                    )
                                     data_card.rateParams[
-                                        channel + "AND" + sample["name"]
+                                        f"{channel}AND" + sample["name"]
                                     ].append([[mod["name"], 1, 0], ""])
 
 
@@ -516,7 +504,7 @@ def main():
     addSamples(file, spec, data_card, channel_bins, samples, options)
     addMods(file, spec, data_card, channel_bins, systs)
     addSignal(spec, data_card, channels, modifiers)
-    addRateParams()
+    addRateParams(spec, data_card, channels, modifiers)
     file.close()
     write_data_card(spec, data_card, channels, options.outdatacard)
 
