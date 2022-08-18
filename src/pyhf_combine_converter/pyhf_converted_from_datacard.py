@@ -110,10 +110,10 @@ def getUncertDown(
 
 
 def addChannels(spec: dict):  ##add each channel and associated observation to the spec
-    if DC.hasShapes:
+    if data_card.hasShapes:
         for idxc, channel in enumerate(channels):
             spec["channels"].append({"name": channel, "samples": []})
-            hist = getHist(DC.shapeMap, channel, "data_obs")
+            hist = getHist(data_card.shapeMap, channel, "data_obs")
             data = hist.values().tolist()
             spec["observations"].append({"name": channel, "data": data})
     else:
@@ -123,10 +123,10 @@ def addChannels(spec: dict):  ##add each channel and associated observation to t
 
 
 def addSamples(spec: dict):  ##add sample names and expected values to spec
-    if DC.hasShapes:
+    if data_card.hasShapes:
         for idxc, channel in enumerate(channels):
             for idxs, sample in enumerate(samples):
-                hist = getHist(DC.shapeMap, channel, sample)
+                hist = getHist(data_card.shapeMap, channel, sample)
                 data = hist.values().tolist()
                 if sample in exp_values[channel].keys():
                     spec["channels"][idxc]["samples"].append(
@@ -159,8 +159,8 @@ def addMeasurements(spec: dict):  ##add signal measurements to spec
                         "config": {"poi": "mu_" + sample, "parameters": []},
                     }
                 )
-                if channel + "AND" + sample in DC.rateParams.keys():
-                    for param in DC.rateParams[channel + "AND" + sample]:
+                if channel + "AND" + sample in data_card.rateParams.keys():
+                    for param in data_card.rateParams[channel + "AND" + sample]:
                         spec["measurements"][len(spec["measurements"] - 1)]["config"][
                             "parameters"
                         ].append(
@@ -176,8 +176,8 @@ def addMeasurements(spec: dict):  ##add signal measurements to spec
 def addNormFactor(spec: dict):  ##add all normfactor modifiers to spec
     for idxc, channel in enumerate(channels):
         for idxs, sample in enumerate(samples):
-            if (channel + "AND" + sample) in DC.rateParams.keys():
-                name = DC.rateParams[channel + "AND" + sample][0][0][0]
+            if (channel + "AND" + sample) in data_card.rateParams.keys():
+                name = data_card.rateParams[channel + "AND" + sample][0][0][0]
                 spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                     {"name": name, "type": "normfactor", "data": None}
                 )
@@ -229,8 +229,12 @@ def addMods(spec: dict):  ##add systematics as modifiers
                 for idxs, sample in enumerate(samples):
                     if syst[4][channel][sample] != 0:
                         if sample in exp_values[channel].keys():
-                            histUp = getUncertUp(DC.shapeMap, channel, sample, name)
-                            histDown = getUncertDown(DC.shapeMap, channel, sample, name)
+                            histUp = getUncertUp(
+                                data_card.shapeMap, channel, sample, name
+                            )
+                            histDown = getUncertDown(
+                                data_card.shapeMap, channel, sample, name
+                            )
                             hi_data = histUp.values().tolist()
                             lo_data = histDown.values().tolist()
                             data = spec["channels"][idxc]["samples"][idxs]["data"]
@@ -267,20 +271,22 @@ def addMods(spec: dict):  ##add systematics as modifiers
 
     for idxc, channel in enumerate(channels):  ##staterror/shapesys
 
-        if channel in DC.binParFlags.keys():
-            if DC.binParFlags[channel][0] == 0:  # if BB lite enabled
+        if channel in data_card.binParFlags.keys():
+            if data_card.binParFlags[channel][0] == 0:  # if BB lite enabled
                 for idxs, sample in enumerate(samples):
                     if sample in exp_values[channel].keys():
-                        hist = getHist(DC.shapeMap, channel, sample)
+                        hist = getHist(data_card.shapeMap, channel, sample)
                         err = hist.errors().tolist()
                         spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                             {"name": "my_stat_err", "type": "staterror", "data": err}
                         )
 
-            elif DC.binParFlags[channel][0] > 0:  ##if user wants total BB (shapesys)
+            elif (
+                data_card.binParFlags[channel][0] > 0
+            ):  ##if user wants total BB (shapesys)
                 for idxs, sample in enumerate(samples):
                     if sample in exp_values[channel].keys():
-                        hist = getHist(DC.shapeMap, channel, sample)
+                        hist = getHist(data_card.shapeMap, channel, sample)
                         err = hist.errors().tolist()
                         spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                             {
@@ -311,17 +317,17 @@ def main():
     )
     options, args = parser.parse_args()  # add command line args
 
-    DC = Datacard()  # create Datacard object
+    data_card = Datacard()  # create Datacard object
     with open(args[0]) as dc_file:
-        DC = Datacard()
-        DC = DP.parseCard(file=dc_file, options=options)
+        data_card = Datacard()
+        data_card = DP.parseCard(file=dc_file, options=options)
 
-    channels = [channel for channel in DC.bins]
-    observations = [obs for channel, obs in DC.obs.items()]
-    samples = [sample for sample in DC.processes]
-    exp_values = DC.exp
-    sig = DC.isSignal
-    mods = DC.systs
+    channels = [channel for channel in data_card.bins]
+    observations = [obs for channel, obs in data_card.obs.items()]
+    samples = [sample for sample in data_card.processes]
+    exp_values = data_card.exp
+    sig = data_card.isSignal
+    mods = data_card.systs
     spec = {"channels": [], "observations": [], "measurements": [], "version": "1.0.0"}
     toJSON(spec)
 
