@@ -4,7 +4,7 @@ from pyhf_combine_converter.version import version as __version__
 from pyhf_combine_converter import pyhf_convert_to_datacard
 from pyhf_combine_converter import pyhf_converted_from_datacard
 
-__all__ = ["pyhf_convert_to_datacard", "pyhf_converted_from_datacard", "__version__"]
+__all__ = ["__version__", "pyhf_convert_to_datacard", "pyhf_converted_from_datacard"]
 
 
 def __dir__():
