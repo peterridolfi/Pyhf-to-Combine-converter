@@ -51,16 +51,20 @@ def addChannels(file, spec, data_card, channel_bins):
             file[channel["name"] + "/data_obs"] = h_data
 
 
-def addSamples():  ##add sample names and expected counts to the Datacard
+def addSamples(file, spec, data_card, channel_bins, samples, options):
+    """
+    Add sample names and expected counts to the Datacard
+    """
     data_card.processes = samples
 
     for idxc, channel in enumerate(spec["channels"]):
-        if data_card.hasShapes == False:  ##counting
-            for idxs, sample in enumerate(channel["samples"]):
+        if data_card.hasShapes == False:  # counting
+            for sample in channel["samples"]:
                 data_card.exp[channel["name"]].update(
                     {sample["name"]: sample["data"][0]}
                 )
-        else:  ##shapes
+        else:
+            # shapes
             data_card.shapeMap.update({channel["name"]: {}})
             data_card.shapeMap[channel["name"]].update(
                 {"data_obs": [options.shapefile, channel["name"] + "/" + "data_obs"]}
@@ -75,7 +79,8 @@ def addSamples():  ##add sample names and expected counts to the Datacard
                         spec["channels"][idxc]["samples"][idxs]["modifiers"]
                     )
                 ]
-                if "histosys" in mods:  ##if shape uncertainty histogram is available
+                if "histosys" in mods:
+                    # if shape uncertainty histogram is available
                     data_card.shapeMap[channel["name"]].update(
                         {
                             spec["channels"][idxc]["samples"][idxs]["name"]: [
@@ -101,9 +106,8 @@ def addSamples():  ##add sample names and expected counts to the Datacard
                             ]
                         }
                     )
-                if (
-                    "staterror" in mods
-                ):  ##if staterror is present, provide variances for histograms
+                if "staterror" in mods:
+                    # if staterror is present, provide variances for histograms
                     h_data = hist.Hist.new.Regular(
                         channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
                     ).Weight()
@@ -121,7 +125,7 @@ def addSamples():  ##add sample names and expected counts to the Datacard
                         axis=-1,
                     )
                     data_card.binParFlags.update({channel["name"]: True})
-                elif "shapesys" in mods:  ##for shapesys, also provide variances
+                elif "shapesys" in mods:  # for shapesys, also provide variances
                     h_data = hist.Hist.new.Regular(
                         channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
                     ).Weight()
@@ -138,14 +142,14 @@ def addSamples():  ##add sample names and expected counts to the Datacard
                         axis=-1,
                     )
                     data_card.binParFlags.update({channel["name"]: True})
-                else:  ##no staterror or shapesys->0 variance
+                else:  # no staterror or shapesys->0 variance
                     h_data = hist.Hist.new.Regular(
                         channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
                     ).Weight()
                     h_data[...] = np.stack(
                         [
                             spec["channels"][idxc]["samples"][idxs]["data"],
-                            [0 for i in range(channel_bins[channel["name"]])],
+                            [0 for _ in range(channel_bins[channel["name"]])],
                         ],
                         axis=-1,
                     )
@@ -545,7 +549,7 @@ def main():
 
     file = uproot.recreate(options.shapefile)
     addChannels(file, spec, data_card, channel_bins)
-    addSamples()
+    addSamples(file, spec, data_card, channel_bins, samples, options)
     addMods()
     addSignal()
     addRateParams()
