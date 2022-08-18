@@ -343,7 +343,7 @@ def main():
     options, args = parser.parse_args()  # add command line args
     print(f"{args=}")
     print(f"{options=}")
-    pyhf_converted_from_datacard(options.outfile, *args, **options)
+    pyhf_converted_from_datacard(options.outfile, *args, options)
 
 
 if __name__ == "__main__":
