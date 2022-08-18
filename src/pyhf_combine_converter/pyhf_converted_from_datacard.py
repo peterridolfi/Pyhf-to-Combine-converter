@@ -305,20 +305,9 @@ def addMods(spec: dict, data_card, channels, samples, exp_values, mods):
                         )
 
 
-def main():
-    parser = OptionParser()
-    DP.addDatacardParserOptions(parser)
-    parser.add_option(
-        "-O",
-        "--out-file",
-        dest="outfile",
-        default="converted_workspace.json",
-        help="desired name of JSON file",
-    )
-    options, args = parser.parse_args()  # add command line args
-
+def pyhf_converted_from_datacard(input_datacard, outfile, options=None):
     data_card = Datacard()  # create Datacard object
-    with open(args[0]) as dc_file:
+    with open(input_datacard) as dc_file:
         data_card = Datacard()
         data_card = DP.parseCard(file=dc_file, options=options)
 
@@ -337,8 +326,26 @@ def main():
     addNormFactor(spec, data_card, channels, samples, sig)
     addMods(spec, data_card, channels, samples, exp_values, mods)
 
-    with open(options.outfile, "w") as file:
+    with open(outfile, "w") as file:
         file.write(json.dumps(spec, indent=2))
+
+
+def main():
+    # Add command line args
+    parser = OptionParser()
+    DP.addDatacardParserOptions(parser)
+    parser.add_option(
+        "-O",
+        "--out-file",
+        dest="outfile",
+        default="converted_workspace.json",
+        help="desired name of JSON file",
+    )
+    options, args = parser.parse_args()
+
+    pyhf_converted_from_datacard(
+        input_datacard=args[0], outfile=options.outfile, options=options
+    )
 
 
 if __name__ == "__main__":
