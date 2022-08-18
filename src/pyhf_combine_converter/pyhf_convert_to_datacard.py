@@ -460,7 +460,7 @@ def write_data_card(spec, data_card, channels, path):
                     f.write(f"{channel} autoMCStats 0 0 2" + "\n")
 
 
-def pyhf_convert_to_datacard(outdatacard, shapefile, args):
+def pyhf_convert_to_datacard(outdatacard, shapefile, args, kwargs):
     with open(args[0]) as serialized:
         spec = json.load(serialized)
     workspace = pyhf.Workspace(spec)
@@ -508,8 +508,9 @@ def main():
         help="desired name of shapes file",
     )
     options, args = parser.parse_args()
-    print(options, args)
-    pyhf_convert_to_datacard(*options, *args)
+    print(f"{args=}")
+    print(f"{options=}")
+    pyhf_convert_to_datacard(options.outdatacard, options.shapefile, *args, **options)
 
 
 if __name__ == "__main__":
