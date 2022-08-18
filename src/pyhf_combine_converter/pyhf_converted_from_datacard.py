@@ -312,14 +312,6 @@ def addMods(spec: dict, data_card):
                         )
 
 
-def toJSON(spec: dict, data_card):
-    addChannels(spec, data_card)
-    addSamples(spec, data_card)
-    addMeasurements(spec, data_card)
-    addNormFactor(spec, data_card)
-    addMods(spec, data_card)
-
-
 def main():
     parser = OptionParser()
     DP.addDatacardParserOptions(parser)
@@ -344,7 +336,13 @@ def main():
     sig = data_card.isSignal
     mods = data_card.systs
     spec = {"channels": [], "observations": [], "measurements": [], "version": "1.0.0"}
-    toJSON(spec, data_card)
+
+    # convert to JSON spec
+    addChannels(spec, data_card)
+    addSamples(spec, data_card)
+    addMeasurements(spec, data_card)
+    addNormFactor(spec, data_card)
+    addMods(spec, data_card)
 
     with open(options.outfile, "w") as file:
         file.write(json.dumps(spec, indent=2))
