@@ -18,28 +18,32 @@ except:
     )
 
 
-def addChannels():  ##add each channel to Datacard object, add observed counts
-    data_card.bins = [channel["name"] for i, channel in enumerate(spec["channels"])]
-    for idxc, channel in enumerate(spec["channels"]):
+def addChannels(file, spec, data_card, channel_bins):
+    """
+    Add each channel to Datacard object, add observed counts
+    """
+    data_card.bins = [channel["name"] for channel in spec["channels"]]
+    for channel in spec["channels"]:
         if channel_bins[channel["name"]] != 1:
             data_card.hasShapes = True
     for idxc, channel in enumerate(spec["channels"]):
         data_card.exp.update({channel["name"]: {}})
-        if data_card.hasShapes == False:  ##single bin
+        # single bin
+        if data_card.hasShapes == False:
             data_card.obs.update(
                 {channel["name"]: spec["observations"][idxc]["data"][0]}
             )
-
         else:
             data = sum(spec["observations"][idxc]["data"])
             data_card.obs.update({channel["name"]: data})
             h_data = hist.Hist.new.Regular(
                 channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
             ).Weight()
+
             h_data[...] = np.stack(
                 [
                     spec["observations"][idxc]["data"],
-                    [0 for i in range(channel_bins[channel["name"]])],
+                    [0 for _ in range(channel_bins[channel["name"]])],
                 ],
                 axis=-1,
             )
@@ -540,7 +544,7 @@ def main():
     data_card = Datacard()
 
     file = uproot.recreate(options.shapefile)
-    addChannels()
+    addChannels(file, spec, data_card, channel_bins)
     addSamples()
     addMods()
     addSignal()
