@@ -17,6 +17,12 @@ except:
         "Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again."
     )
 
+__all__ = ["pyhf_convert_to_datacard"]
+
+
+def __dir__():
+    return __all__
+
 
 def addChannels(file, spec, data_card, channel_bins):
     """
