@@ -160,48 +160,51 @@ def addSamples(file, spec, data_card, channel_bins, samples, options):
                 ] = h_data
 
 
-def addMods():  ##add systematics to data_card
+def addMods(file, spec, data_card, channel_bins, systs):
+    """
+    Add systematics to data_card
+    """
     for im, modifier in enumerate(systs):
         if "normsys" in modifier[1]:  ##normsys
-            data_card.systs.append(
-                (modifier[0], False, "shape?", [], {})
-            )  ##write normsys as 'shape?' so that Combine doesn't try to combine normsys and histosys mods of the same name
-            for idxc, channel in enumerate(spec["channels"]):
+            # write normsys as 'shape?' so that Combine doesn't try to combine normsys and histosys mods of the same name
+            data_card.systs.append((modifier[0], False, "shape?", [], {}))
+            for channel in spec["channels"]:
                 data_card.systs[im][4].update({channel["name"]: {}})
-                for idxs, sample in enumerate(channel["samples"]):
+                for sample in channel["samples"]:
                     for i in data_card.systs:
                         i[4][channel["name"]].update({sample["name"]: 0.0})
+
         if "lumi" in modifier[1]:  ##lumi
-            data_card.systs.append(
-                (modifier[0], False, "lnN", [], {})
-            )  ##write lumi as lnN since they act the same way on the model
-            for idxc, channel in enumerate(spec["channels"]):
+            # Write lumi as lnN since they act the same way on the model
+            data_card.systs.append((modifier[0], False, "lnN", [], {}))
+            for channel in spec["channels"]:
                 data_card.systs[im][4].update({channel["name"]: {}})
-                for idxs, sample in enumerate(channel["samples"]):
+                for sample in channel["samples"]:
                     for i in data_card.systs:
                         i[4][channel["name"]].update({sample["name"]: 0.0})
+
         if "histosys" in modifier[1]:  ##histosys
             data_card.systs.append((modifier[0], False, "shape", [], {}))
-            for idxc, channel in enumerate(spec["channels"]):
+            for channel in spec["channels"]:
                 data_card.systs[im][4].update({channel["name"]: {}})
-                for idxs, sample in enumerate(channel["samples"]):
+                for sample in channel["samples"]:
                     for i in data_card.systs:
                         i[4][channel["name"]].update({sample["name"]: 0.0})
 
     for idxc, channel in enumerate(spec["channels"]):
         for idxs, sample in enumerate(channel["samples"]):
             mods = sample["modifiers"]
-            names = []
-            for mod in mods:
-                names.append(mod["name"])
+            names = [mod["name"] for mod in mods]
             for syst in data_card.systs:
                 name = syst[0]
-                type = syst[2]
-                if name in names:  ##if systematic name is a modifier for this sample
-                    if "shape?" in type:  ##normsys
+                if name in names:
+                    syst_type = syst[2]
+                    # if systematic name is a modifier for this sample
+                    if "shape?" in syst_type:  ##normsys
                         for mod in mods:
                             if mod["type"] == "normsys" and mod["name"] == name:
                                 if mod["data"]["lo"] == 0:
+                                    # asymmetric lnN
                                     syst[4][channel["name"]].update(
                                         {
                                             sample["name"]: str(
@@ -209,32 +212,33 @@ def addMods():  ##add systematics to data_card
                                             )
                                             + "/"
                                             + str(mod["data"]["hi"])
-                                        }  ##asymmetric lnN
+                                        }
                                     )
                                 elif mod["data"]["hi"] == 0:
+                                    # asymmetric lnN
                                     syst[4][channel["name"]].update(
                                         {
                                             sample["name"]: str(mod["data"]["lo"])
                                             + "/"
                                             + str(mod["data"]["hi"] + 1e-9)
-                                        }  ##asymmetric lnN
+                                        }
                                     )
                                 else:
+                                    # asymmetric lnN
                                     syst[4][channel["name"]].update(
                                         {
                                             sample["name"]: str(mod["data"]["lo"])
                                             + "/"
                                             + str(mod["data"]["hi"])
-                                        }  ##asymmetric lnN
+                                        }
                                     )
-                    if "lnN" in type:  ##lumi only
+                    if "lnN" in syst_type:  ##lumi only
                         for mod in mods:
                             if mod["type"] == "lumi" and mod["name"] == name:
-                                for im, measurement in enumerate(spec["measurements"]):
-                                    for ip, param in enumerate(
-                                        measurement["config"]["parameters"]
-                                    ):
+                                for measurement in spec["measurements"]:
+                                    for param in measurement["config"]["parameters"]:
                                         if mod["name"] == param["name"]:
+                                            # asymmetric lnN
                                             syst[4][channel["name"]].update(
                                                 {
                                                     sample["name"]: str(
@@ -246,10 +250,10 @@ def addMods():  ##add systematics to data_card
                                                         param["auxdata"][0]
                                                         + param["sigmas"][0]
                                                     )
-                                                }  ##asymmetric lnN
+                                                }
                                             )
 
-                    if "shape" in type:  ##histosys
+                    if "shape" in syst_type:  ##histosys
                         for mod in mods:
                             if mod["type"] == "histosys" and mod["name"] == name:
                                 syst[4][channel["name"]].update({sample["name"]: 1.0})
@@ -263,7 +267,7 @@ def addMods():  ##add systematics to data_card
                                         mod["data"]["hi_data"],
                                         [
                                             0
-                                            for i in range(
+                                            for _ in range(
                                                 channel_bins[channel["name"]]
                                             )
                                         ],
@@ -280,7 +284,7 @@ def addMods():  ##add systematics to data_card
                                         mod["data"]["lo_data"],
                                         [
                                             0
-                                            for i in range(
+                                            for _ in range(
                                                 channel_bins[channel["name"]]
                                             )
                                         ],
@@ -511,7 +515,7 @@ def main():
     file = uproot.recreate(options.shapefile)
     addChannels(file, spec, data_card, channel_bins)
     addSamples(file, spec, data_card, channel_bins, samples, options)
-    addMods()
+    addMods(file, spec, data_card, channel_bins, systs)
     addSignal()
     addRateParams()
     file.close()
