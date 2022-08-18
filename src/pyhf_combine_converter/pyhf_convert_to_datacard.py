@@ -492,7 +492,8 @@ def pyhf_convert_to_datacard(outdatacard, shapefile, args, kwargs):
 
 
 def main():
-    parser = OptionParser()  # add command line args
+    # Add command line args
+    parser = OptionParser()
     parser.add_option(
         "-O",
         "--out-datacard",
@@ -508,8 +509,7 @@ def main():
         help="desired name of shapes file",
     )
     options, args = parser.parse_args()
-    print(f"{args=}")
-    print(f"{options=}")
+
     pyhf_convert_to_datacard(options.outdatacard, options.shapefile, args, options)
 
 

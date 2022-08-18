@@ -331,6 +331,7 @@ def pyhf_converted_from_datacard(outfile, args, kwargs):
 
 
 def main():
+    # Add command line args
     parser = OptionParser()
     DP.addDatacardParserOptions(parser)
     parser.add_option(
@@ -340,9 +341,8 @@ def main():
         default="converted_workspace.json",
         help="desired name of JSON file",
     )
-    options, args = parser.parse_args()  # add command line args
-    print(f"{args=}")
-    print(f"{options=}")
+    options, args = parser.parse_args()
+
     pyhf_converted_from_datacard(options.outfile, args, options)
 
 
