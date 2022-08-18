@@ -109,12 +109,12 @@ def getUncertDown(
     return hist
 
 
-def addChannels(spec: dict, data_card):
+def addChannels(spec: dict, data_card, channels, observations):
     """
     Add each channel and associated observation to the spec
     """
     if data_card.hasShapes:
-        for idxc, channel in enumerate(channels):
+        for channel in channels:
             spec["channels"].append({"name": channel, "samples": []})
             hist = getHist(data_card.shapeMap, channel, "data_obs")
             data = hist.values().tolist()
@@ -338,7 +338,7 @@ def main():
     spec = {"channels": [], "observations": [], "measurements": [], "version": "1.0.0"}
 
     # convert to JSON spec
-    addChannels(spec, data_card)
+    addChannels(spec, data_card, channels, observations)
     addSamples(spec, data_card)
     addMeasurements(spec, data_card)
     addNormFactor(spec, data_card)
