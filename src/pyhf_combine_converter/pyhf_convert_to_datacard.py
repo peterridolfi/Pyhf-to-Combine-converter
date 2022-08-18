@@ -19,18 +19,20 @@ except:
 
 
 def addChannels():  ##add each channel to Datacard object, add observed counts
-    DC.bins = [channel["name"] for i, channel in enumerate(spec["channels"])]
+    data_card.bins = [channel["name"] for i, channel in enumerate(spec["channels"])]
     for idxc, channel in enumerate(spec["channels"]):
         if channel_bins[channel["name"]] != 1:
-            DC.hasShapes = True
+            data_card.hasShapes = True
     for idxc, channel in enumerate(spec["channels"]):
-        DC.exp.update({channel["name"]: {}})
-        if DC.hasShapes == False:  ##single bin
-            DC.obs.update({channel["name"]: spec["observations"][idxc]["data"][0]})
+        data_card.exp.update({channel["name"]: {}})
+        if data_card.hasShapes == False:  ##single bin
+            data_card.obs.update(
+                {channel["name"]: spec["observations"][idxc]["data"][0]}
+            )
 
         else:
             data = sum(spec["observations"][idxc]["data"])
-            DC.obs.update({channel["name"]: data})
+            data_card.obs.update({channel["name"]: data})
             h_data = hist.Hist.new.Regular(
                 channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
             ).Weight()
@@ -46,20 +48,22 @@ def addChannels():  ##add each channel to Datacard object, add observed counts
 
 
 def addSamples():  ##add sample names and expected counts to the Datacard
-    DC.processes = samples
+    data_card.processes = samples
 
     for idxc, channel in enumerate(spec["channels"]):
-        if DC.hasShapes == False:  ##counting
+        if data_card.hasShapes == False:  ##counting
             for idxs, sample in enumerate(channel["samples"]):
-                DC.exp[channel["name"]].update({sample["name"]: sample["data"][0]})
+                data_card.exp[channel["name"]].update(
+                    {sample["name"]: sample["data"][0]}
+                )
         else:  ##shapes
-            DC.shapeMap.update({channel["name"]: {}})
-            DC.shapeMap[channel["name"]].update(
+            data_card.shapeMap.update({channel["name"]: {}})
+            data_card.shapeMap[channel["name"]].update(
                 {"data_obs": [options.shapefile, channel["name"] + "/" + "data_obs"]}
             )
             for idxs, sample in enumerate(channel["samples"]):
                 data = sum(sample["data"])
-                DC.exp[channel["name"]].update({sample["name"]: data})
+                data_card.exp[channel["name"]].update({sample["name"]: data})
 
                 mods = [
                     spec["channels"][idxc]["samples"][idxs]["modifiers"][i]["type"]
@@ -68,7 +72,7 @@ def addSamples():  ##add sample names and expected counts to the Datacard
                     )
                 ]
                 if "histosys" in mods:  ##if shape uncertainty histogram is available
-                    DC.shapeMap[channel["name"]].update(
+                    data_card.shapeMap[channel["name"]].update(
                         {
                             spec["channels"][idxc]["samples"][idxs]["name"]: [
                                 options.shapefile,
@@ -83,7 +87,7 @@ def addSamples():  ##add sample names and expected counts to the Datacard
                         }
                     )
                 else:
-                    DC.shapeMap[channel["name"]].update(
+                    data_card.shapeMap[channel["name"]].update(
                         {
                             spec["channels"][idxc]["samples"][idxs]["name"]: [
                                 options.shapefile,
@@ -112,7 +116,7 @@ def addSamples():  ##add sample names and expected counts to the Datacard
                         ],
                         axis=-1,
                     )
-                    DC.binParFlags.update({channel["name"]: True})
+                    data_card.binParFlags.update({channel["name"]: True})
                 elif "shapesys" in mods:  ##for shapesys, also provide variances
                     h_data = hist.Hist.new.Regular(
                         channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
@@ -129,7 +133,7 @@ def addSamples():  ##add sample names and expected counts to the Datacard
                         ],
                         axis=-1,
                     )
-                    DC.binParFlags.update({channel["name"]: True})
+                    data_card.binParFlags.update({channel["name"]: True})
                 else:  ##no staterror or shapesys->0 variance
                     h_data = hist.Hist.new.Regular(
                         channel_bins[channel["name"]], 0, channel_bins[channel["name"]]
@@ -148,32 +152,32 @@ def addSamples():  ##add sample names and expected counts to the Datacard
                 ] = h_data
 
 
-def addMods():  ##add systematics to DC
+def addMods():  ##add systematics to data_card
     for im, modifier in enumerate(systs):
         if "normsys" in modifier[1]:  ##normsys
-            DC.systs.append(
+            data_card.systs.append(
                 (modifier[0], False, "shape?", [], {})
             )  ##write normsys as 'shape?' so that Combine doesn't try to combine normsys and histosys mods of the same name
             for idxc, channel in enumerate(spec["channels"]):
-                DC.systs[im][4].update({channel["name"]: {}})
+                data_card.systs[im][4].update({channel["name"]: {}})
                 for idxs, sample in enumerate(channel["samples"]):
-                    for i in DC.systs:
+                    for i in data_card.systs:
                         i[4][channel["name"]].update({sample["name"]: 0.0})
         if "lumi" in modifier[1]:  ##lumi
-            DC.systs.append(
+            data_card.systs.append(
                 (modifier[0], False, "lnN", [], {})
             )  ##write lumi as lnN since they act the same way on the model
             for idxc, channel in enumerate(spec["channels"]):
-                DC.systs[im][4].update({channel["name"]: {}})
+                data_card.systs[im][4].update({channel["name"]: {}})
                 for idxs, sample in enumerate(channel["samples"]):
-                    for i in DC.systs:
+                    for i in data_card.systs:
                         i[4][channel["name"]].update({sample["name"]: 0.0})
         if "histosys" in modifier[1]:  ##histosys
-            DC.systs.append((modifier[0], False, "shape", [], {}))
+            data_card.systs.append((modifier[0], False, "shape", [], {}))
             for idxc, channel in enumerate(spec["channels"]):
-                DC.systs[im][4].update({channel["name"]: {}})
+                data_card.systs[im][4].update({channel["name"]: {}})
                 for idxs, sample in enumerate(channel["samples"]):
-                    for i in DC.systs:
+                    for i in data_card.systs:
                         i[4][channel["name"]].update({sample["name"]: 0.0})
 
     for idxc, channel in enumerate(spec["channels"]):
@@ -182,7 +186,7 @@ def addMods():  ##add systematics to DC
             names = []
             for mod in mods:
                 names.append(mod["name"])
-            for syst in DC.systs:
+            for syst in data_card.systs:
                 name = syst[0]
                 type = syst[2]
                 if name in names:  ##if systematic name is a modifier for this sample
@@ -308,8 +312,8 @@ def addSignal():  ##determine which samples are signal
             ):
                 for sig in signalMods:
                     if sig == mod["name"]:
-                        DC.isSignal.update({sample["name"]: True})
-                        DC.signals.append(sample["name"])
+                        data_card.isSignal.update({sample["name"]: True})
+                        data_card.signals.append(sample["name"])
 
 
 def addRateParams():  ##add normfactor mods as rateParams (excluding signal strength)
@@ -340,81 +344,87 @@ def addRateParams():  ##add normfactor mods as rateParams (excluding signal stre
                                 measurement["config"]["parameters"]
                             ):
                                 if mod["name"] == param["name"]:
-                                    DC.rateParams.update(
+                                    data_card.rateParams.update(
                                         {channel + "AND" + sample["name"]: []}
                                     )
-                                    DC.rateParams[
+                                    data_card.rateParams[
                                         channel + "AND" + sample["name"]
                                     ].append([[mod["name"], 1, 0, param["bounds"]], ""])
                                 else:
-                                    DC.rateParams.update(
+                                    data_card.rateParams.update(
                                         {channel + "AND" + sample["name"]: []}
                                     )
-                                    DC.rateParams[
+                                    data_card.rateParams[
                                         channel + "AND" + sample["name"]
                                     ].append([[mod["name"], 1, 0], ""])
 
 
-def writeDataCard(path):  ##manually write each line of the datacard from DC object
+def writeDataCard(
+    path,
+):  ##manually write each line of the datacard from data_card object
     with open(path, "w") as f:
-        f.write("imax " + str(size(DC.bins)) + "\n")
-        f.write("jmax " + str(size(DC.processes) - size(DC.isSignal.keys())) + "\n")
-        f.write("kmax " + str(size(DC.systs, 0)) + "\n")
-        if DC.hasShapes:
-            for channel in DC.shapeMap.keys():
-                for sample in DC.shapeMap[channel].keys():
+        f.write("imax " + str(size(data_card.bins)) + "\n")
+        f.write(
+            "jmax "
+            + str(size(data_card.processes) - size(data_card.isSignal.keys()))
+            + "\n"
+        )
+        f.write("kmax " + str(size(data_card.systs, 0)) + "\n")
+        if data_card.hasShapes:
+            for channel in data_card.shapeMap.keys():
+                for sample in data_card.shapeMap[channel].keys():
                     f.write(
                         "shapes "
                         + sample
                         + "  "
                         + channel
                         + "  "
-                        + DC.shapeMap[channel][sample][0]
+                        + data_card.shapeMap[channel][sample][0]
                         + "  "
-                        + DC.shapeMap[channel][sample][1]
+                        + data_card.shapeMap[channel][sample][1]
                     )
-                    if size(DC.shapeMap[channel][sample]) > 2:
-                        f.write("  " + DC.shapeMap[channel][sample][2] + "\n")
+                    if size(data_card.shapeMap[channel][sample]) > 2:
+                        f.write("  " + data_card.shapeMap[channel][sample][2] + "\n")
                     else:
                         f.write("\n")
 
         f.write("\n---------------------------------\n")
         f.write("bin ")
-        for bin in DC.obs.keys():
+        for bin in data_card.obs.keys():
             f.write(bin + " ")
         f.write("\n")
         f.write("observation ")
-        for channel in DC.obs.keys():
-            f.write(str(DC.obs[channel]) + " ")
+        for channel in data_card.obs.keys():
+            f.write(str(data_card.obs[channel]) + " ")
         f.write("\n---------------------------------\n")
         f.write("bin     ")
-        for channel in DC.obs.keys():
-            for sample in DC.exp[channel].keys():
+        for channel in data_card.obs.keys():
+            for sample in data_card.exp[channel].keys():
                 f.write(channel + "    ")
         f.write("\n")
         f.write("process     ")
-        for channel in DC.bins:
-            for sample in DC.exp[channel].keys():
+        for channel in data_card.bins:
+            for sample in data_card.exp[channel].keys():
                 f.write(sample + "    ")
         f.write("\n")
         f.write("process     ")
-        for channel in DC.bins:
-            for sample in DC.exp[channel].keys():
-                if sample in DC.signals:
-                    f.write(str(-1 * DC.processes.index(sample)) + "     ")
+        for channel in data_card.bins:
+            for sample in data_card.exp[channel].keys():
+                if sample in data_card.signals:
+                    f.write(str(-1 * data_card.processes.index(sample)) + "     ")
                 else:
-                    f.write(str(DC.processes.index(sample) + 1) + "     ")
+                    f.write(str(data_card.processes.index(sample) + 1) + "     ")
         f.write("\n")
         f.write("rate     ")
-        for channel in DC.bins:
-            for sample in DC.exp[channel].keys():
+        for channel in data_card.bins:
+            for sample in data_card.exp[channel].keys():
 
-                f.write(str(DC.exp[channel][sample]) + "     ")
+                f.write(str(data_card.exp[channel][sample]) + "     ")
         f.write("\n---------------------------------\n")
-        for syst in DC.systs:
+        for syst in data_card.systs:
             f.write(syst[0] + "  " + syst[2] + "  ")
             for bin in syst[4].keys():
-                for sample in DC.exp[bin].keys():
+                for sample in data_card.exp[bin].keys():
                     if syst[4][bin][sample] != 0:
                         f.write(str(syst[4][bin][sample]) + "  ")
                     else:
@@ -422,38 +432,38 @@ def writeDataCard(path):  ##manually write each line of the datacard from DC obj
 
             f.write("\n")
         f.write("\n---------------------------------\n")
-        for cAp in DC.rateParams.keys():
+        for cAp in data_card.rateParams.keys():
             dir = cAp.split("AND")
-            for i in range(size(DC.rateParams[cAp], 0)):
-                if size(DC.rateParams[cAp][i][0]) > 3:
+            for i in range(size(data_card.rateParams[cAp], 0)):
+                if size(data_card.rateParams[cAp][i][0]) > 3:
                     f.write(
-                        str(DC.rateParams[cAp][i][0][0])
+                        str(data_card.rateParams[cAp][i][0][0])
                         + " "
                         + "rateParam "
                         + dir[0]
                         + " "
                         + dir[1]
                         + " "
-                        + str(DC.rateParams[cAp][i][0][1])
+                        + str(data_card.rateParams[cAp][i][0][1])
                         + " "
-                        + DC.rateParams[cAp][i][0][3]
+                        + data_card.rateParams[cAp][i][0][3]
                     )
                 else:
                     f.write(
-                        str(DC.rateParams[cAp][i][0][0])
+                        str(data_card.rateParams[cAp][i][0][0])
                         + " "
                         + "rateParam "
                         + dir[0]
                         + " "
                         + dir[1]
                         + " "
-                        + str(DC.rateParams[cAp][i][0][1])
+                        + str(data_card.rateParams[cAp][i][0][1])
                     )
                 f.write("\n")
         f.write("\n---------------------------------\n")
         for idxc, channel in enumerate(channels):
-            if channel in DC.binParFlags.keys():
-                if DC.binParFlags[channel] == True:  ##double check to be safe
+            if channel in data_card.binParFlags.keys():
+                if data_card.binParFlags[channel] == True:  ##double check to be safe
                     shapesys = False
                     staterror = False
                     for idxs, sample in enumerate(spec["channels"][idxc]["samples"]):
@@ -527,7 +537,7 @@ def main():
                 if "staterror" not in mod:
                     systs.append(mod)
 
-    DC = Datacard()
+    data_card = Datacard()
 
     file = uproot.recreate(options.shapefile)
     addChannels()
