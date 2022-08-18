@@ -34,3 +34,4 @@ combine-to-pyhf = "pyhf_combine_converter.pyhf_converted_from_datacard:main"
 [tool.hatch]
 version.source = "vcs"
 build.hooks.vcs.version-file = "src/pyhf_combine_converter/version.py"
+build.hooks.vcs.local_scheme = "no-local-version"
