@@ -197,14 +197,14 @@ def addNormFactor(spec: dict, data_card, channels, samples, sig):
                 )
 
 
-def addMods(spec: dict, data_card):
+def addMods(spec: dict, data_card, channels, samples, exp_values, mods):
     """
     Add systematics as modifiers
     """
     for syst in mods:
         name = syst[0]
         mod_type = syst[2]
-        if mod_type == "lnN":  ##normsys
+        if mod_type == "lnN":  # normsys
             for idxc, channel in enumerate(channels):
                 for idxs, sample in enumerate(exp_values[channel].keys()):
                     if sample in exp_values[channel].keys():
@@ -237,7 +237,7 @@ def addMods(spec: dict, data_card):
                                     }
                                 )
 
-        elif "shape" in mod_type:  ##histosys
+        elif "shape" in mod_type:  # histosys
             for idxc, channel in enumerate(channels):
                 for idxs, sample in enumerate(samples):
                     if syst[4][channel][sample] != 0:
@@ -260,18 +260,16 @@ def addMods(spec: dict, data_card):
                                 lo = lo + i
                             for i in data:
                                 nom = nom + i
-                            spec["channels"][idxc]["samples"][idxs][
-                                "modifiers"
-                            ].append(  ##add histosys modifier for shape
+                            # Add histosys modifier for shape
+                            spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                                 {
                                     "name": name,
                                     "type": "histosys",
                                     "data": {"hi_data": hi_data, "lo_data": lo_data},
                                 }
                             )
-                            spec["channels"][idxc]["samples"][idxs][
-                                "modifiers"
-                            ].append(  ##add additional normsys to account for shape/norm split
+                            # Add additional normsys to account for shape/norm split
+                            spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                                 {
                                     "name": name,
                                     "type": "normsys",
@@ -283,7 +281,6 @@ def addMods(spec: dict, data_card):
             raise NotImplementedError
 
     for idxc, channel in enumerate(channels):  ##staterror/shapesys
-
         if channel in data_card.binParFlags.keys():
             if data_card.binParFlags[channel][0] == 0:  # if BB lite enabled
                 for idxs, sample in enumerate(samples):
@@ -293,10 +290,8 @@ def addMods(spec: dict, data_card):
                         spec["channels"][idxc]["samples"][idxs]["modifiers"].append(
                             {"name": "my_stat_err", "type": "staterror", "data": err}
                         )
-
-            elif (
-                data_card.binParFlags[channel][0] > 0
-            ):  ##if user wants total BB (shapesys)
+            # if user wants total BB (shapesys)
+            elif data_card.binParFlags[channel][0] > 0:
                 for idxs, sample in enumerate(samples):
                     if sample in exp_values[channel].keys():
                         hist = getHist(data_card.shapeMap, channel, sample)
@@ -340,7 +335,7 @@ def main():
     addSamples(spec, data_card, channels, samples, exp_values)
     addMeasurements(spec, data_card, channels, samples, sig)
     addNormFactor(spec, data_card, channels, samples, sig)
-    addMods(spec, data_card)
+    addMods(spec, data_card, channels, samples, exp_values, mods)
 
     with open(options.outfile, "w") as file:
         file.write(json.dumps(spec, indent=2))
