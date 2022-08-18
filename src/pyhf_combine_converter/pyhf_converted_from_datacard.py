@@ -305,9 +305,9 @@ def addMods(spec: dict, data_card, channels, samples, exp_values, mods):
                         )
 
 
-def pyhf_converted_from_datacard(outfile, args, kwargs):
+def pyhf_converted_from_datacard(input_datacard, outfile, kwargs):
     data_card = Datacard()  # create Datacard object
-    with open(args[0]) as dc_file:
+    with open(input_datacard) as dc_file:
         data_card = Datacard()
         data_card = DP.parseCard(file=dc_file, options=kwargs)
 
@@ -343,7 +343,14 @@ def main():
     )
     options, args = parser.parse_args()
 
-    pyhf_converted_from_datacard(options.outfile, args, options)
+    print(f"{args=}")
+    print(f"{args[0]=}")
+    print(f"{options=}")
+    print(f"{options.outfile=}")
+
+    pyhf_converted_from_datacard(
+        input_datacard=args[0], outfile=options.outfile, kwargs=options
+    )
 
 
 if __name__ == "__main__":
