@@ -13,18 +13,18 @@ except:
     )
 
 
-def getShapeFile(
-    shapeMap: dict, channel, sample
-) -> string:  ##get shape file of specific sample
+def getShapeFile(shapeMap: dict, channel, sample) -> string:
+    """
+    Get shape file of specific sample
+    """
     file = ""
-    if not channel in shapeMap.keys():
-        if "*" in shapeMap.keys():
-            if not sample in shapeMap["*"]:
-                if "*" in shapeMap["*"].keys():
-                    file = shapeMap["*"]["*"][0]
-            else:
+    if channel not in shapeMap:
+        if "*" in shapeMap:
+            if sample in shapeMap["*"]:
                 file = shapeMap["*"][sample][0]
-    elif not sample in shapeMap[channel]:
+            elif "*" in shapeMap["*"].keys():
+                file = shapeMap["*"]["*"][0]
+    elif sample not in shapeMap[channel]:
         if "*" in shapeMap[channel].keys():
             file = shapeMap[channel]["*"][0]
     else:
