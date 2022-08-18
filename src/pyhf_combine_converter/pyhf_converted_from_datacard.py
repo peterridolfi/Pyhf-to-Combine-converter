@@ -305,7 +305,7 @@ def addMods(spec: dict, data_card, channels, samples, exp_values, mods):
                         )
 
 
-def pyhf_converted_from_datacard(input_datacard, outfile, kwargs):
+def pyhf_converted_from_datacard(input_datacard, outfile, **kwargs):
     data_card = Datacard()  # create Datacard object
     with open(input_datacard) as dc_file:
         data_card = Datacard()
