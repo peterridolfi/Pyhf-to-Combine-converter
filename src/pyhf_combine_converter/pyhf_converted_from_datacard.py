@@ -331,7 +331,6 @@ def pyhf_converted_from_datacard(outfile, options, args):
 
 
 def main():
-    print("hi")
     parser = OptionParser()
     DP.addDatacardParserOptions(parser)
     parser.add_option(
