@@ -109,7 +109,10 @@ def getUncertDown(
     return hist
 
 
-def addChannels(spec: dict):  ##add each channel and associated observation to the spec
+def addChannels(spec: dict, data_card):
+    """
+    Add each channel and associated observation to the spec
+    """
     if data_card.hasShapes:
         for idxc, channel in enumerate(channels):
             spec["channels"].append({"name": channel, "samples": []})
@@ -122,7 +125,10 @@ def addChannels(spec: dict):  ##add each channel and associated observation to t
             spec["observations"].append({"name": channel, "data": [observations[idxc]]})
 
 
-def addSamples(spec: dict):  ##add sample names and expected values to spec
+def addSamples(spec: dict, data_card):
+    """
+    Add sample names and expected values to spec
+    """
     if data_card.hasShapes:
         for idxc, channel in enumerate(channels):
             for idxs, sample in enumerate(samples):
@@ -149,7 +155,10 @@ def addSamples(spec: dict):  ##add sample names and expected values to spec
                     )
 
 
-def addMeasurements(spec: dict):  ##add signal measurements to spec
+def addMeasurements(spec: dict, data_card):
+    """
+    Add signal measurements to spec
+    """
     for idxc, channel in enumerate(channels):
         for idxs, sample in enumerate(samples):
             if sig[sample] == True:
@@ -173,7 +182,10 @@ def addMeasurements(spec: dict):  ##add signal measurements to spec
                         )
 
 
-def addNormFactor(spec: dict):  ##add all normfactor modifiers to spec
+def addNormFactor(spec: dict, data_card):
+    """
+    Add all normfactor modifiers to spec
+    """
     for idxc, channel in enumerate(channels):
         for idxs, sample in enumerate(samples):
             if (channel + "AND" + sample) in data_card.rateParams.keys():
@@ -187,7 +199,10 @@ def addNormFactor(spec: dict):  ##add all normfactor modifiers to spec
                 )
 
 
-def addMods(spec: dict):  ##add systematics as modifiers
+def addMods(spec: dict, data_card):
+    """
+    Add systematics as modifiers
+    """
     for syst in mods:
         name = syst[0]
         mod_type = syst[2]
@@ -297,12 +312,12 @@ def addMods(spec: dict):  ##add systematics as modifiers
                         )
 
 
-def toJSON(spec: dict):
-    addChannels(spec)
-    addSamples(spec)
-    addMeasurements(spec)
-    addNormFactor(spec)
-    addMods(spec)
+def toJSON(spec: dict, data_card):
+    addChannels(spec, data_card)
+    addSamples(spec, data_card)
+    addMeasurements(spec, data_card)
+    addNormFactor(spec, data_card)
+    addMods(spec, data_card)
 
 
 def main():
@@ -329,7 +344,7 @@ def main():
     sig = data_card.isSignal
     mods = data_card.systs
     spec = {"channels": [], "observations": [], "measurements": [], "version": "1.0.0"}
-    toJSON(spec)
+    toJSON(spec, data_card)
 
     with open(options.outfile, "w") as file:
         file.write(json.dumps(spec, indent=2))
