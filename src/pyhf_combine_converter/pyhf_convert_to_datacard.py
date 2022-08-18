@@ -491,7 +491,7 @@ def pyhf_convert_to_datacard(outdatacard, shapefile, args):
     write_data_card(spec, data_card, channels, outdatacard)
 
 
-if __name__ == "__main__":
+def main():
     print("hi")
     parser = OptionParser()  # add command line args
     parser.add_option(
@@ -511,3 +511,7 @@ if __name__ == "__main__":
     options, args = parser.parse_args()
     print(options, args)
     pyhf_convert_to_datacard(*options, *args)
+
+
+if __name__ == "__main__":
+    main()

@@ -330,7 +330,7 @@ def pyhf_converted_from_datacard(outfile, options, args):
         file.write(json.dumps(spec, indent=2))
 
 
-if __name__ == "__main__":
+def main():
     print("hi")
     parser = OptionParser()
     DP.addDatacardParserOptions(parser)
@@ -344,3 +344,7 @@ if __name__ == "__main__":
     options, args = parser.parse_args()  # add command line args
     print(options, args)
     pyhf_converted_from_datacard(options.outfile, options, args)
+
+
+if __name__ == "__main__":
+    main()
