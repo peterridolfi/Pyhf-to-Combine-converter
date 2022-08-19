@@ -1,8 +1,9 @@
-import string
-from numpy.core.fromnumeric import size
-import uproot
 import json
+import string
 from optparse import OptionParser
+
+import uproot
+from numpy.core.fromnumeric import size
 
 try:
     import HiggsAnalysis.CombinedLimit.DatacardParser as DP
