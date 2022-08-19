@@ -1,7 +1,8 @@
-import pyhf_combine_converter as converter
+from pyhf_combine_converter import pyhf_converted_from_datacard
+from pyhf_combine_converter import pyhf_convert_to_datacard
 
 ##convert to pyhf
-converter.pyhf_converted_from_datacard.main("converted_datacard.txt", outfile = "pyhf_workspace.json")
+pyhf_converted_from_datacard(input_datacard = "converted_datacard.txt", outfile = "pyhf_workspace.json")
 ##convert back to datacard
-converter.pyhf_convert_to_datacard.main("pyhf_workspace.json", outdatacard = "combine_datacard.txt", shapefile = "shapes.root")
+pyhf_convert_to_datacard(workspace = "pyhf_workspace.json", outdatacard = "combine_datacard.txt", shapefile = "shapes.root")
 

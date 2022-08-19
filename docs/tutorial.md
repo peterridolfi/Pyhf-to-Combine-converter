@@ -1,6 +1,6 @@
 Once you are in an environment with both cvmfs commands and pyhf supported, as well as the package installed, you are ready to run the translation
 
-### pyhf->Combine
+### pyhf to Combine
 
 To go from a pyhf workspace to a datacard, you only need the workspace JSON file
 
@@ -21,12 +21,12 @@ To run the translation in a python script, run the following code:
 
 ```
 from pyhf_combine_converter import pyhf_convert_to_datacard
-pyhf_convert_to_datacard.main($JSON_FILE)
+pyhf_convert_to_datacard(workspace = $JSON_FILE, outdatacard = $DATACARD_FILE_NAME, shapefile = $SHAPES_FILE_NAME)
 ```
 
-### Combine->pyhf
+### Combine to pyhf
 
-To run the translation in the other direction, the protocols are very similar. However, if the model has shapes, meaning there are samples with multiple bins and a shapes file is designated in the datacard, this shapes file must be present in the directory from which you are running the command. Otherwise there will be an error that the shapes file was not found.
+To run the translation in the other direction, the method is very similar. However, if the model has shapes, meaning there are samples with multiple bins and a shapes file is designated in the datacard, this shapes file must be present in the directory from which you are running the command. Otherwise there will be an error that the shapes file was not found.
 
 In the CLI:
 
@@ -44,5 +44,5 @@ To run this conversion in a python script, run the following:
 
 ```
 from pyhf_combine_converter import pyhf_converted_from_datacard
-pyhf_converted_from_datacard.main($DATACARD_FILE)
+pyhf_converted_from_datacard(input_datacard = $DATACARD_FILE, outfile = $JSON_FILE_NAME)
 ```
