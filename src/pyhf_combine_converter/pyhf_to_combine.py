@@ -1,14 +1,15 @@
+import json
 from ctypes import sizeof
 from operator import indexOf
+from optparse import OptionParser
 from unicodedata import name
+
+import hist
 import numpy as np
-from numpy.core.fromnumeric import size
 import pyhf
 import uproot
-import hist
 from hist import Hist
-import json
-from optparse import OptionParser
+from numpy.core.fromnumeric import size
 
 try:
     from HiggsAnalysis.CombinedLimit.Datacard import Datacard
@@ -16,6 +17,12 @@ except:
     print(
         "Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again."
     )
+
+__all__ = ["pyhf_convert_to_datacard"]
+
+
+def __dir__():
+    return __all__
 
 
 def addChannels(file, spec, data_card, channel_bins):
@@ -51,7 +58,7 @@ def addChannels(file, spec, data_card, channel_bins):
             file[channel["name"] + "/data_obs"] = h_data
 
 
-def addSamples(file, spec, data_card, channel_bins, samples, options):
+def addSamples(file, spec, data_card, channel_bins, samples, shapefile):
     """
     Add sample names and expected counts to the Datacard
     """
@@ -67,7 +74,7 @@ def addSamples(file, spec, data_card, channel_bins, samples, options):
             # shapes
             data_card.shapeMap.update({channel["name"]: {}})
             data_card.shapeMap[channel["name"]].update(
-                {"data_obs": [options.shapefile, channel["name"] + "/" + "data_obs"]}
+                {"data_obs": [shapefile, channel["name"] + "/" + "data_obs"]}
             )
             for idxs, sample in enumerate(channel["samples"]):
                 data = sum(sample["data"])
@@ -84,7 +91,7 @@ def addSamples(file, spec, data_card, channel_bins, samples, options):
                     data_card.shapeMap[channel["name"]].update(
                         {
                             spec["channels"][idxc]["samples"][idxs]["name"]: [
-                                options.shapefile,
+                                shapefile,
                                 channel["name"]
                                 + "/"
                                 + spec["channels"][idxc]["samples"][idxs]["name"],
@@ -99,7 +106,7 @@ def addSamples(file, spec, data_card, channel_bins, samples, options):
                     data_card.shapeMap[channel["name"]].update(
                         {
                             spec["channels"][idxc]["samples"][idxs]["name"]: [
-                                options.shapefile,
+                                shapefile,
                                 channel["name"]
                                 + "/"
                                 + spec["channels"][idxc]["samples"][idxs]["name"],
@@ -460,25 +467,8 @@ def write_data_card(spec, data_card, channels, path):
                     f.write(f"{channel} autoMCStats 0 0 2" + "\n")
 
 
-def main():
-    parser = OptionParser()  # add command line args
-    parser.add_option(
-        "-O",
-        "--out-datacard",
-        dest="outdatacard",
-        default="converted_datacard.txt",
-        help="desired name of datacard file",
-    )
-    parser.add_option(
-        "-s",
-        "--shape-file",
-        dest="shapefile",
-        default="shapes.root",
-        help="desired name of shapes file",
-    )
-    options, args = parser.parse_args()
-
-    with open(args[0]) as serialized:
+def pyhf_convert_to_datacard(workspace, outdatacard, shapefile):
+    with open(workspace) as serialized:
         spec = json.load(serialized)
     workspace = pyhf.Workspace(spec)
     model = workspace.model()
@@ -498,14 +488,38 @@ def main():
 
     data_card = Datacard()
 
-    file = uproot.recreate(options.shapefile)
+    file = uproot.recreate(shapefile)
     addChannels(file, spec, data_card, channel_bins)
-    addSamples(file, spec, data_card, channel_bins, samples, options)
+    addSamples(file, spec, data_card, channel_bins, samples, shapefile)
     addMods(file, spec, data_card, channel_bins, systs)
     addSignal(spec, data_card, channels, modifiers)
     addRateParams(spec, data_card, channels, modifiers)
     file.close()
-    write_data_card(spec, data_card, channels, options.outdatacard)
+    write_data_card(spec, data_card, channels, outdatacard)
+
+
+def main():
+    # Add command line args
+    parser = OptionParser()
+    parser.add_option(
+        "-O",
+        "--out-datacard",
+        dest="outdatacard",
+        default="converted_datacard.txt",
+        help="desired name of datacard file",
+    )
+    parser.add_option(
+        "-s",
+        "--shape-file",
+        dest="shapefile",
+        default="shapes.root",
+        help="desired name of shapes file",
+    )
+    options, args = parser.parse_args()
+
+    pyhf_convert_to_datacard(
+        workspace=args[0], outdatacard=options.outdatacard, shapefile=options.shapefile
+    )
 
 
 if __name__ == "__main__":

@@ -1,8 +1,9 @@
-import string
-from numpy.core.fromnumeric import size
-import uproot
 import json
+import string
 from optparse import OptionParser
+
+import uproot
+from numpy.core.fromnumeric import size
 
 try:
     import HiggsAnalysis.CombinedLimit.DatacardParser as DP
@@ -11,6 +12,13 @@ except:
     print(
         "Either the docker container has not been created properly or Combine commands have not been mounted. Please fix this and try again."
     )
+
+
+__all__ = ["pyhf_converted_from_datacard"]
+
+
+def __dir__():
+    return __all__
 
 
 def getShapeFile(shapeMap: dict, channel, sample) -> string:
@@ -305,26 +313,15 @@ def addMods(spec: dict, data_card, channels, samples, exp_values, mods):
                         )
 
 
-def main():
-    parser = OptionParser()
-    DP.addDatacardParserOptions(parser)
-    parser.add_option(
-        "-O",
-        "--out-file",
-        dest="outfile",
-        default="converted_workspace.json",
-        help="desired name of JSON file",
-    )
-    options, args = parser.parse_args()  # add command line args
-
+def pyhf_converted_from_datacard(input_datacard, outfile, options=None):
     data_card = Datacard()  # create Datacard object
-    with open(args[0]) as dc_file:
+    with open(input_datacard) as dc_file:
         data_card = Datacard()
         data_card = DP.parseCard(file=dc_file, options=options)
 
-    channels = [channel for channel in data_card.bins]
+    channels = list(data_card.bins)
+    samples = list(data_card.processes)
     observations = [obs for channel, obs in data_card.obs.items()]
-    samples = [sample for sample in data_card.processes]
     exp_values = data_card.exp
     sig = data_card.isSignal
     mods = data_card.systs
@@ -337,8 +334,26 @@ def main():
     addNormFactor(spec, data_card, channels, samples, sig)
     addMods(spec, data_card, channels, samples, exp_values, mods)
 
-    with open(options.outfile, "w") as file:
+    with open(outfile, "w") as file:
         file.write(json.dumps(spec, indent=2))
+
+
+def main():
+    # Add command line args
+    parser = OptionParser()
+    DP.addDatacardParserOptions(parser)
+    parser.add_option(
+        "-O",
+        "--out-file",
+        dest="outfile",
+        default="converted_workspace.json",
+        help="desired name of JSON file",
+    )
+    options, args = parser.parse_args()
+
+    pyhf_converted_from_datacard(
+        input_datacard=args[0], outfile=options.outfile, options=options
+    )
 
 
 if __name__ == "__main__":
