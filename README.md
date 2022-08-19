@@ -2,7 +2,9 @@
 
 Tool to convert models from pyhf to CMS Combine and vise versa
 
-Zenodo DOI: [![DOI](https://zenodo.org/badge/492820903.svg)](https://zenodo.org/badge/latestdoi/492820903)
+[![DOI](https://zenodo.org/badge/492820903.svg)](https://zenodo.org/badge/latestdoi/492820903)
+
+[![PyPI version](https://badge.fury.io/py/pyhf-combine-converter.svg)](https://badge.fury.io/py/pyhf-combine-converter)
 
 This tool has been fully verified to produce the same model structure and expected yields, as well as to produce fits that are within 1% of the central value of each other. This has been done through the comparison of NLL plots, pull plots, and raw difference calculations.
 
@@ -24,15 +26,15 @@ cmsenv
 
 ## Install
 
-`pyhf_combine_converter` can be installed from PyPI. Inside of the Python environment containing Combine run
+`pyhf-combine-converter` can be installed from PyPI. Inside of the Python environment containing Combine run
 
 ```
-python3 -m pip install pyhf_combine_converter
+python3 -m pip install pyhf-combine-converter
 ```
 
 ## Use
 
-`pyhf_combine_converter` provides a CLI API for bidirectional conversion between pyhf and Combine.
+`pyhf-combine-converter` provides a CLI API for bidirectional conversion between pyhf and Combine.
 
 ### Convert from pyhf to Combine
 
