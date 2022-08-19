@@ -8,6 +8,8 @@ on:
   pull_request:
     branches:
     - main
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       publish:
