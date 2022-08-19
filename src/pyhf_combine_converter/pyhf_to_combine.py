@@ -1,14 +1,15 @@
+import json
 from ctypes import sizeof
 from operator import indexOf
+from optparse import OptionParser
 from unicodedata import name
+
+import hist
 import numpy as np
-from numpy.core.fromnumeric import size
 import pyhf
 import uproot
-import hist
 from hist import Hist
-import json
-from optparse import OptionParser
+from numpy.core.fromnumeric import size
 
 try:
     from HiggsAnalysis.CombinedLimit.Datacard import Datacard
