@@ -28,8 +28,8 @@ dynamic = ["version"]
 "Bug Tracker" = "https://github.com/peterridolfi/Pyhf-to-Combine-converter/issues"
 
 [project.scripts]
-pyhf-to-combine = "pyhf_combine_converter.pyhf_convert_to_datacard:main"
-combine-to-pyhf = "pyhf_combine_converter.pyhf_converted_from_datacard:main"
+pyhf-to-combine = "pyhf_combine_converter.pyhf_to_combine:main"
+combine-to-pyhf = "pyhf_combine_converter.combine_to_pyhf:main"
 
 [tool.hatch]
 version.source = "vcs"
