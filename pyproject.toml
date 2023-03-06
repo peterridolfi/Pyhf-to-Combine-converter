@@ -44,5 +44,4 @@ exclude = [
   "/docker",
   "/docs",
   "/test",
-  "./gitignore",
 ]
