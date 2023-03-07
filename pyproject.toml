@@ -37,3 +37,11 @@ build.hooks.vcs.version-file = "src/pyhf_combine_converter/version.py"
 
 [tool.hatch.version.raw-options]
 local_scheme = "no-local-version"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+  "/docker",
+  "/docs",
+  "/test",
+]
